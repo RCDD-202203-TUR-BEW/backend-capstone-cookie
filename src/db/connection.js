@@ -8,11 +8,11 @@ const connectToMongo = () => {
   const db = mongoose.connection;
 
   db.once('open', () => {
-    console.log('Database connected: ', url);
+    //  console.log('Database connected: ', url);
   });
 
   db.on('error', (err) => {
-    console.error('Database connection error: ', err);
+    //  console.error('Database connection error: ', err);
   });
 };
 
