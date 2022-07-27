@@ -1,29 +1,30 @@
 const mongoose = require('mongoose');
 
-const { Schema } = mongoose.Schema;
+const { Schema } = mongoose;
 
 const couponSchema = new Schema({
-    couopn_id: {
-        type: Schema.Types.ObjectId,
-        ref: process.env.COUPON_MODEL_NAME,
-      },
- 
- coupon_code: String,
- discount_type: {
+
+
+  coupon_code: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  discount_type: {
     type: String,
     enum: [
       'coupon',
-      'persentage',
-     
+      'percentage',
+
     ],
   },
-    discount_amount: Number,
-    active: Boolean,
- 
-    expiration_date: Date,
-  
-  
+  discount_amount: { type: Number, required: true },
+  active: { type: Boolean, default: true, required: true },
+
+  expiration_date: Date,
+
+
 });
 
-
+const modelName = process.env.COUPON_MODEL_NAME
 module.exports = mongoose.model(modelName, couponSchema);
