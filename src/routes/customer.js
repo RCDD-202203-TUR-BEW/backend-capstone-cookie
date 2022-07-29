@@ -11,7 +11,7 @@ router.post('/login', customerController);
 router.get('/orders', customerController);
 router.get('/rate', customerController); // rated dishes
 router.get('/rate/:id', customerController); // rated a single dish
-router.put('/profile', customerController); // update profile - or it cuts off the rest of the routes
+router.put('/profile', customerController); // update profile - and every thing else inside the profile details
 
 router.put('/orders', customerController); // update orders
 
