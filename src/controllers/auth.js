@@ -48,4 +48,22 @@ authControllers.signup = async (req, res) => {
   return res.redirect('/');
 };
 
+authControllers.signin = async (req, res) => {
+  const { username, email, password } = req.body;
+  const errorMessage = `invalid ${username ? 'username' : 'email'} or password`;
+  const existedUser = await Users.findOne({ $or: [{ username }, { email }] });
+  if (!existedUser) {
+    return res.status(401).json({
+      error: errorMessage,
+    });
+  }
+  const hashedPassword = existedUser.password_hash;
+  const validPassword = await bcrypt.compare(password, hashedPassword);
+  if (!validPassword) {
+    return res.status(401).json({ error: errorMessage });
+  }
+
+  return res.redirect('/');
+};
+
 module.exports = authControllers;
