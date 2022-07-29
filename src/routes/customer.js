@@ -17,10 +17,8 @@ router.put('/orders', customerController); // update orders
 
 router.delete('/deleteorder', customerController); // delete order
 router.delete('/deleteaddress', customerController); // delete address
-router.delete('/deletephone', customerController); // delete phone
-router.delete('/deleteemail', customerController); // delete email
-router.put('/deleteall', customerController); // delete all - acount, orders, address, phone, email, name
 
+router.delete('/deleteAccount', customerController); // delete account
 router.get('/chefs', chefController); // all chefs"
 router.get('/chefs/:username', chefController); // all chefs"
 router.get('/dishes/dishId', chefController); // dish by id
