@@ -66,4 +66,9 @@ authControllers.signin = async (req, res) => {
   return res.redirect('/');
 };
 
+authControllers.signout = (req, res) => {
+  // logic will be implemented after applying authentication
+  res.redirect('/');
+};
+
 module.exports = authControllers;
