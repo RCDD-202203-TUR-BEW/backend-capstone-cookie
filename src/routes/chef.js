@@ -22,11 +22,11 @@ router.delete('/deletedetails', chefController); // delete address
 
 router.get('/chefs', chefController); // all chefs"
 router.get('/chefs/:username', chefController); // all chefs"
-router.get('/dishes/dishId', chefController); // dish by id
+router.get('/dishes/:dishId', chefController); // dish by id
 router.get('/dishes/filter', chefController); // filter dishes
 
 router.post('/dishes', chefController); // add dish
-router.put('/dishes/dishId', chefController); // update dish
-router.delete('/dishes/dishId', chefController); // delete dish
+router.put('/dishes/:dishId', chefController); // update dish
+router.delete('/dishes/:dishId', chefController); // delete dish
 
 module.exports = router;
