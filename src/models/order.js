@@ -25,7 +25,6 @@ const orderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: process.env.COUPON_MODEL_NAME,
   },
-  price_after_discount: Number,
   status: {
     type: String,
     enum: ['in preparation', 'completed', 'cancelled'],
