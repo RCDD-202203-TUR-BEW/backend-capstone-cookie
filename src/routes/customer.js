@@ -15,7 +15,6 @@ router.put('/profile', customerController); // update profile - and every thing 
 
 router.put('/orders', customerController); // update orders
 
-router.delete('/deleteorder', customerController); // delete order
 router.delete('/deleteaddress', customerController); // delete address
 
 router.delete('/deleteAccount', customerController); // delete account
