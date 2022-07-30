@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const connectToMongo = require('./db/connection');
 
- const router = require('./routes');
+const router = require('./routes');
 // const customerRoutes = require("./routes/customer");
 // const chefRoutes = require("./routes/chef");
 
