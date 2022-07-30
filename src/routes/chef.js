@@ -14,9 +14,7 @@ router.get('/orders', chefController); // all orders
 router.get('/rate', chefController); // rated dishes
 router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
 
-router.put('/orders', chefController); // update orders
-
-router.put('/updateDetails', chefController);
+router.put('/updateDetails', chefController); //oreder details
 
 router.delete('/deletedetails', chefController); // delete address
 
