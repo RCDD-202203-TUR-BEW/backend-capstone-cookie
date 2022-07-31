@@ -1,7 +1,10 @@
 const express = require('express');
 
-const router = express.Router();
+const routes = express.Router();
 
+const adminRoutes = require('./admin');
 //  You will add routes here
 
-module.exports = router;
+routes.use('/admin', adminRoutes);
+
+module.exports = routes;
