@@ -12,19 +12,19 @@ const UserSchema = new Schema(
 
     locations: [location],
 
-    first_name: {
+    firstname: {
       type: String,
       unique: false,
-      requied: true,
+      required: true,
     },
 
-    last_name: {
+    lastname: {
       type: String,
       unique: false,
-      requied: true,
+      required: true,
     },
 
-    user_name: {
+    username: {
       type: String,
       match: [
         // eslint-disable-next-line node/no-unsupported-features/es-syntax
@@ -49,17 +49,17 @@ const UserSchema = new Schema(
 
     email_verified: {
       type: Boolean,
-      requied: true,
+      required: true,
+      default: false,
     },
 
     password_hash: {
       type: String,
-      required: false,
     },
 
     phone: {
       type: Number,
-      requied: true,
+      required: true,
       unique: true,
     },
 
@@ -69,7 +69,7 @@ const UserSchema = new Schema(
 
     birthday: {
       type: Date,
-      requied: true,
+      required: true,
     },
 
     gender: {
