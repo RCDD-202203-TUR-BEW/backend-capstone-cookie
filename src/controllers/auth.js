@@ -17,17 +17,24 @@ authControllers.signup = async (req, res) => {
     acceptTos,
   } = req.body;
 
-  const existedUser = await Users.findOne({ $or: [{ username }, { email }] });
-  if (existedUser) {
-    return res.status(400).json({
-      error: `${
-        username ? `username: ${username}` : `email: ${email}`
-      } already existed!`,
-    });
-  }
+  const isExisted = async (property, value) => {
+    const existedProperty = await Users.find({}).where(property).equals(value);
+    if (existedProperty.length !== 0) return true;
+    return false;
+  };
+
+  const response = (property, value) =>
+    res.status(400).json({ error: `${property} (${value}) already exists!` });
+
+  if (await isExisted('username', username))
+    return response('username', username);
+  if (await isExisted('email', email)) return response('email', email);
+  if (await isExisted('phone', phone)) return response('phone', phone);
+
   if (password !== confirmPassword) {
     return res.status(400).json({ error: "Passwords don't match" });
   }
+
   if (!acceptTos) {
     return res
       .status(400)
