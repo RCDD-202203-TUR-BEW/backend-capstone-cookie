@@ -9,6 +9,7 @@ authControllers.signup = async (req, res) => {
     lastname,
     username,
     email,
+    role,
     password,
     confirmPassword,
     phone,
@@ -47,12 +48,19 @@ authControllers.signup = async (req, res) => {
     lastname,
     username,
     email,
+    role,
     password_hash: hashedPassword,
     phone,
     birthday,
     gender,
   });
-  return res.json({ message: 'successful sign up' });
+
+  // checking the role to render the appropriate page for the user after signing up
+
+  if (role === 'chef')
+    return res.json({ message: 'new chef signed up successfully' });
+
+  return res.json({ message: 'new customer signed up successfully' });
 };
 
 authControllers.signin = async (req, res) => {
@@ -73,7 +81,16 @@ authControllers.signin = async (req, res) => {
     return res.status(401).json({ error: 'invalid id or password' });
   }
 
-  return res.json({ message: 'successful sign in' });
+  // checking the role to render the appropriate page for the user after signing invalid
+
+  if (existedUser.role === 'chef')
+    return res.json({
+      message: `chef: ${existedUser.username} signed in successfully`,
+    });
+
+  return res.json({
+    message: `customer: ${existedUser.username} signed in successfully`,
+  });
 };
 
 authControllers.signout = (req, res) => {
