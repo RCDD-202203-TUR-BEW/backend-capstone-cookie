@@ -52,25 +52,28 @@ authControllers.signup = async (req, res) => {
     birthday,
     gender,
   });
-  return res.redirect('/');
+  return res.json({ message: 'successful sign up' });
 };
 
 authControllers.signin = async (req, res) => {
-  const { username, email, password } = req.body;
-  const errorMessage = `invalid ${username ? 'username' : 'email'} or password`;
-  const existedUser = await Users.findOne({ $or: [{ username }, { email }] });
+  const { id, password } = req.body; // id represents what the user chooses to login with (email/username)
+
+  const existedUser = await Users.findOne({
+    $or: [{ username: id }, { email: id }],
+  });
   if (!existedUser) {
     return res.status(401).json({
-      error: errorMessage,
+      error: 'invalid id or password',
     });
   }
+
   const hashedPassword = existedUser.password_hash;
   const validPassword = await bcrypt.compare(password, hashedPassword);
   if (!validPassword) {
-    return res.status(401).json({ error: errorMessage });
+    return res.status(401).json({ error: 'invalid id or password' });
   }
 
-  return res.redirect('/');
+  return res.json({ message: 'successful sign in' });
 };
 
 authControllers.signout = (req, res) => {
