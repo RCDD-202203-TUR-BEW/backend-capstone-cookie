@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-//  const location = require('./location');
+const location = require('./location');
+
 const { Schema } = mongoose;
 
 const User = new Schema(
@@ -9,7 +10,7 @@ const User = new Schema(
       enum: ['chef', 'customer', 'admin'],
     },
 
-    // locations: [location], //   location is not defined yet
+    locations: [location], //   location is not defined yet
 
     first_name: {
       type: String,
@@ -104,20 +105,22 @@ const ChefModel = UserModel.discriminator(
     kitchen_name: {
       type: String,
       unique: true,
+      required: true,
     },
     kitchen_description: {
       type: String,
       default: '',
+      required: true,
     },
     bio: {
       type: String,
       default: '',
     },
-    // dishes: {
-    //   type: [Schema.Types.ObjectId],
-    //   ref: process.env.DISH_MODEL_NAME,
-    //   default: [],
-    // },
+    dishes: {
+      type: [Schema.Types.ObjectId],
+      ref: process.env.DISH_MODEL_NAME,
+      default: [],
+    },
     average_rate: {
       type: Number,
       default: 0,
@@ -128,11 +131,11 @@ const ChefModel = UserModel.discriminator(
 const CustomerModel = UserModel.discriminator(
   'Customer',
   new Schema({
-    // orders: {
-    //   type: [Schema.Types.ObjectId],
-    //   ref: process.env.ORDER_MODEL_NAME,
-    //   default: [],
-    // },
+    orders: {
+      type: [Schema.Types.ObjectId],
+      ref: process.env.ORDER_MODEL_NAME,
+      default: [],
+    },
   })
 );
 
@@ -141,7 +144,7 @@ const AdminModel = UserModel.discriminator(
   new Schema({
     permissions: {
       type: [String],
-      enum: ['create', 'read', 'update', 'delete'],
+      enum: ['create', 'create/update', 'create/update/delete'],
     },
     is_main_admin: {
       type: Boolean,
