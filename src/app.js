@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config();
 const connectToMongo = require('./db/connection');
 
-const router = require('./routes/index');
+const router = require('./routes');
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;

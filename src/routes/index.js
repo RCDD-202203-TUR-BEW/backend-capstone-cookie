@@ -1,14 +1,10 @@
 const express = require('express');
 
-const router = express.Router();
-const orderControllers = require('../controllers/order');
+const routes = express.Router();
 
-// ORDER ENDPOINTS
+const orderRoutes = require('./order');
+//  You will add routes here
 
-// GET CUSTOMER ORDER
-router.get('/:customerid/order', orderControllers.getCustomerOrder);
+routes.use(orderRoutes);
 
-// GET ALL PREVIOUS CUSTOMER ORDERS
-router.get('/:customerid/orders', orderControllers.getAllPrevOrders);
-
-module.exports = router;
+module.exports = routes;
