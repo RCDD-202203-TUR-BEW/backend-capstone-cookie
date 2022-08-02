@@ -2,7 +2,8 @@ const express = require('express');
 require('dotenv').config();
 const connectToMongo = require('./db/connection');
 
-const router = require('./routes');
+const router = require('./routes/index');
+const orderRoute = require('./routes/order');
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
@@ -13,9 +14,10 @@ app.use(connectToMongo);
 
 // USING ENDPOINTS
 app.use(router);
+app.use(orderRoute);
 
 app.listen(port, () => {
-  //    console.log(`Server listening on port ${port}`);
+  // console.log(`Server listening on port ${port}`);
   connectToMongo();
 });
 
