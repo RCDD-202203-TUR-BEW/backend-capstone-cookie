@@ -18,14 +18,14 @@ authControllers.signup = async (req, res) => {
     acceptTos,
   } = req.body;
 
-  const isExisted = async (property, value) => {
-    const existedProperty = await Users.find({}).where(property).equals(value);
+  const isExisted = async (fieldName, value) => {
+    const existedProperty = await Users.find({}).where(fieldName).equals(value);
     if (existedProperty.length !== 0) return true;
     return false;
   };
 
-  const response = (property, value) =>
-    res.status(400).json({ error: `${property} (${value}) already exists!` });
+  const response = (fieldName, value) =>
+    res.status(400).json({ error: `${fieldName} (${value}) already exists!` });
 
   if (await isExisted('username', username))
     return response('username', username);
