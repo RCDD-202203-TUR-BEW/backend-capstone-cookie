@@ -12,4 +12,7 @@ routes.get('/:customerid/orders', orderControllers.getAllPrevOrders);
 // CREATE NEW ORDER
 routes.post('/:customerid/order', orderControllers.addNewOrder);
 
+// UPDATE ORDER
+routes.put('/:customerid/order', orderControllers.updateOrder);
+
 module.exports = routes;

@@ -75,5 +75,21 @@ orderControllers.addNewOrder = async (req, res) => {
 };
 
 // UPDATE ORDER
+orderControllers.updateOrder = async (req, res) => {
+  const { customerid } = req.params;
+  const { dishid, quantity } = req.body;
+
+  const theOrder = await orderModel.findOne({ customer: customerid });
+
+  theOrder.dishes.forEach(async (dish, index) => {
+    if (dish.dish === dishid) {
+      theOrder.dishes[index].quantity = quantity;
+      await theOrder.save();
+    }
+  });
+  res.send(theOrder);
+};
+
+// DELETE ORDER
 
 module.exports = orderControllers;
