@@ -22,12 +22,12 @@ orderControllers.addNewOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
 
-  const theDish = await dishModel.findById(dishid);
-  const totalPrice = parseInt(theDish.price * quantity, 10);
+  let totalPrice = 0;
   const theEvaluation = await evaluationModel.findOne({
     customer_id: customerid,
     dish_id: dishid,
   });
+  const existedOrder = orderModel.findOne({ status: 'in preparation' });
 
   // CREATE DISH AND QUANTITY PAIRS
   const dishAndQuantity = {
@@ -35,18 +35,45 @@ orderControllers.addNewOrder = async (req, res) => {
     quantity,
   };
 
-  // CREATE ORDER
-  const theOrder = await orderModel.create({
-    customer: customerid,
-    total_price: totalPrice,
-    paid: false,
+  if (!existedOrder) {
+    // CREATE ORDER
+    const theOrder = await orderModel.create({
+      customer: customerid,
+      total_price: totalPrice,
+      paid: false,
+    });
+
+    // ADD DISH TO ORDER
+    theOrder.dishes.push(dishAndQuantity);
+
+    // ADD THE RATE TO THE ORDER
+    if (theEvaluation) theOrder.evaluation = theEvaluation;
+
+    // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
+    theOrder.dishes.forEach(async (elm) => {
+      const theDish = await dishModel.findById(elm.dish);
+      totalPrice += theDish.price * quantity;
+    });
+
+    await theOrder.save();
+    res.json(theOrder);
+  }
+
+  // ADD NEW DISH TO EXISTED ORDER
+  existedOrder.dishes.push(dishAndQuantity);
+
+  // ADD EVALUATION
+  if (theEvaluation) existedOrder.evaluation = theEvaluation;
+
+  // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
+  existedOrder.dishes.forEach(async (elm) => {
+    const theDish = await dishModel.findById(elm.dish);
+    totalPrice += theDish.price * quantity;
   });
 
-  if (theEvaluation) theOrder.evaluation = theEvaluation;
-  theOrder.dishes.push(dishAndQuantity);
-  await theOrder.save();
-
-  res.json(theOrder);
+  res.json(existedOrder);
 };
+
+// UPDATE ORDER
 
 module.exports = orderControllers;
