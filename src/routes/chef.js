@@ -6,11 +6,10 @@ const chefController = require('../controllers/chef');
 router.get('/', chefController); // all dishes - all chefs or (/dishes/all)
 router.get('/profile', chefController); //profile
 
-// router.post("/", chefController);
-router.get('/signup', chefController);
-router.get('/login', chefController);
+
+
 router.get('/order', chefController); //specific order
-router.get('/orders', chefController); // all orders
+
 router.get('/rate', chefController); // rated dishes
 router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
 

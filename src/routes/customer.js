@@ -5,10 +5,9 @@ const customerController = require('../controllers/customer');
 
 router.get('/', customerController);
 router.get('/profile', customerController); //profile
-// router.post("/", customerController);
-router.post('/signup', customerController);
-router.post('/login', customerController);
-router.get('/orders', customerController);
+
+
+
 router.get('/rate', customerController); // rated dishes
 router.get('/rate/:id', customerController); // rated a single dish
 router.put('/profile', customerController); // update profile - and every thing else inside the profile details
