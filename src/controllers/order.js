@@ -79,7 +79,10 @@ orderControllers.updateOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
 
-  const theOrder = await orderModel.findOne({ customer: customerid });
+  const theOrder = await orderModel.findOne({
+    customer: customerid,
+    status: 'adding dishes',
+  });
 
   theOrder.dishes.forEach(async (dish, index) => {
     if (dish.dish === dishid) {
