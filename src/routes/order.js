@@ -9,4 +9,7 @@ routes.get('/:customerid/order', orderControllers.getCustomerOrder);
 // GET ALL PREVIOUS CUSTOMER ORDERS
 routes.get('/:customerid/orders', orderControllers.getAllPrevOrders);
 
+// CREATE NEW ORDER
+routes.post('/:customerid/order', orderControllers.addNewOrder);
+
 module.exports = routes;

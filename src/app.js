@@ -10,11 +10,11 @@ const port = process.env.NODE_LOCAL_PORT;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(connectToMongo);
+// app.use(connectToMongo);
 
 // USING ENDPOINTS
-app.use(router);
 
+app.use('/api', router);
 app.use(orderRoutes);
 
 app.listen(port, () => {
