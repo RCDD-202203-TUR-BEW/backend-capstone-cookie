@@ -3,7 +3,7 @@ const orderModel = require('../models/order');
 const dishModel = require('../models/dish');
 const evaluationModel = require('../models/evaluation');
 
-// GET CUSTOEMR ORDER
+// GET THE LAST CUSTOEMR ORDER
 orderControllers.getCustomerOrder = async (req, res) => {
   const { customerid } = req.params;
   const customerOrder = await orderModel.findOne({ customer: customerid });
@@ -27,7 +27,7 @@ orderControllers.addNewOrder = async (req, res) => {
     customer_id: customerid,
     dish_id: dishid,
   });
-  const existedOrder = orderModel.findOne({ status: 'in preparation' });
+  const existedOrder = orderModel.findOne({ status: 'adding dishes' });
 
   // CREATE DISH AND QUANTITY PAIRS
   const dishAndQuantity = {
@@ -91,5 +91,13 @@ orderControllers.updateOrder = async (req, res) => {
 };
 
 // DELETE ORDER
+orderControllers.deleteOrder = async (req, res) => {
+  const { customerid } = req.params;
+  const theOrder = await orderModel.deleteOne({
+    customer: customerid,
+    status: 'adding dishes',
+  });
+  res.send(theOrder);
+};
 
 module.exports = orderControllers;

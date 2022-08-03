@@ -15,4 +15,7 @@ routes.post('/:customerid/order', orderControllers.addNewOrder);
 // UPDATE ORDER
 routes.put('/:customerid/order', orderControllers.updateOrder);
 
+// DELETE ORDER
+routes.delete('/:customerid', orderControllers.deleteOrder);
+
 module.exports = routes;
