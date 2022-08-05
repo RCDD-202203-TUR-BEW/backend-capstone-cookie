@@ -9,6 +9,7 @@ authControllers.signup = async (req, res) => {
     lastname,
     username,
     email,
+    role,
     password,
     confirmPassword,
     phone,
@@ -17,17 +18,24 @@ authControllers.signup = async (req, res) => {
     acceptTos,
   } = req.body;
 
-  const existedUser = await Users.findOne({ $or: [{ username }, { email }] });
-  if (existedUser) {
-    return res.status(400).json({
-      error: `${
-        username ? `username: ${username}` : `email: ${email}`
-      } already existed!`,
-    });
-  }
+  const isExisted = async (fieldName, value) => {
+    const existedProperty = await Users.find({}).where(fieldName).equals(value);
+    if (existedProperty.length !== 0) return true;
+    return false;
+  };
+
+  const response = (fieldName, value) =>
+    res.status(400).json({ error: `${fieldName} (${value}) already exists!` });
+
+  if (await isExisted('username', username))
+    return response('username', username);
+  if (await isExisted('email', email)) return response('email', email);
+  if (await isExisted('phone', phone)) return response('phone', phone);
+
   if (password !== confirmPassword) {
     return res.status(400).json({ error: "Passwords don't match" });
   }
+
   if (!acceptTos) {
     return res
       .status(400)
@@ -40,30 +48,49 @@ authControllers.signup = async (req, res) => {
     lastname,
     username,
     email,
+    role,
     password_hash: hashedPassword,
     phone,
     birthday,
     gender,
   });
-  return res.redirect('/');
+
+  // checking the role to render the appropriate page for the user after signing up
+
+  if (role === 'chef')
+    return res.json({ message: 'new chef signed up successfully' });
+
+  return res.json({ message: 'new customer signed up successfully' });
 };
 
 authControllers.signin = async (req, res) => {
-  const { username, email, password } = req.body;
-  const errorMessage = `invalid ${username ? 'username' : 'email'} or password`;
-  const existedUser = await Users.findOne({ $or: [{ username }, { email }] });
+  const { id, password } = req.body; // id represents what the user chooses to login with (email/username)
+
+  const existedUser = await Users.findOne({
+    $or: [{ username: id }, { email: id }],
+  });
   if (!existedUser) {
     return res.status(401).json({
-      error: errorMessage,
+      error: 'invalid id or password',
     });
   }
+
   const hashedPassword = existedUser.password_hash;
   const validPassword = await bcrypt.compare(password, hashedPassword);
   if (!validPassword) {
-    return res.status(401).json({ error: errorMessage });
+    return res.status(401).json({ error: 'invalid id or password' });
   }
 
-  return res.redirect('/');
+  // checking the role to render the appropriate page for the user after signing invalid
+
+  if (existedUser.role === 'chef')
+    return res.json({
+      message: `chef: ${existedUser.username} signed in successfully`,
+    });
+
+  return res.json({
+    message: `customer: ${existedUser.username} signed in successfully`,
+  });
 };
 
 authControllers.signout = (req, res) => {
