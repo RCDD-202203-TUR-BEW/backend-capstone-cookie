@@ -27,7 +27,10 @@ orderControllers.addNewOrder = async (req, res) => {
     customer_id: customerid,
     dish_id: dishid,
   });
-  const existedOrder = orderModel.findOne({ status: 'adding dishes' });
+  const existedOrder = orderModel.findOne({
+    customer: customerid,
+    status: 'adding dishes',
+  });
 
   // CREATE DISH AND QUANTITY PAIRS
   const dishAndQuantity = {
@@ -96,11 +99,21 @@ orderControllers.updateOrder = async (req, res) => {
 // DELETE ORDER
 orderControllers.deleteOrder = async (req, res) => {
   const { customerid } = req.params;
-  const theOrder = await orderModel.deleteOne({
+  const theOrder = await orderModel.find({
     customer: customerid,
     status: 'adding dishes',
   });
-  res.send(theOrder);
+
+  if (theOrder) {
+    orderModel.deleteOne({
+      customer: customerid,
+      status: 'adding dishes',
+    });
+    await orderModel.save();
+    res.send(theOrder);
+  } else {
+    res.send('You dont have an order to delete');
+  }
 };
 
 module.exports = orderControllers;
