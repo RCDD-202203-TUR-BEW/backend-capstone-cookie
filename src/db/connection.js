@@ -8,12 +8,12 @@ const connectToMongo = () => {
   const db = mongoose.connection;
 
   db.once('open', () => {
-    //  console.log('Database connected: ', url);
+    console.log('Database connected: ', url);
   });
 
   // err deleted
-  db.on('error', () => {
-    //  console.error('Database connection error: ', err);
+  db.on('error', (err) => {
+    console.error('Database connection error: ', err);
   });
 };
 
