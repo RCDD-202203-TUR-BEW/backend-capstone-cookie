@@ -31,5 +31,4 @@ const LocationSchema = new Schema({
   },
 });
 
-const modelName = process.env.LOCATION_MODEL_NAME;
-module.exports = mongoose.model(modelName, LocationSchema);
+module.exports = LocationSchema;
