@@ -1,6 +1,6 @@
 const express = require('express');
 
-const routes = express.Router();
+const router = express.Router();
 
 const adminRoutes = require('./admin');
 
