@@ -1,11 +1,13 @@
 const express = require('express');
+
 const router = express.Router();
 
 const chefController = require('../controllers/chef');
+
 const customerController = require('../controllers/customer');
 
 router.get('/', customerController);
-router.get('/profile', customerController); //profile
+router.get('/profile', customerController); // profile
 
 
 
