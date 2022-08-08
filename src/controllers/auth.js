@@ -99,10 +99,13 @@ authControllers.signin = async (req, res) => {
   });
 };
 
-authControllers.signout = (req, res) => {
-  const { username } = req.user;
+authControllers.signout = async (req, res) => {
+  const { _id } = req.user;
+  const user = await Users.findOne({ _id });
+  const { username } = user;
   res.clearCookie('token');
   res.json({ message: `${username} has signed out successfully` });
+  // redirect to signin page once we have a view ready
 };
 
 module.exports = authControllers;
