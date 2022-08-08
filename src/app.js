@@ -20,6 +20,16 @@ app.use(express.json());
 app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
 
+const path = [
+  '/api/auth/signup',
+  '/api/auth/signin',
+  '/api/chefs',
+  '/api/chefs/:username',
+  '/api/dishes',
+  '/api/dishes/:dishId',
+  '/api/dishes/filter',
+];
+
 app.use(
   '/api',
   jwt({
@@ -27,7 +37,9 @@ app.use(
     algorithms: ['HS256'],
     requestProperty: 'user',
     getToken: (req) => req.signedCookies.token ?? req.cookies.token,
-  }).unless({ path: ['/api/auth/signup', '/api/auth/signin'] })
+  }).unless({
+    path,
+  })
 );
 
 app.use('/api', apiRoutes);
