@@ -1,19 +1,20 @@
 const express = require('express');
+
 const router = express.Router();
 
 const chefController = require('../controllers/chef');
 
 router.get('/', chefController); // all dishes - all chefs or (/dishes/all)
-router.get('/profile', chefController); //profile
+router.get('/profile', chefController); // profile
 
 
 
-router.get('/order', chefController); //specific order
+router.get('/order', chefController); // specific order
 
 router.get('/rate', chefController); // rated dishes
 router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
 
-router.put('/updateDetails', chefController); //oreder details
+router.put('/updateDetails', chefController); // oreder details
 
 router.delete('/deletedetails', chefController); // delete address
 
