@@ -3,6 +3,8 @@ require('dotenv').config();
 const { expressjwt: jwt } = require('express-jwt');
 const cookieParser = require('cookie-parser');
 const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 
 const connectToMongo = require('./db/connection');
@@ -38,6 +40,14 @@ app.use(
     getToken: (req) => req.signedCookies.token ?? req.cookies.token,
   }).unless({
     path,
+  })
+);
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customCss: `.swagger-ui .topbar { display: none };`,
   })
 );
 
