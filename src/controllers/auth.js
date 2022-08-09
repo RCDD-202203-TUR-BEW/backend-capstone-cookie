@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const Users = require('../models/user');
+const transporter = require('../utils/email');
 
 const authControllers = {};
 
@@ -53,6 +54,15 @@ authControllers.signup = async (req, res) => {
     phone,
     birthday,
     gender,
+  });
+
+  // sending verification email
+
+  const info = await transporter.sendMail({
+    from: 'cookiesrecoded@outlook.com',
+    to: 'cookiesreciever@outlook.com',
+    subject: 'hello this is text from nodemaileer',
+    html: '<h1>HELLO WORLD</h1>',
   });
 
   // checking the role to render the appropriate page for the user after signing up
