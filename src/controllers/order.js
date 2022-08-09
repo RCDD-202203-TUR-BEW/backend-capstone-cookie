@@ -111,6 +111,12 @@ orderControllers.deleteOrder = async (req, res) => {
     });
     await deleteOrder.save();
     res.send(deleteOrder);
+    orderModel.deleteOne({
+      customer: customerid,
+      status: 'adding dishes',
+    });
+    await orderModel.save();
+    res.send(theOrder);
   } else {
     res.send('You dont have an order to delete');
   }
