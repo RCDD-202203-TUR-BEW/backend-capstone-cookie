@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
-const Users = require('../models/user');
+
+const Users = require('../models/user').User;
+const signJWT = require('../helpers/signJWT');
 
 const authControllers = {};
 
@@ -43,7 +45,7 @@ authControllers.signup = async (req, res) => {
   }
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  await Users.create({
+  const user = await Users.create({
     firstname,
     lastname,
     username,
@@ -54,6 +56,8 @@ authControllers.signup = async (req, res) => {
     birthday,
     gender,
   });
+
+  signJWT(res, user);
 
   // checking the role to render the appropriate page for the user after signing up
 
@@ -81,6 +85,8 @@ authControllers.signin = async (req, res) => {
     return res.status(401).json({ error: 'invalid id or password' });
   }
 
+  signJWT(res, existedUser);
+
   // checking the role to render the appropriate page for the user after signing invalid
 
   if (existedUser.role === 'chef')
@@ -93,9 +99,13 @@ authControllers.signin = async (req, res) => {
   });
 };
 
-authControllers.signout = (req, res) => {
-  // logic will be implemented after applying authentication
-  res.redirect('/');
+authControllers.signout = async (req, res) => {
+  const { _id } = req.user;
+  const user = await Users.findOne({ _id });
+  const { username } = user;
+  res.clearCookie('token');
+  res.json({ message: `${username} has signed out successfully` });
+  // redirect to signin page once we have a view ready
 };
 
 module.exports = authControllers;
