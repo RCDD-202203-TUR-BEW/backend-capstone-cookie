@@ -13,7 +13,10 @@ router.get('/:username', customerController.getProfile); // returns customer obj
 router.put('/profile/:id', customerController.updateProfile); // update operation will done on profile information page
 
 router.post('/:customerId/location', customerController.createLocation); // create and add location to customer
-router.get('/:customerId/location', customerController.getAllLocations); // get all locations of customer by id
+router.get(
+  '/:customerId/location',
+  customerController.getAllLcationsByCustomerId
+); // get all locations of customer by id
 router.get(
   '/:customerId/location/:locationId',
   customerController.getLocationById

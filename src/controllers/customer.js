@@ -64,7 +64,7 @@ const createLocation = async (req, res) => {
   }
 };
 
-const getAllLocations = async (req, res) => {
+const getAllLcationsByCustomerId = async (req, res) => {
   try {
     const { customerId } = req.params;
 
@@ -107,8 +107,6 @@ const updateLocationById = async (req, res) => {
     const locationIndex = user.locations.findIndex(
       (location) => location._id.toString() === locationId.toString()
     );
-
-    const { data } = req.body;
 
     // open an empty set for holding new values from req
     const updateSet = {};
@@ -166,7 +164,7 @@ module.exports = {
 
   // location
   createLocation,
-  getAllLocations,
+  getAllLcationsByCustomerId,
   getLocationById,
   updateLocationById,
   deleteLocationById,
