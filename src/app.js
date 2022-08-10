@@ -36,7 +36,7 @@ app.use(orderRoutes);
 
 app.listen(port, () => {
   //  console.log(`Server listening on port ${port}`);
-  connectToMongo();
+  // connectToMongo();
 });
 
 module.exports = app;
