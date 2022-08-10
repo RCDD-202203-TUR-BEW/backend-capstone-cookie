@@ -90,3 +90,29 @@ describe('Signup functionality', () => {
     expect(res.body.error).toBe("Passwords don't match");
   });
 });
+
+describe('Signin functionality', () => {
+  it('logs in user successfully', async () => {
+    const res = await request(app)
+      .post('/api/auth/signin')
+      .send({ id: newUser.username, password: 'correctPass7' });
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe('customer: newuser signed in successfully');
+  });
+
+  it('handles wrong id', async () => {
+    const res = await request(app)
+      .post('/api/auth/signin')
+      .send({ id: 'wrong', password: 'correctPass7' });
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('invalid id or password');
+  });
+
+  it('handles wrong password', async () => {
+    const res = await request(app)
+      .post('/api/auth/signin')
+      .send({ id: newUser.username, password: 'wrongPass7' });
+    expect(res.statusCode).toBe(401);
+    expect(res.body.error).toBe('invalid id or password');
+  });
+});
