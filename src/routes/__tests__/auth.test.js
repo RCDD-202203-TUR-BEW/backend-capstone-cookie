@@ -31,6 +31,8 @@ const newUser = {
   acceptTos: true,
 };
 
+let token;
+
 describe('Signup functionality', () => {
   it('should register a new user successfully', async () => {
     const res = await request(app).post('/api/auth/signup').send(newUser);
@@ -40,6 +42,8 @@ describe('Signup functionality', () => {
     expect(res.headers['set-cookie']).toBeDefined();
     expect(res.headers['set-cookie']).toBeTruthy();
     expect(res.body.message).toBe('new customer signed up successfully');
+    const cookieProperties = res.headers['set-cookie'][0].split(';');
+    [token] = cookieProperties;
 
     // check user in db
     const user = await User.findOne({ username: newUser.username });
@@ -95,7 +99,7 @@ describe('Signin functionality', () => {
   it('logs in user successfully', async () => {
     const res = await request(app)
       .post('/api/auth/signin')
-      .send({ id: newUser.username, password: 'correctPass7' });
+      .send({ id: newUser.username, password: newUser.password });
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('customer: newuser signed in successfully');
   });
@@ -103,7 +107,7 @@ describe('Signin functionality', () => {
   it('handles wrong id', async () => {
     const res = await request(app)
       .post('/api/auth/signin')
-      .send({ id: 'wrong', password: 'correctPass7' });
+      .send({ id: 'wrong', password: newUser.password });
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('invalid id or password');
   });
@@ -114,5 +118,24 @@ describe('Signin functionality', () => {
       .send({ id: newUser.username, password: 'wrongPass7' });
     expect(res.statusCode).toBe(401);
     expect(res.body.error).toBe('invalid id or password');
+  });
+});
+
+describe('Signout functionality', () => {
+  it("should return error message when the user isn't signed in ", async () => {
+    const res = await request(app).get('/api/auth/signout');
+
+    expect(res.statusCode).toBe(401);
+    expect(res.text).toBe("You don't have authorization to view this page");
+  });
+
+  it('should sign the user out', async () => {
+    const res = await request(app)
+      .get('/api/auth/signout')
+      .set('Cookie', [token]);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['set-cookie']).toBeTruthy();
+    expect(res.body.message).toBe('newuser has signed out successfully');
   });
 });
