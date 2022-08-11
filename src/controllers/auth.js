@@ -1,8 +1,11 @@
 const bcrypt = require('bcrypt');
+const randomstring = require('randomstring');
 const Users = require('../models/user');
+const signJWT = require('../helpers/signJWT');
 const transporter = require('../utils/email');
 
 const authControllers = {};
+const randomstr = randomstring.generate();
 
 authControllers.signup = async (req, res) => {
   const {
@@ -44,7 +47,7 @@ authControllers.signup = async (req, res) => {
   }
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  await Users.create({
+  const user = await Users.create({
     firstname,
     lastname,
     username,
@@ -61,8 +64,16 @@ authControllers.signup = async (req, res) => {
   const info = await transporter.sendMail({
     from: 'cookiesrecoded@outlook.com',
     to: 'cookiesreciever@outlook.com',
-    subject: 'hello this is text from nodemaileer',
-    html: '<h1>HELLO WORLD</h1>',
+    subject: 'Cookiez Verification',
+    html: `<h2>Welcome ${firstname}</h2>
+  <p>
+    We just need to verify your email address before you can access Cookiez.
+    
+    Verify your email address <a href="http://localhost:3000/signup/verifyemail">here</a> by entering the code below :
+    <h2>${randomstr}</h2>
+    Thanks! <br>
+    - The Cookiez team
+    </p>`,
   });
 
   // checking the role to render the appropriate page for the user after signing up
@@ -71,6 +82,13 @@ authControllers.signup = async (req, res) => {
     return res.json({ message: 'new chef signed up successfully' });
 
   return res.json({ message: 'new customer signed up successfully' });
+};
+
+authControllers.verifyEmail = (req, res) => {
+  const { code } = req.body;
+  if (code !== randomstr) return res.send('Please enter a correect code');
+
+  return res.redirect('/');
 };
 
 authControllers.signin = async (req, res) => {
@@ -91,6 +109,8 @@ authControllers.signin = async (req, res) => {
     return res.status(401).json({ error: 'invalid id or password' });
   }
 
+  signJWT(res, existedUser);
+
   // checking the role to render the appropriate page for the user after signing invalid
 
   if (existedUser.role === 'chef')
@@ -103,9 +123,13 @@ authControllers.signin = async (req, res) => {
   });
 };
 
-authControllers.signout = (req, res) => {
-  // logic will be implemented after applying authentication
-  res.redirect('/');
+authControllers.signout = async (req, res) => {
+  const { _id } = req.user;
+  const user = await Users.findOne({ _id });
+  const { username } = user;
+  res.clearCookie('token');
+  res.json({ message: `${username} has signed out successfully` });
+  // redirect to signin page once we have a view ready
 };
 
 module.exports = authControllers;

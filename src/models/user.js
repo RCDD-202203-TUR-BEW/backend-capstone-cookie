@@ -1,7 +1,40 @@
 const mongoose = require('mongoose');
-const location = require('./location');
+// const location = require('./location');
 
 const { Schema } = mongoose;
+
+const LocationSchema = new Schema({
+  locationName: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    requied: true,
+  },
+  district: {
+    type: String,
+    requied: true,
+  },
+  street: {
+    type: String,
+    requied: true,
+  },
+  quarter: {
+    type: String,
+  },
+  block_num: {
+    type: Number,
+  },
+  flat_num: {
+    type: String,
+    requied: true,
+  },
+  location_description: {
+    type: String,
+    requied: true,
+  },
+});
 
 const User = new Schema(
   {
@@ -10,7 +43,8 @@ const User = new Schema(
       enum: ['chef', 'customer', 'admin'],
     },
 
-    locations: [location], //   location is not defined yet
+    // reference location schema as an array
+    locations: [LocationSchema],
 
     firstname: {
       type: String,
