@@ -11,24 +11,18 @@ const connectToMongo = require('./db/connection');
 const apiRoutes = require('./routes');
 const orderRoutes = require('./routes/order');
 
-
-const customerRoutes = require("./routes/customer");
-const chefRoutes = require("./routes/chef");
-
-
-
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
 app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
 
 const path = [
-  '/api/auth/signup',
+  '/api/auth/chef/signup',
+  '/api/auth/customer/signup',
   '/api/auth/signin',
   '/api/chefs',
   '/api/chefs/:username',
@@ -50,16 +44,15 @@ app.use(
 );
 
 app.use('/api', apiRoutes);
-app.use("/api/customer", customerRoutes);
-app.use("/api/chef", chefRoutes);
 app.use(orderRoutes);
 
 app.use(UnauthorizedErrorHandler);
 
-
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-  connectToMongo();
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+    connectToMongo();
+  });
+}
 
 module.exports = app;
