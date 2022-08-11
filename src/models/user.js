@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const location = require('./location');
 
 const { Schema } = mongoose;
-
 
 const LocationSchema = new Schema({
   locationName: {
@@ -43,7 +41,6 @@ const User = new Schema(
       type: String,
       enum: ['chef', 'customer', 'admin'],
     },
-
 
     // reference location schema as an array
     locations: [LocationSchema],
