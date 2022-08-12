@@ -24,8 +24,11 @@ authControllers.signup = async (req, res) => {
     acceptTos,
   } = req.body;
 
-  const isExisted = async (fieldName, value) => {
-    const existedProperty = await Users.find({}).where(fieldName).equals(value);
+  const isExisted = async (fieldName, value, modelName = Users) => {
+    const existedProperty = await modelName
+      .find({})
+      .where(fieldName)
+      .equals(value);
     if (existedProperty.length !== 0) return true;
     return false;
   };
@@ -52,7 +55,7 @@ authControllers.signup = async (req, res) => {
   let user;
   if (role === 'chef') {
     const { kitchenName, kitchenDescription } = req.body;
-    if (await isExisted('kitchen_name', kitchenName))
+    if (await isExisted('kitchen_name', kitchenName, Chefs))
       return response('Kitchen Name', kitchenName);
     user = await Chefs.create({
       firstname,
