@@ -9,25 +9,32 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 router.get('/', chefControllers.getAllChefs);
 router.get('/:username', chefControllers.getSpecificChef);
 // router.get("/nearby-chefs",chefControllers.getNearbyChefs)
-// router.get('/:username/dishes', chefControllers.getDishes);
-// router.get('/dishes/:dishId', chefControllers); // dish by id
+router.get('/dishes', chefControllers.getAllDishes);
+router.get('/dishes/:dishId', chefControllers.getSpecificDish);
 // router.get('/dishes/filter', chefControllers); // filter dishes
+router.get('/:username/dishes', chefControllers.getChefDishes);
 
 // PRIVATE ROUTES
-
-router.get('/profile/:username', isAuthenticated, chefControllers.seeProfile);
+router.get('/:username/profile', isAuthenticated, chefControllers.seeProfile);
 router.put(
-  '/profile/:username',
+  '/:username/profile',
   isAuthenticated,
   chefControllers.updateProfile
 );
 
-// router.post('/dishes', chefControllers); // add dish
-// router.put('/dishes/:dishId', chefControllers); // update dish
-// router.delete('/dishes/:dishId', chefControllers); // delete dish
-// router.get('/order', chefControllers); // specific order
+router.post('/:username/dishes', isAuthenticated, chefControllers.addDish);
+router.put(
+  '/:username/dishes/:dishId',
+  isAuthenticated,
+  chefControllers.updateDishInfos
+);
+router.delete(
+  '/:username/dishes/:dishId',
+  isAuthenticated,
+  chefControllers.deleteDish
+);
 
-// router.get('/rate', chefControllers); // rated dishes
+// router.get('/order', chefControllers); // specific order
 
 // router.put('/update-details', chefControllers); // oredr details
 
