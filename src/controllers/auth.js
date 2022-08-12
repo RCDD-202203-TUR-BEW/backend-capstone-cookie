@@ -5,7 +5,7 @@ const signJWT = require('../helpers/signJWT');
 const transporter = require('../utils/email');
 
 const authControllers = {};
-const randomstr = randomstring.generate();
+let randomstr;
 
 authControllers.signup = async (req, res) => {
   const {
@@ -61,6 +61,8 @@ authControllers.signup = async (req, res) => {
 
   // sending verification email
 
+  randomstr = randomstring.generate();
+
   const info = await transporter.sendMail({
     from: 'cookiesrecoded@outlook.com',
     to: 'cookiesreciever@outlook.com',
@@ -72,7 +74,7 @@ authControllers.signup = async (req, res) => {
     Verify your email address <a href="http://localhost:3000/signup/verifyemail">here</a> by entering the code below :
     <h2>${randomstr}</h2>
     Thanks! <br>
-    - The Cookiez team
+    -The Cookiez team
     </p>`,
   });
 
@@ -84,11 +86,16 @@ authControllers.signup = async (req, res) => {
   return res.json({ message: 'new customer signed up successfully' });
 };
 
-authControllers.verifyEmail = (req, res) => {
-  const { code } = req.body;
+authControllers.verifyEmail = async (req, res) => {
+  const { email, code } = req.body;
   if (code !== randomstr) return res.send('Please enter a correect code');
 
-  return res.redirect('/');
+  const user = await Users.User.findOne({ email });
+  user.email_verified = true;
+
+  await user.save();
+
+  return res.redirect('/api/aut/signin');
 };
 
 authControllers.signin = async (req, res) => {
