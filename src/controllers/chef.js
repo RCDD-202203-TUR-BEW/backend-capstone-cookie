@@ -160,15 +160,10 @@ chefControllers.addDish = async (req, res) => {
       res.status(401).send("You don't have authorization to view this page");
     else {
       const { _id: chefId } = relatedChef;
-      const {
-        title,
-        ingredients,
-        description,
-        cuisine,
-        dishType,
-        images,
-        price,
-      } = req.body;
+      const { title, ingredients, description, images, price } = req.body;
+      let { cuisine, dishType } = req.body;
+      cuisine = _.capitalize(cuisine);
+      dishType = _.startCase(_.toLower(dishType));
 
       const newDish = await Dishes.create({
         chef_id: chefId,
