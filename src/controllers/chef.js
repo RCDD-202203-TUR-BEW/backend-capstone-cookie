@@ -6,6 +6,7 @@ const {
   updateLocationById,
   deleteLocationById,
 } = require('./customer');
+const provincesOfTurkey = require('../helpers/provincesOfTurkey');
 
 const chefControllers = {};
 
@@ -13,6 +14,26 @@ chefControllers.getAllChefs = async (req, res) => {
   const chefs = await Chefs.find({});
   if (!chefs) return res.json({ message: 'No chefs to show at this time' });
   return res.json(chefs);
+};
+
+chefControllers.getNearbyChefs = async (req, res) => {
+  let { city } = req.query;
+  city = _.capitalize(city);
+  if (!provincesOfTurkey.includes(city))
+    return res.status(400).json({ message: 'Wrong city name' });
+  const chefs = await Chefs.find({});
+  if (!chefs) return res.json({ message: 'No chefs to show at this time' });
+  const nearbyChefs = [];
+  chefs.forEach((chef) => {
+    chef.locations.forEach((location) => {
+      if (location.city === city) nearbyChefs.push(chef);
+    });
+  });
+
+  if (nearbyChefs.length === 0)
+    return res.json({ message: `No chefs in ${city} province at this time` });
+
+  return res.json(nearbyChefs);
 };
 
 chefControllers.getSpecificChef = async (req, res) => {
@@ -45,7 +66,7 @@ chefControllers.filterDishes = async (req, res) => {
     'ingredients',
   ];
 
-  // to avoid wrong or empty queris
+  // to avoid wrong or empty queries
   const properties = Object.keys(req.query);
   properties.forEach((prop) => {
     if (filteringProperties.includes(prop) && req.query[prop]) {

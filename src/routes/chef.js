@@ -7,6 +7,7 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 
 // PUBLIC ROUTES
 router.get('/', chefControllers.getAllChefs);
+router.get('/nearby-chefs', chefControllers.getNearbyChefs);
 router.get('/:username', chefControllers.getSpecificChef);
 router.get('/dishes', chefControllers.getAllDishes);
 router.get('/dishes/:dishId', chefControllers.getSpecificDish);
