@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Chefs = require('../models/user').Chef;
 const Dishes = require('../models/dish');
 
@@ -27,6 +28,39 @@ chefControllers.getSpecificDish = async (req, res) => {
   const dish = await Dishes.findOne({ _id: dishId });
   if (!dish) return res.status(400).json({ message: "Dish isn't available" });
   return res.json(dish);
+};
+
+chefControllers.filterDishes = async (req, res) => {
+  const queries = {};
+  const filteringProperties = [
+    'title',
+    'cuisine',
+    'dish_type',
+    'price',
+    'ingredients',
+  ];
+
+  // to avoid wrong or empty queris
+  const properties = Object.keys(req.query);
+  properties.forEach((prop) => {
+    if (filteringProperties.includes(prop) && req.query[prop]) {
+      if (prop === 'price') {
+        // query example: price=44-77
+        const [min, max] = req.query[prop].split('-');
+        queries[prop] = { $gte: +min, $lte: +max };
+      } else if (prop === 'cuisine' || prop === 'dish_type') {
+        // Start case (First letter of each word capitalized) to match enums in the schema
+        queries[prop] = _.startCase(_.toLower(req.query[prop]));
+      } else queries[prop] = req.query[prop];
+    }
+  });
+
+  const results = await Dishes.find(queries);
+  if (_.isEmpty(queries) || results.length === 0)
+    res.status(400).json({ message: 'Results not found' });
+  else {
+    res.json(results);
+  }
 };
 
 chefControllers.getChefDishes = async (req, res) => {
@@ -152,6 +186,7 @@ chefControllers.updateDishInfos = async (req, res) => {
             new: true,
           }
         );
+        updatedDish.edited_at = Date.now();
         res.json(updatedDish);
       } else
         res.status(401).send("You don't have authorization to view this page");

@@ -11,7 +11,7 @@ router.get('/:username', chefControllers.getSpecificChef);
 // router.get("/nearby-chefs",chefControllers.getNearbyChefs)
 router.get('/dishes', chefControllers.getAllDishes);
 router.get('/dishes/:dishId', chefControllers.getSpecificDish);
-// router.get('/dishes/filter', chefControllers); // filter dishes
+router.get('/dishes/filter', chefControllers.filterDishes);
 router.get('/:username/dishes', chefControllers.getChefDishes);
 
 // PRIVATE ROUTES
