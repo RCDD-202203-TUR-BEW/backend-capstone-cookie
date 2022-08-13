@@ -37,7 +37,11 @@ router.delete(
   chefControllers.deleteDish
 );
 
-// router.get('/order', chefControllers); // specific order
-// router.put('/update-details', chefControllers); // oredr details
+router.get('/:username/orders', isAuthenticated, chefControllers.getOrders);
+router.put(
+  '/:username/orders/:orderId',
+  isAuthenticated,
+  chefControllers.finishPreparation
+);
 
 module.exports = router;

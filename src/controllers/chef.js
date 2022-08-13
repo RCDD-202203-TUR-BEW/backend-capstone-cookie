@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const Chefs = require('../models/user').Chef;
 const Dishes = require('../models/dish');
+const Orders = require('../models/order');
 const {
   createLocation,
   updateLocationById,
@@ -245,6 +246,49 @@ chefControllers.deleteDish = async (req, res) => {
         res.json('Dish has been deleted successfully');
       } else
         res.status(401).send("You don't have authorization to view this page");
+    }
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+};
+
+// Note: the following order controllers aren't tested on postman since order functionality isn't working properly yet.
+
+chefControllers.getOrders = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { _id } = req.user;
+    const relatedChef = await Chefs.findOne({ _id, username });
+    if (!relatedChef)
+      res.status(401).send("You don't have authorization to view this page");
+    else {
+      const orders = await Orders.find({
+        dishes: { $elemMatch: { 'dish.chef_id': _id } },
+      });
+      if (orders.length === 0) res.json({ message: 'No orders for now' });
+      else res.json(orders);
+    }
+  } catch (err) {
+    res.json({ error: err.message });
+  }
+};
+
+chefControllers.finishPreparation = async (req, res) => {
+  try {
+    const { username, orderId } = req.params;
+    const { _id } = req.user;
+    const relatedChef = await Chefs.findOne({ _id, username });
+    if (!relatedChef)
+      res.status(401).send("You don't have authorization to view this page");
+    else {
+      const order = await Orders.findOne({ _id: orderId });
+      if (!order)
+        res.status(400).json({ message: 'wrong query for the order' });
+      else {
+        order.status = 'completed';
+        await order.save();
+        res.json(order);
+      }
     }
   } catch (err) {
     res.json({ error: err.message });
