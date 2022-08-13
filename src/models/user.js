@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const location = require('./location');
 
 const { Schema } = mongoose;
 
