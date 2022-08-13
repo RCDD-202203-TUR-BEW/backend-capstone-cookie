@@ -8,7 +8,6 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 // PUBLIC ROUTES
 router.get('/', chefControllers.getAllChefs);
 router.get('/:username', chefControllers.getSpecificChef);
-// router.get("/nearby-chefs",chefControllers.getNearbyChefs)
 router.get('/dishes', chefControllers.getAllDishes);
 router.get('/dishes/:dishId', chefControllers.getSpecificDish);
 router.get('/dishes/filter', chefControllers.filterDishes);
@@ -21,6 +20,9 @@ router.put(
   isAuthenticated,
   chefControllers.updateProfile
 );
+router.post('/:customerId/profile', chefControllers.addLocation);
+router.put('/:username/profile/:locationId', chefControllers.updateLocation);
+router.delete('/:username/profile/:locationId', chefControllers.deleteLocation);
 
 router.post('/:username/dishes', isAuthenticated, chefControllers.addDish);
 router.put(
@@ -35,9 +37,6 @@ router.delete(
 );
 
 // router.get('/order', chefControllers); // specific order
-
 // router.put('/update-details', chefControllers); // oredr details
-
-// router.delete('/delete-details', chefControllers); // delete address
 
 module.exports = router;

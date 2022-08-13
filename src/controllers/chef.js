@@ -1,6 +1,11 @@
 const _ = require('lodash');
 const Chefs = require('../models/user').Chef;
 const Dishes = require('../models/dish');
+const {
+  createLocation,
+  updateLocationById,
+  deleteLocationById,
+} = require('./customer');
 
 const chefControllers = {};
 
@@ -117,6 +122,12 @@ chefControllers.updateProfile = async (req, res) => {
     res.json({ error: err.message });
   }
 };
+
+// Note: we can move the location controllers to a separate file as they're for customers and chefs and generalize them
+// Bug to be fixed: I can add a location for any user when I'm signed in
+chefControllers.addLocation = createLocation;
+chefControllers.updateLocation = updateLocationById;
+chefControllers.deleteLocation = deleteLocationById;
 
 chefControllers.addDish = async (req, res) => {
   try {
