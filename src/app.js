@@ -9,7 +9,6 @@ const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
-const orderRoutes = require('./routes/order');
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
@@ -44,7 +43,6 @@ app.use(
 );
 
 app.use('/api', apiRoutes);
-app.use(orderRoutes);
 
 app.use(UnauthorizedErrorHandler);
 
