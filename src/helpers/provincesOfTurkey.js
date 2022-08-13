@@ -1,5 +1,4 @@
 const provincesOfTurkey = [
-  'antep',
   'Adana',
   'Adıyaman',
   'Afyonkarahisar',
