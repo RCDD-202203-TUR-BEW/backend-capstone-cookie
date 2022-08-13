@@ -24,10 +24,10 @@ const path = [
   '/api/auth/customer/signup',
   '/api/auth/signin',
   '/api/chefs',
-  '/api/chefs/:username',
-  '/api/dishes',
-  '/api/dishes/:dishId',
-  '/api/dishes/filter',
+  '/api/chefs/nearby-chefs',
+  '/api/chefs/dishes',
+  '/api/chefs/dishes/filter',
+  /^\/api\/chefs\/dishes\/.*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
 ];
 
 app.use(
