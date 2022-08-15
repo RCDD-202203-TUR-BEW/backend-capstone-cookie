@@ -1,17 +1,21 @@
 const bcrypt = require('bcrypt');
 
 const Users = require('../models/user').User;
+const Chefs = require('../models/user').Chef;
+const Customers = require('../models/user').Customer;
 const signJWT = require('../helpers/signJWT');
 
 const authControllers = {};
 
 authControllers.signup = async (req, res) => {
+  let role = 'customer';
+  if (req.path === '/chef/signup') role = 'chef';
+
   const {
     firstname,
     lastname,
     username,
     email,
-    role,
     password,
     confirmPassword,
     phone,
@@ -45,17 +49,37 @@ authControllers.signup = async (req, res) => {
   }
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  const user = await Users.create({
-    firstname,
-    lastname,
-    username,
-    email,
-    role,
-    password_hash: hashedPassword,
-    phone,
-    birthday,
-    gender,
-  });
+  let user;
+  if (role === 'chef') {
+    const { kitchenName, kitchenDescription } = req.body;
+    if (await isExisted('kitchen_name', kitchenName))
+      return response('Kitchen Name', kitchenName);
+    user = await Chefs.create({
+      firstname,
+      lastname,
+      username,
+      email,
+      role,
+      password_hash: hashedPassword,
+      phone,
+      birthday,
+      gender,
+      kitchen_name: kitchenName,
+      kitchen_description: kitchenDescription,
+    });
+  } else {
+    user = await Customers.create({
+      firstname,
+      lastname,
+      username,
+      email,
+      role,
+      password_hash: hashedPassword,
+      phone,
+      birthday,
+      gender,
+    });
+  }
 
   signJWT(res, user);
 

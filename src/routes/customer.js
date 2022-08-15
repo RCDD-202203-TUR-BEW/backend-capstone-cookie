@@ -18,7 +18,6 @@ router.get(
   '/:customerId/location',
   customerController.getAllLcationsByCustomerId
 ); // get all locations of customer by id
-
 router.get(
   '/:customerId/location/:locationId',
   customerController.getLocationById
@@ -34,6 +33,7 @@ router.delete(
   customerController.deleteLocationById
 ); // delete address object with an id of that customerId/:customerId
 
+
 router.delete('/:id', customerController.deleteAccount); // delete account                          // customer can delete his account?
 
 const chefController = require('../controllers/chef');
@@ -48,5 +48,6 @@ router.get('/chefs', chefController); // all chefs"
 router.get('/chefs/:username', chefController); // all chefs"
 router.get('/dishes/dishId', chefController); // dish by id
 router.get('/dishes/filter', chefController); // filter dishes
+
 
 module.exports = router;
