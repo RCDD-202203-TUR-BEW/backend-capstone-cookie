@@ -1,6 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 // const swaggerJsDoc = require('swagger-jsdoc');
+const { expressjwt: jwt } = require('express-jwt');
+const cookieParser = require('cookie-parser');
+const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 const connectToMongo = require('./db/connection');
