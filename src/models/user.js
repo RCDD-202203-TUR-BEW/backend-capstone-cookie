@@ -3,7 +3,6 @@ const location = require('./location');
 
 const { Schema } = mongoose;
 
-
 const LocationSchema = new Schema({
   locationName: {
     type: String,
@@ -44,7 +43,6 @@ const User = new Schema(
       enum: ['chef', 'customer', 'admin'],
     },
 
-
     // reference location schema as an array
     locations: [LocationSchema],
 
@@ -71,7 +69,9 @@ const User = new Schema(
       unique: true,
       lowercase: true,
     },
-
+    // googleId: {
+    //   type: String,
+    // },
     email: {
       type: String,
       match: [
