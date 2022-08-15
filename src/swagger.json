@@ -1,0 +1,375 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "COOKIEZ ITS WEBSITE FOR SERVING HOMEMADE FOOD STRIGHT UP TO YOUR DOOR",
+    "title": "COOKIEZ",
+    "contact": {
+      "email": "cookiesrecoded@outlook.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "order",
+      "description": "Adding new order, fetching orders, removing orders"
+    },
+    {
+      "name": "admin",
+      "description": "Access to all users data, fetch users, delete users"
+    },
+    {
+      "name": "customer",
+      "description": "Normal user opreation like updating his profile, create location..."
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/:customerid/order": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get the last ordedr the user made",
+        "description": "this endpoint should return the last order the user made",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "post": {
+        "tags": ["order"],
+        "summary": "Create or Add new dish to the order ",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "tags": ["order"],
+        "summary": "Update order information",
+        "description": "this endpoint should update the order information like quantity",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["order"],
+        "summary": "Delete order",
+        "description": " this endpoint should delete the order in your basket",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/:customerid/orders": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get all previous orders",
+        "description": "this endpoint should return all the order that the customer made",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/admin/fetchCustomers": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all customer in the database",
+        "description": "this endpoint should return all the customer in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/admin/fetchAdmins": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all admins in the database",
+        "description": "this endpoint should return all the admins in the database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/admin/fetchChefs": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all chefs in the database",
+        "description": "this endpoint should return all the chefs in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/admin/fetchAll": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all type of users in the database",
+        "description": "this endpoint should return all the type of users in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/admin/delete/:id": {
+      "delete": {
+        "tags": ["admin"],
+        "summary": "Delete user",
+        "description": " this endpoint should delete any user but not the main admin",
+        "produces": ["application/json"],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/customer/:username": {
+      "get": {
+        "tags": ["customer"],
+        "summary": "Return user details",
+        "description": "this endpoint should return a user by his username",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/customer/profile/:id": {
+      "put": {
+        "tags": ["customer"],
+        "summary": "Update user details",
+        "description": "this endpoint should update the profile details depending on his id",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/customer/:customerId/location": {
+      "post": {
+        "tags": ["customer"],
+        "summary": "Create or add new location",
+        "description": "this endpoint should create or push new location to the user",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "get": {
+        "tags": ["customer"],
+        "summary": "Get all user location",
+        "description": "this endpoint should return all location that the user have",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/customer/:customerId/location/:locationId": {
+      "get": {
+        "tags": ["customer"],
+        "summary": "Get specefic location",
+        "description": "this endpoint should return location by using user id and user location id",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "tags": ["customer"],
+        "summary": "Update specefic location",
+        "description": "this endpoint should update the location by using user id and user location id",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["customer"],
+        "summary": "Delete specefic location",
+        "description": "this endpoint should delete location by using user id and user location id",
+        "produces": ["application/json"],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/customer/:id": {
+      "tags": ["customer"],
+      "summary": "Delete the user account",
+      "description": "this endpoint should delete the user account",
+      "response": {
+        "200": {
+          "description": "successful operation"
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New user creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Logs user into the system",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The user id for signin (email/username)",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password for login in clear text",
+                "required": true
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Invalid id/password supplied"
+          }
+        }
+      }
+    },
+    "/auth/signout": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "no authorization to view the page"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "description": "chef/customer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "number",
+          "description": "Turkish phone number"
+        },
+        "birthday": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "acceptTos": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

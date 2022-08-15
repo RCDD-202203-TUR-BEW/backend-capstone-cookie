@@ -26,6 +26,8 @@
     "mongo": "^0.1.0",
     "mongoose": "^6.4.6",
     "react": "^18.2.0",
+    "swagger-jsdoc": "^6.2.4",
+    "swagger-ui-express": "^4.5.0",
     "yarn-upgrade-all": "^0.6.1"
   },
   "devDependencies": {

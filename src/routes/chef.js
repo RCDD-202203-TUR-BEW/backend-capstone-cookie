@@ -7,12 +7,14 @@
 // router.get('/', chefController); // all dishes - all chefs or (/dishes/all)
 // router.get('/profile', chefController); // profile
 
+
 // router.get('/order', chefController); // specific order
 
 // router.get('/rate', chefController); // rated dishes
 // router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
 
 // router.put('/updateDetails', chefController); // oreder details
+
 
 // router.delete('/deletedetails', chefController); // delete address
 
