@@ -337,10 +337,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "string"
-            }
+            "description": "successful operation"
           },
           "401": {
             "description": "Invalid id/password supplied"
@@ -362,6 +359,299 @@
           },
           "401": {
             "description": "no authorization to view the page"
+          }
+        }
+      }
+    },
+    "/chefs": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get all the chefs registered in database",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "No chefs to show at this time"
+          }
+        }
+      }
+    },
+    "/chefs/nearby-chefs": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get all the chefs located in the provided city",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "description": "The city in where to search for nearby chefs",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "404": {
+            "description": "No chefs to show"
+          }
+        }
+      }
+    },
+    "/chefs/{username}": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get a specific chef depending on their username",
+        "description": "a public route to see a chef page",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/chefs/{username}/profile": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get profile for the authenticated chef",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username who's trying to see their profile.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      },
+      "put": {
+        "tags": ["chef"],
+        "summary": "update profile for the authenticated chef",
+        "description": "This can only be done by the logged in user.",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username who's trying to edit their profile.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Chef"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/{username}/dishes": {
+      "post": {
+        "tags": ["chef"],
+        "summary": "add a dish to the chef menu",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "created dish object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/{username}/dishes/{dishId}": {
+      "put": {
+        "tags": ["chef"],
+        "summary": "update dish details",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "updated dish object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["chef"],
+        "summary": "delete dish from chef menu",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/{username}/orders": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get orders that are asked from the chef",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/{username}/orders/{orderId}": {
+      "put": {
+        "tags": ["chef"],
+        "summary": "update the status of the order to 'completed' when chef finish preperation",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "The order id to change its status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "not authorized"
           }
         }
       }
@@ -400,7 +690,7 @@
         },
         "birthday": {
           "type": "string",
-          "example": "04-07-1996"
+          "example": "01-01-2000"
         },
         "gender": {
           "type": "string"
@@ -427,6 +717,9 @@
         "lastname": {
           "type": "string"
         },
+        "bio": {
+          "type": "string"
+        },
         "email": {
           "type": "string"
         },
@@ -442,7 +735,7 @@
         },
         "birthday": {
           "type": "string",
-          "example": "04-07-1996"
+          "example": "01-01-2000"
         },
         "gender": {
           "type": "string"
@@ -458,6 +751,44 @@
           "type": "string",
           "required": true
         }
+      }
+    },
+    "Dish": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "ingredients": {
+          "type": "string",
+          "example": ["str1", "str2", "str3"]
+        },
+        "description": { "type": "string" },
+        "cuisine": {
+          "type": "string",
+          "enum": [
+            "Turkish",
+            "Asian",
+            "Japanese",
+            "Italian",
+            "American",
+            "Indian",
+            "Mexican"
+          ]
+        },
+        "dishType": {
+          "type": "string",
+          "enum": [
+            "Appetizer",
+            "Main Dish",
+            "Dessert",
+            "Soup",
+            "Salad",
+            "Pizza",
+            "Burger",
+            "Pasta",
+            "Sandwich"
+          ]
+        },
+        "price": { "type": "number" }
       }
     }
   }
