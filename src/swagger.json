@@ -7,10 +7,11 @@
       "email": "cookiesrecoded@outlook.com"
     }
   },
+  "basePath": "/api",
   "tags": [
     {
-      "name": "order",
-      "description": "Adding new order, fetching orders, removing orders"
+      "name": "user",
+      "description": "Operations about user"
     },
     {
       "name": "admin",
@@ -21,8 +22,16 @@
       "description": "Normal user opreation like updating his profile, create location..."
     },
     {
-      "name": "user",
-      "description": "Operations about user"
+      "name": "chef",
+      "description": "chef related operations"
+    },
+    {
+      "name": "dish",
+      "description": "fetching dishes in different ways"
+    },
+    {
+      "name": "order",
+      "description": "Adding new order, fetching orders, removing orders"
     }
   ],
   "paths": {
@@ -244,10 +253,10 @@
         }
       }
     },
-    "/auth/signup": {
+    "/auth/chef/signup": {
       "post": {
         "tags": ["user"],
-        "summary": "New user creation",
+        "summary": "New chef creation",
         "description": "",
         "consumes": ["application/json"],
         "produces": ["application/json", "application/xml"],
@@ -258,7 +267,35 @@
             "description": "Created user object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Chef"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/customer/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New customer creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
             }
           }
         ],
@@ -331,12 +368,13 @@
     }
   },
   "definitions": {
-    "User": {
+    "Customer": {
       "type": "object",
       "properties": {
         "role": {
           "type": "string",
-          "description": "chef/customer"
+          "default": "customer",
+          "readOnly": true
         },
         "username": {
           "type": "string"
@@ -361,13 +399,64 @@
           "description": "Turkish phone number"
         },
         "birthday": {
-          "type": "string"
+          "type": "string",
+          "example": "04-07-1996"
         },
         "gender": {
           "type": "string"
         },
         "acceptTos": {
           "type": "boolean"
+        }
+      }
+    },
+    "Chef": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "default": "chef",
+          "readOnly": true
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "number",
+          "description": "Turkish phone number"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "04-07-1996"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "acceptTos": {
+          "type": "boolean"
+        },
+        "kitchenName": {
+          "type": "string",
+          "required": true
+        },
+        "kitchenDescription": {
+          "type": "string",
+          "required": true
         }
       }
     }
