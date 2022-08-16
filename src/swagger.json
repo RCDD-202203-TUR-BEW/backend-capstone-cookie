@@ -93,7 +93,7 @@
         }
       }
     },
-    "/api/admin/fetchCustomers": {
+    "/admin/fetchCustomers": {
       "get": {
         "tags": ["admin"],
         "summary": "Get all customer in the database",
@@ -106,7 +106,7 @@
         }
       }
     },
-    "/api/admin/fetchAdmins": {
+    "/admin/fetchAdmins": {
       "get": {
         "tags": ["admin"],
         "summary": "Get all admins in the database",
@@ -119,7 +119,7 @@
         }
       }
     },
-    "/api/admin/fetchChefs": {
+    "/admin/fetchChefs": {
       "get": {
         "tags": ["admin"],
         "summary": "Get all chefs in the database",
@@ -132,7 +132,7 @@
         }
       }
     },
-    "/api/admin/fetchAll": {
+    "/admin/fetchAll": {
       "get": {
         "tags": ["admin"],
         "summary": "Get all type of users in the database",
@@ -145,7 +145,7 @@
         }
       }
     },
-    "/api/admin/delete/:id": {
+    "/admin/delete/:id": {
       "delete": {
         "tags": ["admin"],
         "summary": "Delete user",
@@ -158,7 +158,7 @@
         }
       }
     },
-    "/api/customer/:username": {
+    "/customer/:username": {
       "get": {
         "tags": ["customer"],
         "summary": "Return user details",
@@ -171,7 +171,7 @@
         }
       }
     },
-    "/api/customer/profile/:id": {
+    "/customer/profile/:id": {
       "put": {
         "tags": ["customer"],
         "summary": "Update user details",
@@ -184,7 +184,7 @@
         }
       }
     },
-    "/api/customer/:customerId/location": {
+    "/customer/:customerId/location": {
       "post": {
         "tags": ["customer"],
         "summary": "Create or add new location",
@@ -208,7 +208,7 @@
         }
       }
     },
-    "/api/customer/:customerId/location/:locationId": {
+    "/customer/:customerId/location/:locationId": {
       "get": {
         "tags": ["customer"],
         "summary": "Get specefic location",
@@ -243,7 +243,7 @@
         }
       }
     },
-    "/api/customer/:id": {
+    "/customer/:id": {
       "tags": ["customer"],
       "summary": "Delete the user account",
       "description": "this endpoint should delete the user account",
