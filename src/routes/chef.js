@@ -13,9 +13,9 @@ router.get('/nearby-chefs', chefControllers.getNearbyChefs);
 router.get('/:username', chefControllers.getSpecificChef);
 
 // PRIVATE ROUTES
-router.get('/:username/profile', isAuthenticated, chefControllers.seeProfile);
+router.get('/profile/:username', isAuthenticated, chefControllers.seeProfile);
 router.put(
-  '/:username/profile',
+  '/profile/:username',
   isAuthenticated,
   chefControllers.updateProfile
 );
@@ -23,21 +23,21 @@ router.post('/:username/profile', chefControllers.addLocation);
 router.put('/:username/profile/:locationId', chefControllers.updateLocation);
 router.delete('/:username/profile/:locationId', chefControllers.deleteLocation);
 
-router.post('/:username/dishes', isAuthenticated, chefControllers.addDish);
+router.post('/dishes/:username', isAuthenticated, chefControllers.addDish);
 router.put(
-  '/:username/dishes/:dishId',
+  '/dishes/:username/:dishId',
   isAuthenticated,
   chefControllers.updateDishInfos
 );
 router.delete(
-  '/:username/dishes/:dishId',
+  '/dishes/:username/:dishId',
   isAuthenticated,
   chefControllers.deleteDish
 );
 
-router.get('/:username/orders', isAuthenticated, chefControllers.getOrders);
+router.get('/orders/:username', isAuthenticated, chefControllers.getOrders);
 router.put(
-  '/:username/orders/:orderId',
+  '/orders/:username/:orderId',
   isAuthenticated,
   chefControllers.finishPreparation
 );
