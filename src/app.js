@@ -25,9 +25,11 @@ const path = [
   '/api/auth/signin',
   '/api/chefs',
   '/api/chefs/nearby-chefs',
-  '/api/chefs/dishes',
-  '/api/chefs/dishes/filter',
-  /^\/api\/chefs\/dishes\/.*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
+  '/api/dishes',
+  '/api/dishes/filter',
+  /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
+  // excluding "/nearby-dishes" as it needs authentication to know the user location first
+  /^\/api\/dishes\/chef\/.*/,
 ];
 
 app.use(
