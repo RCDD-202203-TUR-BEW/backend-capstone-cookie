@@ -1,20 +1,27 @@
 const express = require('express');
 require('dotenv').config();
+// const swaggerJsDoc = require('swagger-jsdoc');
 const { expressjwt: jwt } = require('express-jwt');
 const cookieParser = require('cookie-parser');
 const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
-
+const swaggerUi = require('swagger-ui-express');
 const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
-
+const swaggerDocument = require('./swagger.json');
 const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
+const orderRoutes = require('./routes/order');
+
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(connectToMongo);
+
 
 app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
@@ -44,7 +51,9 @@ app.use(
   })
 );
 
+
 app.use('/api', apiRoutes);
+app.use(orderRoutes);
 
 app.use(UnauthorizedErrorHandler);
 
@@ -54,5 +63,6 @@ if (process.env.NODE_ENV !== 'test') {
     connectToMongo();
   });
 }
+
 
 module.exports = app;
