@@ -39,81 +39,15 @@ chefControllers.getNearbyChefs = async (req, res) => {
 
 chefControllers.getSpecificChef = async (req, res) => {
   const { username } = req.params;
-  const chef = await Chefs.findOne({ username });
+  const chef = await Chefs.findOne({ username }).populate('dishes');
   if (!chef) return res.json({ message: `No chef with username: ${username}` });
   return res.json(chef);
-};
-
-chefControllers.getAllDishes = async (req, res) => {
-  const dishes = await Dishes.find({});
-  if (!dishes) return res.json({ message: 'No dishes to show at this time' });
-  return res.json(dishes);
-};
-
-chefControllers.getSpecificDish = async (req, res) => {
-  const { dishId } = req.params;
-  const dish = await Dishes.findOne({ _id: dishId });
-  if (!dish) return res.status(400).json({ message: "Dish isn't available" });
-  return res.json(dish);
-};
-
-chefControllers.filterDishes = async (req, res) => {
-  const queries = {};
-  const filteringProperties = [
-    'title',
-    'cuisine',
-    'dish_type',
-    'price',
-    'ingredients',
-  ];
-
-  // to avoid wrong or empty queries
-  const properties = Object.keys(req.query);
-  properties.forEach((prop) => {
-    if (filteringProperties.includes(prop) && req.query[prop]) {
-      if (prop === 'price') {
-        // query example: price=44-77
-        const [min, max] = req.query[prop].split('-');
-        queries[prop] = { $gte: +min, $lte: +max };
-      } else if (prop === 'cuisine' || prop === 'dish_type') {
-        // Start case (First letter of each word capitalized) to match enums in the schema
-        queries[prop] = _.startCase(_.toLower(req.query[prop]));
-      } else queries[prop] = req.query[prop];
-    }
-  });
-
-  const results = await Dishes.find(queries);
-
-  if (_.isEmpty(queries)) res.status(400).json({ message: 'Invalid query!' });
-  else if (results.length === 0)
-    res.status(400).json({ message: 'Results not found' });
-  else {
-    res.json(results);
-  }
-};
-
-chefControllers.getChefDishes = async (req, res) => {
-  try {
-    const { username } = req.params;
-    const chef = await Chefs.findOne({ username }).populate('dishes');
-    if (chef) {
-      const chefDishes = chef.dishes;
-      if (chefDishes.length !== 0) {
-        res.json(chefDishes);
-      } else
-        res.json({
-          message: `No available dishes for chef: ${username} for now`,
-        });
-    } else res.json({ message: `No chef with username: ${username}` });
-  } catch (err) {
-    res.json({ error: err.message });
-  }
 };
 
 chefControllers.seeProfile = async (req, res) => {
   const { username } = req.params;
   const { _id } = req.user;
-  const chef = await Chefs.findOne({ _id, username });
+  const chef = await Chefs.findOne({ _id, username }).populate('dishes');
   if (!chef)
     return res
       .status(401)
@@ -139,7 +73,7 @@ chefControllers.updateProfile = async (req, res) => {
 
       const updatedChef = await Chefs.findByIdAndUpdate(_id, dataToBeUpdated, {
         new: true,
-      });
+      }).populate('dishes');
       res.json(updatedChef);
     }
   } catch (err) {

@@ -10,10 +10,6 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 // PUBLIC ROUTES
 router.get('/', chefControllers.getAllChefs);
 router.get('/nearby-chefs', chefControllers.getNearbyChefs);
-router.get('/dishes', chefControllers.getAllDishes);
-router.get('/dishes/filter', chefControllers.filterDishes);
-router.get('/dishes/:dishId', chefControllers.getSpecificDish);
-router.get('/:username/dishes', chefControllers.getChefDishes);
 router.get('/:username', chefControllers.getSpecificChef);
 
 // PRIVATE ROUTES
@@ -23,7 +19,7 @@ router.put(
   isAuthenticated,
   chefControllers.updateProfile
 );
-router.post('/:customerId/profile', chefControllers.addLocation);
+router.post('/:username/profile', chefControllers.addLocation);
 router.put('/:username/profile/:locationId', chefControllers.updateLocation);
 router.delete('/:username/profile/:locationId', chefControllers.deleteLocation);
 
