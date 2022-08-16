@@ -8,8 +8,10 @@ const swaggerUi = require('swagger-ui-express');
 const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 const swaggerDocument = require('./swagger.json');
 const connectToMongo = require('./db/connection');
-const router = require('./routes');
+
+const apiRoutes = require('./routes');
 const orderRoutes = require('./routes/order');
+
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
@@ -29,10 +31,12 @@ const path = [
   '/api/auth/customer/signup',
   '/api/auth/signin',
   '/api/chefs',
-  '/api/chefs/:username',
+  '/api/chefs/nearby-chefs',
   '/api/dishes',
-  '/api/dishes/:dishId',
   '/api/dishes/filter',
+  /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
+  // excluding "/nearby-dishes" as it needs authentication to know the user location first
+  /^\/api\/dishes\/chef\/.*/,
 ];
 
 app.use(
@@ -47,7 +51,8 @@ app.use(
   })
 );
 
-app.use('/api', router);
+
+app.use('/api', apiRoutes);
 app.use(orderRoutes);
 
 app.use(UnauthorizedErrorHandler);

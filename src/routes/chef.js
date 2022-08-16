@@ -1,30 +1,45 @@
-// const express = require('express');
+const express = require('express');
 
-// const router = express.Router();
+const router = express.Router();
 
-// const chefController = require('../controllers/chef');
+const chefControllers = require('../controllers/chef');
+const isAuthenticated = require('../middleware/isAuthenticated');
 
-// router.get('/', chefController); // all dishes - all chefs or (/dishes/all)
-// router.get('/profile', chefController); // profile
+// IMPORTANT NOTE: The order of the routes matters as middleware functions are executed sequentially
 
+// PUBLIC ROUTES
+router.get('/', chefControllers.getAllChefs);
+router.get('/nearby-chefs', chefControllers.getNearbyChefs);
+router.get('/:username', chefControllers.getSpecificChef);
 
-// router.get('/order', chefController); // specific order
+// PRIVATE ROUTES
+router.get('/:username/profile', isAuthenticated, chefControllers.seeProfile);
+router.put(
+  '/:username/profile',
+  isAuthenticated,
+  chefControllers.updateProfile
+);
+router.post('/:username/profile', chefControllers.addLocation);
+router.put('/:username/profile/:locationId', chefControllers.updateLocation);
+router.delete('/:username/profile/:locationId', chefControllers.deleteLocation);
 
-// router.get('/rate', chefController); // rated dishes
-// router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
+router.post('/:username/dishes', isAuthenticated, chefControllers.addDish);
+router.put(
+  '/:username/dishes/:dishId',
+  isAuthenticated,
+  chefControllers.updateDishInfos
+);
+router.delete(
+  '/:username/dishes/:dishId',
+  isAuthenticated,
+  chefControllers.deleteDish
+);
 
-// router.put('/updateDetails', chefController); // oreder details
+router.get('/:username/orders', isAuthenticated, chefControllers.getOrders);
+router.put(
+  '/:username/orders/:orderId',
+  isAuthenticated,
+  chefControllers.finishPreparation
+);
 
-
-// router.delete('/deletedetails', chefController); // delete address
-
-// router.get('/chefs', chefController); // all chefs"
-// router.get('/chefs/:username', chefController); // all chefs"
-// router.get('/dishes/:dishId', chefController); // dish by id
-// router.get('/dishes/filter', chefController); // filter dishes
-
-// router.post('/dishes', chefController); // add dish
-// router.put('/dishes/:dishId', chefController); // update dish
-// router.delete('/dishes/:dishId', chefController); // delete dish
-
-// module.exports = router;
+module.exports = router;
