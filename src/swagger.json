@@ -433,7 +433,7 @@
         }
       }
     },
-    "/chefs/{username}/profile": {
+    "/chefs/profile/{username}": {
       "get": {
         "tags": ["chef"],
         "summary": "get profile for the authenticated chef",
@@ -476,8 +476,10 @@
             "in": "body",
             "description": "updated user object",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/Chef"
+            "type": "object",
+            "example": {
+              "bio": "bio about the chef",
+              "lastname": "new lastname"
             }
           }
         ],
@@ -491,11 +493,12 @@
         }
       }
     },
-    "/chefs/{username}/dishes": {
+    "/chefs/dishes/{username}": {
       "post": {
         "tags": ["chef"],
         "summary": "add a dish to the chef menu",
         "description": "This can only be done by the logged in user.",
+        "consumes": ["application/json"],
         "produces": ["application/json", "application/xml"],
         "parameters": [
           {
@@ -525,7 +528,7 @@
         }
       }
     },
-    "/chefs/{username}/dishes/{dishId}": {
+    "/chefs/dishes/{username}/{dishId}": {
       "put": {
         "tags": ["chef"],
         "summary": "update dish details",
@@ -551,8 +554,9 @@
             "in": "body",
             "description": "updated dish object",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/Dish"
+            "type": "object",
+            "example": {
+              "price": 40
             }
           }
         ],
@@ -596,7 +600,7 @@
         }
       }
     },
-    "/chefs/{username}/orders": {
+    "/chefs/orders/{username}": {
       "get": {
         "tags": ["chef"],
         "summary": "get orders that are asked from the chef",
@@ -621,7 +625,7 @@
         }
       }
     },
-    "/chefs/{username}/orders/{orderId}": {
+    "/chefs/orders/{username}/{orderId}": {
       "put": {
         "tags": ["chef"],
         "summary": "update the status of the order to 'completed' when chef finish preperation",
@@ -892,7 +896,7 @@
         "title": { "type": "string" },
         "ingredients": {
           "type": "string",
-          "example": ["str1", "str2", "str3"]
+          "example": ["str1", "str2"]
         },
         "description": { "type": "string" },
         "cuisine": {
