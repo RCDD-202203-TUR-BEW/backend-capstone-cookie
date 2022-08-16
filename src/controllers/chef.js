@@ -83,7 +83,9 @@ chefControllers.filterDishes = async (req, res) => {
   });
 
   const results = await Dishes.find(queries);
-  if (_.isEmpty(queries) || results.length === 0)
+
+  if (_.isEmpty(queries)) res.status(400).json({ message: 'Invalid query!' });
+  else if (results.length === 0)
     res.status(400).json({ message: 'Results not found' });
   else {
     res.json(results);
