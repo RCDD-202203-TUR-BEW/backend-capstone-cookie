@@ -403,7 +403,7 @@
             "description": "bad request"
           },
           "404": {
-            "description": "No chefs to show"
+            "description": "Not found"
           }
         }
       }
@@ -652,6 +652,139 @@
           },
           "401": {
             "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/dishes": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes in the application",
+        "description": "This is a public route when the user isn't logged in",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/dishes/chef/{username}": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes for a specific chef",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/{dishId}": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get a specific dish by its id",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/filter": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "filter the dishes upon specific queries",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "the name of the dish",
+            "type": "string"
+          },
+          {
+            "name": "cuisine",
+            "in": "query",
+            "description": "the cuisine of the dish",
+            "type": "string"
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "description": "a specefic ingredient contained in the dish",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "price range",
+            "type": "string",
+            "example": "44-77"
+          },
+          {
+            "name": "dish_type",
+            "in": "query",
+            "description": "the dish type",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/nearby-dishes": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes in the same city as the user's",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not found"
           }
         }
       }
