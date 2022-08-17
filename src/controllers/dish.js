@@ -7,7 +7,8 @@ const dishControllers = {};
 
 dishControllers.getAllDishes = async (req, res) => {
   const dishes = await Dishes.find({});
-  if (!dishes) return res.json({ message: 'No dishes to show at this time' });
+  if (!dishes)
+    return res.status(404).json({ message: 'No dishes to show at this time' });
   return res.json(dishes);
 };
 
@@ -25,7 +26,7 @@ dishControllers.getNearbyDishes = async (req, res) => {
   });
 
   if (dishesIds.length === 0)
-    return res.json({
+    return res.status(404).json({
       message: `No available dishes in ${userLocation} province at this time`,
     });
 
