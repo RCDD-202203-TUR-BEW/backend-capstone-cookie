@@ -26,7 +26,7 @@
     }
   ],
   "paths": {
-    "api/orders/:customerid/order": {
+    "/api/orders/:customerid/order": {
       "get": {
         "tags": ["order"],
         "summary": "Get the last ordedr the user made",
@@ -84,7 +84,7 @@
         }
       }
     },
-    "api/orders/:customerid/orders": {
+    "/api/orders/:customerid/orders": {
       "get": {
         "tags": ["order"],
         "summary": "Get all previous orders",
