@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const location = require('./location');
 
 const { Schema } = mongoose;
-
+// the  requierd is commented out because the user can sign up with google under testing
 const LocationSchema = new Schema({
   locationName: {
     type: String,
-    required: true,
+    // required: true,
   },
   city: {
     type: String,
@@ -49,13 +49,13 @@ const User = new Schema(
     firstname: {
       type: String,
       unique: false,
-      required: true,
+      // required: true,
     },
 
     lastname: {
       type: String,
       unique: false,
-      required: true,
+      // required: true,
     },
 
     username: {
@@ -65,7 +65,7 @@ const User = new Schema(
         /^(?=.{2,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/,
         `invalid username`,
       ],
-      required: true,
+      // required: true,
       unique: true,
       lowercase: true,
     },
@@ -78,14 +78,14 @@ const User = new Schema(
         /^[a-zA-Z0-9\-_.]+@[a-z]+\.([a-z]{2,3})+(\.[a-z]{2,3})?$/,
         `invalid email`,
       ],
-      required: true,
+      // required: true,
       unique: true,
       lowercase: true,
     },
 
     email_verified: {
       type: Boolean,
-      required: true,
+      // required: true,
       default: false,
     },
 
@@ -95,7 +95,7 @@ const User = new Schema(
 
     phone: {
       type: Number,
-      required: true,
+      // required: true,
       unique: true,
     },
 
@@ -105,19 +105,19 @@ const User = new Schema(
 
     birthday: {
       type: Date,
-      required: true,
+      // required: true,
     },
 
     gender: {
       type: String,
-      required: true,
+      // required: true,
       enum: ['female', 'male', 'non-binary defined'],
     },
     provider: {
       type: String,
       enum: ['email', 'google', 'twitter'],
       default: 'email',
-      required: true,
+      // required: true,
     },
     providerId: {
       type: String,
@@ -141,12 +141,12 @@ const ChefModel = UserModel.discriminator(
     kitchen_name: {
       type: String,
       unique: true,
-      required: true,
+      // required: true,
     },
     kitchen_description: {
       type: String,
       default: '',
-      required: true,
+      // required: true,
     },
     bio: {
       type: String,
