@@ -31,10 +31,18 @@
         "tags": ["order"],
         "summary": "Get the last ordedr the user made",
         "description": "this endpoint should return the last order the user made",
-        "schema": {
-          "$ref": "#/definitions/Order"
-        },
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -45,9 +53,17 @@
         "tags": ["order"],
         "summary": "Create or Add new dish to the order ",
         "description": "this endpoint should create new order",
-        "schema": {
-          "$ref": "#/definitions/Order"
-        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -59,9 +75,17 @@
         "tags": ["order"],
         "summary": "Update order information",
         "description": "this endpoint should update the order information like quantity",
-        "schema": {
-          "$ref": "#/definitions/Order"
-        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -73,9 +97,17 @@
         "tags": ["order"],
         "summary": "Delete order",
         "description": " this endpoint should delete the order in your basket",
-        "schema": {
-          "$ref": "#/definitions/Order"
-        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -89,9 +121,17 @@
         "tags": ["order"],
         "summary": "Get all previous orders",
         "description": "this endpoint should return all the order that the customer made",
-        "schema": {
-          "$ref": "#/definitions/Order"
-        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -391,11 +431,10 @@
       "type": "object",
       "properties": {
         "customer": {
-          "type": "object",
-          "description": "chef/customer"
+          "type": "object"
         },
         "dishes": {
-          "type": ["object"]
+          "type": "object"
         },
         "total_price": {
           "type": "number"
@@ -413,7 +452,7 @@
           "type": "object"
         },
         "order_date": {
-          "type": "Date"
+          "type": "string"
         }
       }
     }
