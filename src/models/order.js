@@ -40,7 +40,7 @@ const orderSchema = new Schema({
       'cancelled',
       'delivered',
     ],
-    default: 'in preparation',
+    default: 'adding dishes',
   },
   paid: {
     type: Boolean,
