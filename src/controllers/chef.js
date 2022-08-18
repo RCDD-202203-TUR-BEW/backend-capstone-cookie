@@ -13,7 +13,8 @@ const chefControllers = {};
 
 chefControllers.getAllChefs = async (req, res) => {
   const chefs = await Chefs.find({});
-  if (!chefs) return res.json({ message: 'No chefs to show at this time' });
+  if (!chefs)
+    return res.status(404).json({ message: 'No chefs to show at this time' });
   return res.json(chefs);
 };
 
@@ -23,7 +24,8 @@ chefControllers.getNearbyChefs = async (req, res) => {
   if (!provincesOfTurkey.includes(city))
     return res.status(400).json({ message: 'Wrong city name' });
   const chefs = await Chefs.find({});
-  if (!chefs) return res.json({ message: 'No chefs to show at this time' });
+  if (!chefs)
+    return res.status(404).json({ message: 'No chefs to show at this time' });
   const nearbyChefs = [];
   chefs.forEach((chef) => {
     chef.locations.forEach((location) => {
@@ -32,7 +34,9 @@ chefControllers.getNearbyChefs = async (req, res) => {
   });
 
   if (nearbyChefs.length === 0)
-    return res.json({ message: `No chefs in ${city} province at this time` });
+    return res
+      .status(400)
+      .json({ message: `No chefs in ${city} province at this time` });
 
   return res.json(nearbyChefs);
 };
@@ -40,7 +44,10 @@ chefControllers.getNearbyChefs = async (req, res) => {
 chefControllers.getSpecificChef = async (req, res) => {
   const { username } = req.params;
   const chef = await Chefs.findOne({ username }).populate('dishes');
-  if (!chef) return res.json({ message: `No chef with username: ${username}` });
+  if (!chef)
+    return res
+      .status(400)
+      .json({ message: `No chef with username: ${username}` });
   return res.json(chef);
 };
 

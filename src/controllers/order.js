@@ -2,6 +2,7 @@ const orderControllers = {};
 const orderModel = require('../models/order');
 const dishModel = require('../models/dish');
 const evaluationModel = require('../models/evaluation');
+const customerModel = require('../models/user').User;
 
 // GET THE LAST CUSTOEMR ORDER
 orderControllers.getCustomerOrder = async (req, res) => {
@@ -21,13 +22,15 @@ orderControllers.getAllPrevOrders = async (req, res) => {
 orderControllers.addNewOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
+  const customer = await customerModel.findById(customerid);
 
   let totalPrice = 0;
-  const theEvaluation = await evaluationModel.findOne({
-    customer_id: customerid,
-    dish_id: dishid,
-  });
-  const existedOrder = orderModel.findOne({
+  // const theEvaluation = await evaluationModel.findOne({
+  //   customer_id: customerid,
+  //   dish_id: dishid,
+  // });
+  const theEvaluation = false;
+  const existedOrder = await orderModel.findOne({
     customer: customerid,
     status: 'adding dishes',
   });
@@ -55,11 +58,15 @@ orderControllers.addNewOrder = async (req, res) => {
     // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
     theOrder.dishes.forEach(async (elm) => {
       const theDish = await dishModel.findById(elm.dish);
-      totalPrice += theDish.price * quantity;
+      totalPrice += theDish.price * elm.quantity;
     });
 
+    theOrder.total_price = totalPrice;
+    customer.orders.push(theOrder.id);
+
+    await customer.save();
     await theOrder.save();
-    res.json(theOrder);
+    return res.json(theOrder);
   }
 
   // ADD NEW DISH TO EXISTED ORDER
@@ -71,13 +78,16 @@ orderControllers.addNewOrder = async (req, res) => {
   // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
   existedOrder.dishes.forEach(async (elm) => {
     const theDish = await dishModel.findById(elm.dish);
-    totalPrice += theDish.price * quantity;
+    totalPrice += theDish.price * quantity + existedOrder.total_price;
   });
 
-  res.json(existedOrder);
+  existedOrder.total_price = totalPrice;
+  customer.orders.push(existedOrder.id);
+  await customer.save();
+  return res.send(existedOrder);
 };
 
-// UPDATE ORDER
+// // UPDATE ORDER
 orderControllers.updateOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
@@ -105,12 +115,11 @@ orderControllers.deleteOrder = async (req, res) => {
   });
 
   if (theOrder) {
-    orderModel.deleteOne({
+    const deletedOrder = await orderModel.deleteOne({
       customer: customerid,
       status: 'adding dishes',
     });
-    await orderModel.save();
-    res.send(theOrder);
+    res.send('your basket is empty');
   } else {
     res.send('You dont have an order to delete');
   }
