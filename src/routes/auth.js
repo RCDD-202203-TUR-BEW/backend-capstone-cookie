@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const signJWT = require('../helpers/signJWT');
 const authControllers = require('../controllers/auth');
 const {
   usernameValidator,
@@ -31,5 +33,26 @@ router.post(
 
 router.post('/signin', authControllers.signin);
 router.get('/signout', authControllers.signout);
+
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', {
+    scope: ['public_profile', 'email'],
+  })
+);
+
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook', {
+    session: false,
+    failureRedirect: '/error',
+  }),
+  async (req, res) => {
+    const { user } = req;
+    signJWT(res, user);
+
+    res.json({ message: 'facebook auth success' });
+  }
+);
 
 module.exports = router;
