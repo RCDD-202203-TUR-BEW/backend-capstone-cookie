@@ -116,12 +116,12 @@ orderControllers.deleteOrder = async (req, res) => {
   const customerOrder = await customerModel.findById(theOrder.customer);
 
   if (theOrder) {
-    // customerOrder.orders.forEach((elm,index) => {
-    //   if(elm == theOrder._id){
-    //     customerOrder.orders.splice(index,1)
-    //     await customerOrder.save()
-    //   }
-    // })
+    customerOrder.orders.forEach(async (elm, index) => {
+      if (`${elm}` === `${theOrder.id}`) {
+        customerOrder.orders.splice(index, 1);
+        await customerOrder.save();
+      }
+    });
     await theOrder.delete();
     res.send(theOrder);
   } else {
