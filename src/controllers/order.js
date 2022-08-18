@@ -109,17 +109,21 @@ orderControllers.updateOrder = async (req, res) => {
 // DELETE ORDER
 orderControllers.deleteOrder = async (req, res) => {
   const { customerid } = req.params;
-  const theOrder = await orderModel.find({
+  const theOrder = await orderModel.findOne({
     customer: customerid,
     status: 'adding dishes',
   });
+  const customerOrder = await customerModel.findById(theOrder.customer);
 
   if (theOrder) {
-    const deletedOrder = await orderModel.deleteOne({
-      customer: customerid,
-      status: 'adding dishes',
-    });
-    res.send('your basket is empty');
+    // customerOrder.orders.forEach((elm,index) => {
+    //   if(elm == theOrder._id){
+    //     customerOrder.orders.splice(index,1)
+    //     await customerOrder.save()
+    //   }
+    // })
+    await theOrder.delete();
+    res.send(theOrder);
   } else {
     res.send('You dont have an order to delete');
   }
