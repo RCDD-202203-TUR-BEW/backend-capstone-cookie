@@ -34,13 +34,10 @@
         "produces": ["application/json"],
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "Created user object",
+            "name": "customerid",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/Order"
-            }
+            "type": "string"
           }
         ],
         "responses": {
@@ -62,6 +59,12 @@
             "schema": {
               "$ref": "#/definitions/Order"
             }
+          },
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": ["application/json"],
@@ -84,6 +87,12 @@
             "schema": {
               "$ref": "#/definitions/Order"
             }
+          },
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": ["application/json"],
@@ -99,13 +108,10 @@
         "description": " this endpoint should delete the order in your basket",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "Created user object",
+            "name": "customerid",
+            "in": "path",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/Order"
-            }
+            "type": "string"
           }
         ],
         "produces": ["application/json"],
