@@ -5,6 +5,11 @@ const Dishes = require('../models/dish');
 
 const dishControllers = {};
 
+const storage = require('../db/storage');
+const { getFileExtension } = require('../utils/utils');
+
+const DISH_IMAGE_DIR = 'dishes';
+
 dishControllers.getAllDishes = async (req, res) => {
   const dishes = await Dishes.find({});
   if (!dishes) return res.json({ message: 'No dishes to show at this time' });
@@ -100,6 +105,108 @@ dishControllers.getChefDishes = async (req, res) => {
     } else res.json({ message: `No chef with username: ${username}` });
   } catch (err) {
     res.json({ error: err.message });
+  }
+};
+
+//
+
+dishControllers.uploadDishImage = async (req, res) => {
+  console.log('-------- uploadDishImage');
+  try {
+    if (req.file) {
+      // get dish id from params
+      const { dishId } = req.params;
+
+      // get dish from db
+      const dish = await Dishes.findById(dishId);
+
+      const nextImageIndex = dish.images.length;
+      console.log(nextImageIndex);
+      const fileName = `${DISH_IMAGE_DIR}/${dishId}_${nextImageIndex}.${getFileExtension(
+        req.file.originalname
+      )}`;
+      // upload image to firebase storage
+      const imageURL = await storage.uploadImage(req.file, fileName);
+      // assign image url to dish images array
+      dish.images.push(imageURL);
+      dish.save();
+      res.status(200).json({ message: 'dish image uploaded successfully' });
+    } else {
+      res.status(200).json({ message: 'no image to upload' });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+dishControllers.fetchDishImage = async (req, res) => {
+  try {
+    const { dishId, index } = req.params;
+    const dish = await Dishes.findById(dishId);
+    const imageURL = dish.images[index];
+    res.status(200).json(imageURL);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+dishControllers.fetchAllDishImages = async (req, res) => {
+  try {
+    const { dishId } = req.params;
+    const dish = await Dishes.findById(dishId);
+    const imageURLs = dish.images;
+    res.status(200).json(imageURLs);
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+dishControllers.updateDishImage = async (req, res) => {
+  console.log('-------- updateDishImage');
+  try {
+    const { dishId, index } = req.params;
+    const dish = await Dishes.findById(dishId);
+    if (req.file) {
+      const newFileName = `${DISH_IMAGE_DIR}/${dishId}_${index}.${getFileExtension(
+        req.file.originalname
+      )}`;
+
+      const file = dish.images[index].split('%2F')[1];
+      const oldFileName = `${DISH_IMAGE_DIR}/${file}`;
+      console.log(oldFileName);
+      console.log(newFileName);
+      const imageURL = await storage.updateImage(
+        req.file,
+        oldFileName,
+        newFileName
+      );
+      //   no need to update the image url in the images array, not changing the image url at this index
+      res.status(200).json({ message: 'dish image updated successfully' });
+    } else {
+      res.status(200).json({ message: 'no image to update' });
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+dishControllers.deleteDishImage = async (req, res) => {
+  console.log('-------- deleteDishImage');
+  try {
+    const { dishId, index } = req.params;
+    const dish = await Dishes.findById(dishId);
+    const imageURL = dish.images[index];
+
+    // get the file name from the image url
+    const file = imageURL.split('%2F')[1];
+    const fileName = `${DISH_IMAGE_DIR}/${file}`;
+    console.log(fileName);
+    await storage.deleteImage(fileName);
+    dish.images.splice(index, 1);
+    dish.save();
+    res.status(200).json({ message: 'dish image deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error });
   }
 };
 

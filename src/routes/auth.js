@@ -1,5 +1,15 @@
 const express = require('express');
+const Multer = require('multer');
 const authControllers = require('../controllers/auth');
+// const { MAX_IMAGE_SIZE } = require('../utility/variables');
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 1024 * 1024 * 10, // no larger than 10mb, you can change as needed.
+  },
+});
+
 const {
   usernameValidator,
   emailValidator,
@@ -19,6 +29,18 @@ router.post(
   handleValidation,
   authControllers.signup
 );
+
+router.post(
+  '/chef/signup/:id/avatar',
+  multer.single('avatar'),
+  authControllers.uploadAvatarImage
+);
+router.post(
+  '/customer/signup/:id/avatar',
+  multer.single('avatar'),
+  authControllers.uploadAvatarImage
+);
+
 router.post(
   '/chef/signup',
   usernameValidator,
