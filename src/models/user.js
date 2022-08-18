@@ -112,7 +112,7 @@ const User = new Schema(
     },
     provider: {
       type: String,
-      enum: ['email', 'google', 'twitter'],
+      enum: ['email', 'google', 'facebook'],
       default: 'email',
       required: true,
     },
