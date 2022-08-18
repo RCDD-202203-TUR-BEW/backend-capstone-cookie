@@ -3,26 +3,29 @@ require('dotenv').config();
 const { expressjwt: jwt } = require('express-jwt');
 const cookieParser = require('cookie-parser');
 const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
+const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
-const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 const swaggerDocument = require('./swagger.json');
+const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
-const orderRoutes = require('./routes/order');
-
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
 
+app.use(passport.initialize());
+require('./services/passport-setup');
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 
 app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
 
 const path = [
+  '/api/auth/facebook',
+  '/api/auth/facebook/callback',
   '/api/auth/chef/signup',
   '/api/auth/customer/signup',
   '/api/auth/signin',
