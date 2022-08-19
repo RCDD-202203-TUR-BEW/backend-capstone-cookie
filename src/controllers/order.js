@@ -23,8 +23,9 @@ orderControllers.addNewOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
   const customer = await customerModel.findById(customerid);
+  const theDish = await dishModel.findById(dishid);
 
-  const totalPrice = 0;
+  let totalPrice = 0;
   // const theEvaluation = await evaluationModel.findOne({
   //   customer_id: customerid,
   //   dish_id: dishid,
@@ -55,7 +56,11 @@ orderControllers.addNewOrder = async (req, res) => {
     // ADD THE RATE TO THE ORDER
     if (theEvaluation) theOrder.evaluation = theEvaluation;
 
-    customer.orders.push(theOrder.id);
+    if (!customer.orders.includes(theOrder.id.toString())) {
+      customer.orders.push(theOrder.id);
+    }
+
+    theOrder.total_price = theDish.price * quantity;
 
     await customer.save();
     await theOrder.save();
@@ -79,8 +84,18 @@ orderControllers.addNewOrder = async (req, res) => {
   // ADD EVALUATION
   if (theEvaluation) existedOrder.evaluation = theEvaluation;
 
+  // CALCULATE THE TOTAL PRICE
+  existedOrder.dishes.forEach((elm) => {
+    dishModel.findById(elm.dish.toString()).then((dishData) => {
+      totalPrice += dishData.price * elm.quantity;
+      existedOrder.total_price = totalPrice;
+    });
+  });
+
   await existedOrder.save();
-  customer.orders.push(existedOrder.id);
+  if (!customer.orders.includes(existedOrder.id.toString())) {
+    customer.orders.push(existedOrder.id);
+  }
   await customer.save();
   return res.send(existedOrder);
 };
