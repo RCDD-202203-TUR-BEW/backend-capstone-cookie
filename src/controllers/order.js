@@ -104,6 +104,7 @@ orderControllers.addNewOrder = async (req, res) => {
 orderControllers.updateOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
+  let totalPrice = 0;
 
   const theOrder = await orderModel.findOne({
     customer: customerid,
@@ -111,12 +112,21 @@ orderControllers.updateOrder = async (req, res) => {
   });
 
   theOrder.dishes.forEach(async (dish, index) => {
-    if (dish.dish === dishid) {
+    if (dish.dish.toString() === dishid) {
+      // UPDATING THE QUANTITY
       theOrder.dishes[index].quantity = quantity;
-      await theOrder.save();
+
+      // UPDATING THE TOTOAL PRICE
+      theOrder.dishes.forEach((elm) => {
+        dishModel.findById(elm.dish.toString()).then((dishData) => {
+          totalPrice += dishData.price * elm.quantity;
+          theOrder.total_price = totalPrice;
+        });
+      });
     }
   });
-  res.send(theOrder);
+  await theOrder.save();
+  return res.send(theOrder);
 };
 
 // DELETE ORDER
