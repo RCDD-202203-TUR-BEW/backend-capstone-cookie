@@ -12,6 +12,7 @@
     "ecmaVersion": "latest"
   },
   "rules": {
+    "import/no-unresolved": "off",
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
     "no-console": "warn",

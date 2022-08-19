@@ -7,6 +7,10 @@ const signJWT = require('../helpers/signJWT');
 
 const authControllers = {};
 
+const storage = require('../db/storage');
+const { getFileExtension } = require('../utils/utils');
+
+const PROFILE_IMAGE_DIR = 'avatars';
 authControllers.signup = async (req, res) => {
   let role = 'customer';
   if (req.path === '/chef/signup') role = 'chef';
@@ -135,4 +139,33 @@ authControllers.signout = async (req, res) => {
   // redirect to signin page once we have a view ready
 };
 
+authControllers.uploadAvatarImage = async (req, res) => {
+  const { _id } = req.user;
+
+  let user;
+  try {
+    if (req.path === '/chef/signup') {
+      user = await Chefs.findOne({ _id });
+    } else if (req.path === '/customer/signup') {
+      user = await Customers.findOne({ _id });
+    } else user = await Users.findOne({ _id });
+
+    /// / add the image to the storage of the user
+    // image is optional
+    // fileName imageDir/userId.extension
+    if (req.file) {
+      const imgUrl = await storage.uploadImage(
+        req.file,
+        `${PROFILE_IMAGE_DIR}/${user.id}.${getFileExtension(
+          req.file.originalname
+        )}`
+      );
+      user.avatar = imgUrl;
+      await user.save();
+      res.json({ message: 'profile image uploaded successfully' });
+    } else res.status(400).json({ error: 'no image provided' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 module.exports = authControllers;
