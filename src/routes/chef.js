@@ -26,17 +26,6 @@ router.put(
   isAuthenticated,
   chefControllers.updateProfile
 );
-router.post('/:username/profile', permit('chef'), chefControllers.addLocation);
-router.put(
-  '/:username/profile/:locationId',
-  permit('chef'),
-  chefControllers.updateLocation
-);
-router.delete(
-  '/:username/profile/:locationId',
-  permit('chef'),
-  chefControllers.deleteLocation
-);
 
 router.post(
   '/dishes/:username',
