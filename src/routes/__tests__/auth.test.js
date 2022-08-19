@@ -164,3 +164,22 @@ describe('Signin functionality', () => {
     expect(res.body.error).toBe('invalid id or password');
   });
 });
+
+describe('Signout functionality', () => {
+  it("should return error message when the user isn't signed in ", async () => {
+    const res = await request(app).get('/api/auth/signout');
+
+    expect(res.statusCode).toBe(401);
+    expect(res.text).toBe("You don't have authorization to view this page");
+  });
+
+  it('should sign the user out', async () => {
+    const res = await request(app)
+      .get('/api/auth/signout')
+      .set('Cookie', [token]);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['set-cookie']).toBeTruthy();
+    expect(res.body.message).toBe('chef1 has signed out successfully');
+  });
+});
