@@ -12,6 +12,10 @@
     "ecmaVersion": "latest"
   },
   "rules": {
+    "import/no-unresolved": [
+      2, 
+      { "caseSensitive": false }
+   ],
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
     "no-console": "warn",
