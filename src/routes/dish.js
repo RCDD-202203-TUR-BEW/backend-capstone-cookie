@@ -35,15 +35,18 @@ router.get('/:dishId/fetchDishImage/:index', dishControllers.fetchDishImage);
 router.post(
   '/:dishId/uploadDishImage',
   multer.single('dish'),
+  permit('chef'),
   dishControllers.uploadDishImage
 );
 router.put(
   '/:dishId/updateDishImage/:index',
   multer.single('dish'),
+  permit('chef'),
   dishControllers.updateDishImage
 );
 router.delete(
   '/:dishId/deleteDishImage/:index',
+  permit('chef'),
   dishControllers.deleteDishImage
 );
 
