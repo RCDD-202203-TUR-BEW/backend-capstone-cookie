@@ -220,9 +220,9 @@
         }
       }
     },
-    "/customer/{customerId}/locations": {
+    "/users/{userId}/locations": {
       "post": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Create or add new location",
         "description": "this endpoint should create or push new location to the user",
         "produces": ["application/json"],
@@ -274,7 +274,7 @@
         }
       }
     },
-    "/customer/{customerId}/location/{locationId}": {
+    "/users/{userId}/location/{locationId}": {
       "get": {
         "tags": ["customer"],
         "summary": "Get specefic location",
@@ -1099,7 +1099,7 @@
           "type": "number"
         },
         "flat_num": {
-          "type": "string"
+          "type": "number"
         },
         "location_description": {
           "type": "string"
