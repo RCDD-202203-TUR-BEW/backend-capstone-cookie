@@ -23,6 +23,7 @@ orderControllers.addNewOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
   const customer = await customerModel.findById(customerid);
+  const theDish = await dishModel.findById(dishid);
 
   let totalPrice = 0;
   // const theEvaluation = await evaluationModel.findOne({
@@ -55,14 +56,11 @@ orderControllers.addNewOrder = async (req, res) => {
     // ADD THE RATE TO THE ORDER
     if (theEvaluation) theOrder.evaluation = theEvaluation;
 
-    // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
-    theOrder.dishes.forEach(async (elm) => {
-      const theDish = await dishModel.findById(elm.dish);
-      totalPrice += theDish.price * elm.quantity;
-    });
+    if (!customer.orders.includes(theOrder.id.toString())) {
+      customer.orders.push(theOrder.id);
+    }
 
-    theOrder.total_price = totalPrice;
-    customer.orders.push(theOrder.id);
+    theOrder.total_price = theDish.price * quantity;
 
     await customer.save();
     await theOrder.save();
@@ -70,19 +68,34 @@ orderControllers.addNewOrder = async (req, res) => {
   }
 
   // ADD NEW DISH TO EXISTED ORDER
-  existedOrder.dishes.push(dishAndQuantity);
+
+  const result = existedOrder.dishes.every((e) => e.dish.toString() !== dishid);
+
+  if (result) {
+    existedOrder.dishes.push(dishAndQuantity);
+  } else {
+    existedOrder.dishes.forEach(async (elm, index) => {
+      if (elm.dish.toString() === dishid) {
+        existedOrder.dishes[index].quantity += parseInt(quantity, 10);
+      }
+    });
+  }
 
   // ADD EVALUATION
   if (theEvaluation) existedOrder.evaluation = theEvaluation;
 
-  // CALCULATE THE PRICE FOR ALL DISHES IN THE ORDER
-  existedOrder.dishes.forEach(async (elm) => {
-    const theDish = await dishModel.findById(elm.dish);
-    totalPrice += theDish.price * quantity + existedOrder.total_price;
+  // CALCULATE THE TOTAL PRICE
+  existedOrder.dishes.forEach((elm) => {
+    dishModel.findById(elm.dish.toString()).then((dishData) => {
+      totalPrice += dishData.price * elm.quantity;
+      existedOrder.total_price = totalPrice;
+    });
   });
 
-  existedOrder.total_price = totalPrice;
-  customer.orders.push(existedOrder.id);
+  await existedOrder.save();
+  if (!customer.orders.includes(existedOrder.id.toString())) {
+    customer.orders.push(existedOrder.id);
+  }
   await customer.save();
   return res.send(existedOrder);
 };
@@ -91,6 +104,7 @@ orderControllers.addNewOrder = async (req, res) => {
 orderControllers.updateOrder = async (req, res) => {
   const { customerid } = req.params;
   const { dishid, quantity } = req.body;
+  let totalPrice = 0;
 
   const theOrder = await orderModel.findOne({
     customer: customerid,
@@ -98,28 +112,41 @@ orderControllers.updateOrder = async (req, res) => {
   });
 
   theOrder.dishes.forEach(async (dish, index) => {
-    if (dish.dish === dishid) {
+    if (dish.dish.toString() === dishid) {
+      // UPDATING THE QUANTITY
       theOrder.dishes[index].quantity = quantity;
-      await theOrder.save();
+
+      // UPDATING THE TOTOAL PRICE
+      theOrder.dishes.forEach((elm) => {
+        dishModel.findById(elm.dish.toString()).then((dishData) => {
+          totalPrice += dishData.price * elm.quantity;
+          theOrder.total_price = totalPrice;
+        });
+      });
     }
   });
-  res.send(theOrder);
+  await theOrder.save();
+  return res.send(theOrder);
 };
 
 // DELETE ORDER
 orderControllers.deleteOrder = async (req, res) => {
   const { customerid } = req.params;
-  const theOrder = await orderModel.find({
+  const theOrder = await orderModel.findOne({
     customer: customerid,
     status: 'adding dishes',
   });
+  const customerOrder = await customerModel.findById(theOrder.customer);
 
   if (theOrder) {
-    const deletedOrder = await orderModel.deleteOne({
-      customer: customerid,
-      status: 'adding dishes',
+    customerOrder.orders.forEach(async (elm, index) => {
+      if (`${elm}` === `${theOrder.id}`) {
+        customerOrder.orders.splice(index, 1);
+        await customerOrder.save();
+      }
     });
-    res.send('your basket is empty');
+    await theOrder.delete();
+    res.send(theOrder);
   } else {
     res.send('You dont have an order to delete');
   }
