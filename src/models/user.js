@@ -5,33 +5,33 @@ const { Schema } = mongoose;
 const LocationSchema = new Schema({
   locationName: {
     type: String,
-    required: true,
   },
   city: {
     type: String,
-    requied: true,
+    required: true,
   },
   district: {
     type: String,
-    requied: true,
+    required: true,
   },
   street: {
     type: String,
-    requied: true,
+    required: true,
   },
   quarter: {
     type: String,
+    required: true,
   },
   block_num: {
     type: Number,
+    required: true,
   },
   flat_num: {
-    type: String,
-    requied: true,
+    type: Number,
+    required: true,
   },
   location_description: {
     type: String,
-    requied: true,
   },
 });
 

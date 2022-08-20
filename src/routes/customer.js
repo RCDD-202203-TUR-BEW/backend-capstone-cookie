@@ -15,37 +15,6 @@ router.put(
   customerController.updateProfile
 ); // update operation will done on profile information page
 
-// ADDED PERMISSIONS FOR BOTH CUSTOMERS AND CHEFS HERE UNTIL WE MOVE LOCATION CONTROLLERS TO A SEPARATE FILE AND GENERALIZE THEM.
-
-router.post(
-  '/:customerId/location',
-  permit('customer', 'chef'),
-  customerController.createLocation
-); // create and add location to customer
-
-router.get(
-  '/:customerId/location',
-  permit('customer', 'chef'),
-  customerController.getAllLcationsByCustomerId
-); // get all locations of customer by id
-router.get(
-  '/:customerId/location/:locationId',
-  permit('customer', 'chef'),
-  customerController.getLocationById
-); // get location object with an id of that customerId/:customerId
-
-router.put(
-  '/:customerId/location/:locationId',
-  permit('customer', 'chef'),
-  customerController.updateLocationById
-); // update location object with an id of that customerId/:customerId
-
-router.delete(
-  '/:customerId/location/:locationId',
-  permit('customer', 'chef'),
-  customerController.deleteLocationById
-); // delete address object with an id of that customerId/:customerId
-
 router.delete('/:id', permit('customer'), customerController.deleteAccount); // delete account
 
 // router.get('/rate', customerController); // rated dishes
