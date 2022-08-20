@@ -37,7 +37,7 @@ const path = [
   '/api/dishes/filter',
   '/api/auth/google',
   '/api/auth/google/redirect',
-  'http://localhost:3000/auth/google/redirect',
+
   '/api/customers/profile/:userId',
 ];
 
@@ -46,7 +46,7 @@ app.use(
   jwt({
     secret: process.env.SECRET_KEY,
     algorithms: ['HS256'],
-    requestProperty: 'auth', // This ensures that decoded token details will be available on req.auth else req.user is the default.
+    requestProperty: 'user', // This ensures that decoded token details will be available on req.auth else req.user is the default.
     getToken: (req) => req.signedCookies.token ?? req.cookies.token,
   }).unless({
     path,
@@ -62,7 +62,6 @@ app.use('/api/joint', jointRoutes);
 app.use(orderRoutes);
 
 //app.use(UnauthorizedErrorHandler);
-app.use(cookieParser(process.env.SECRET_KEY));
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
