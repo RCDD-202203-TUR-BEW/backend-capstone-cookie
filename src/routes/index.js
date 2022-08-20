@@ -11,5 +11,4 @@ const jointRoutes = require('./joint');
 // router.get('/chef', chefRoutes); //    /api/chef
 // router.get('/admin', adminRoutes); //    /api/admin
 router.get('/auth', authRoutes); //    /api/auth'
- router.get('/joint', jointRoutes); //    /api/joint
 module.exports = router;

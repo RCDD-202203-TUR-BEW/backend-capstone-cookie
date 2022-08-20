@@ -38,8 +38,7 @@ const path = [
   '/api/auth/google',
   '/api/auth/google/redirect',
   'http://localhost:3000/auth/google/redirect',
-  '/api/customer/fillprofile',
-  '/api/customer/fillprofile/:id',
+  '/api/customers/profile/:userId',
 ];
 
 app.use(
@@ -48,8 +47,7 @@ app.use(
     secret: process.env.SECRET_KEY,
     algorithms: ['HS256'],
     requestProperty: 'auth', // This ensures that decoded token details will be available on req.auth else req.user is the default.
-    getToken: (req) =>
-      req.signedCookies.token ?? req.cookies.token ?? req.cookies['_t'],
+    getToken: (req) => req.signedCookies.token ?? req.cookies.token,
   }).unless({
     path,
   })

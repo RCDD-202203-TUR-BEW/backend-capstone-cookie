@@ -5,13 +5,12 @@ const express = require('express');
 const router = express.Router();
 
 const customerController = require('../controllers/customer');
-const thirdPartyUserController = require('../controllers/thirdPartyUser'); // for googel auth
-// Public Routes
-router.put('/fillprofile/:id', thirdPartyUserController.createUser); // for google auth
+const isCustomer = require('../middleware/isCustomer'); // middleware to check if the user is a customer from his role (Oauth) as well
 
+// Public Routes
 router.get('/:username', customerController.getProfile); // returns customer object
 // Private Routes : need isAuthenticated middleware
-router.put('/profile/:id', customerController.updateProfile); // update operation will done on profile information page
+router.put('/profile/:id', isCustomer, customerController.updateProfile); // update operation will done on profile information page
 
 router.post('/:customerId/location', customerController.createLocation); // create and add location to customer
 router.get(

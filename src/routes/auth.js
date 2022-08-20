@@ -44,15 +44,12 @@ router.get(
       maxAge: cookieAge,
       secure: false,
     });
-    res.status(302).redirect(`/api/customer/fillprofile/${user.id}`);
+    //directing to update the customer profile
+    res.redirect(`/api/customers/profile/${user.id}`);
+    
   }
 );
 
-router.get('/signout', checkToken, (req, res) => {
-  res.clearCookie('token');
-  res.status(200).json({
-    message: 'Logged out',
-  });
-});
+
 
 module.exports = router;
