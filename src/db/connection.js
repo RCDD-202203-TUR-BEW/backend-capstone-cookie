@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
 
 const url = process.env.DB_URL;
 
@@ -17,4 +18,17 @@ const connectToMongo = () => {
   });
 };
 
-module.exports = connectToMongo;
+module.exports = {
+  connectToMongo,
+
+  // for testing purposes
+  clearDatabase: async () => {
+    const keepIDs = {
+      users: ['63017b363dbead97f329ba6e'],
+    };
+    const { collections } = mongoose.connection;
+    await collections.users.deleteMany({
+      _id: { $not: { $in: keepIDs.users.map(ObjectId) } },
+    });
+  },
+};
