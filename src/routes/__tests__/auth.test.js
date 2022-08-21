@@ -6,7 +6,7 @@ const { User } = require('../../models/user');
 
 jest.setTimeout(1500);
 
-const connectToMongo = require('../../db/connection');
+const { connectToMongo, clearDatabase } = require('../../db/connection');
 
 beforeAll(async () => {
   await connectToMongo();
@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   // clean db
-  await User.deleteMany({});
+  await clearDatabase();
 });
 
 // to test registration
