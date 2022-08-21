@@ -14,6 +14,15 @@ afterAll(async () => {
   await clearDatabase();
 });
 
+const dish = {
+  title: 'besamelli makarna',
+  ingredients: ['makarna', 'et', 'sut'],
+  description: 'delicious food',
+  cuisine: 'turkish',
+  dishType: 'pasta',
+  price: 60,
+};
+
 describe('Chef Related Routes', () => {
   describe('Public Routes', () => {
     it('GET /api/chefs should return an array of chefs', async () => {
@@ -48,6 +57,31 @@ describe('Chef Related Routes', () => {
       const res = await request(app).get('/api/chefs/notexisteduser');
       expect(res.status).toBe(400);
       expect(res.body.message).toBe('No chef with username: notexisteduser');
+    });
+  });
+
+  describe('Private Routes', () => {
+    describe('When not authenticated', () => {
+      it('Responds with 302 for all endpoints and redirect to signin page', async () => {
+        const resRead = await request(app).get('/api/chefs/profile/testchef');
+        const resCreate = await request(app)
+          .post('/api/chefs/dishes/testchef')
+          .send(dish);
+        const resUpdate = await request(app)
+          .put('/api/chefs/dishes/testchef/somefakeid')
+          .send({ title: 'Update_title' });
+        const resDelete = await request(app).delete(
+          '/api/chefs/dishes/testchef/somefakeid'
+        );
+
+        expect(resRead.status).toBe(401);
+        expect(resRead.text).toBe(
+          "You don't have authorization to view this page"
+        );
+        expect(resCreate.status).toBe(401);
+        expect(resUpdate.status).toBe(401);
+        expect(resDelete.status).toBe(401);
+      });
     });
   });
 });
