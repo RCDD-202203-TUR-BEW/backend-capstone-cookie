@@ -49,7 +49,7 @@ afterAll(async () => {
   await User.deleteMany({});
 });
 
-describe('Customer Related Routes', () => {
+describe('Customer Related Routes', (done) => {
   describe('Public Routes', () => {
     it('GET /customer/:username - should get the customer object from the database with username', async () => {
       // !! this test has to be work as public but it is only working with token as private
@@ -115,4 +115,5 @@ describe('Customer Related Routes', () => {
       expect(res.statusCode).toBe(401);
     });
   });
+  done();
 });
