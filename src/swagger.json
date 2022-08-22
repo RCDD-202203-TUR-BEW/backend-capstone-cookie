@@ -309,6 +309,34 @@
         }
       }
     },
+    "/auth/google": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New user creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
     "/auth/signin": {
       "post": {
         "tags": ["user"],
