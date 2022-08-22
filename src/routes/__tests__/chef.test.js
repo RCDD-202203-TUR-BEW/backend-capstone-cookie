@@ -115,13 +115,6 @@ describe('Chef Related Routes', () => {
         expect(res.status).toBe(200);
         expect(typeof res.body).toBe('object');
       });
-      it('GET /api/chefs/profile/:username should return the chef information correctly', async () => {
-        const res = await request(app)
-          .get('/api/chefs/profile/validchef')
-          .set('Cookie', [token]);
-        expect(res.status).toBe(200);
-        expect(typeof res.body).toBe('object');
-      });
 
       it('PUT /api/chefs/profile/:username should update information correctly', async () => {
         const res = await request(app)
