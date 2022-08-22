@@ -25,9 +25,7 @@ const path = [
   '/api/auth/signin',
   '/api/chefs',
   '/api/chefs/nearby-chefs',
-  /^\/api\/chefs\/(?!profile).*/,
-  /^\/api\/chefs\/(?!dishes).*/,
-  /^\/api\/chefs\/(?!orders).*/,
+  /^\/api\/chefs\/(?:([^/]+?))\/?$/i, // equals to /api/chefs/:username
   '/api/dishes',
   '/api/dishes/filter',
   /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
