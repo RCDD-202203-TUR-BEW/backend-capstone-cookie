@@ -42,7 +42,7 @@ orderControllers.addNewOrder = async (req, res) => {
     quantity,
   };
 
-  if (!existedOrder) {
+  if (!existedOrder || existedOrder.dishes.length < 1) {
     // CREATE ORDER
     const theOrder = await orderModel.create({
       customer: customerid,
@@ -85,19 +85,19 @@ orderControllers.addNewOrder = async (req, res) => {
   if (theEvaluation) existedOrder.evaluation = theEvaluation;
 
   // CALCULATE THE TOTAL PRICE
+
   existedOrder.dishes.forEach((elm) => {
-    dishModel.findById(elm.dish.toString()).then((dishData) => {
+    dishModel.findById(elm.dish.toString()).then(async (dishData) => {
       totalPrice += dishData.price * elm.quantity;
       existedOrder.total_price = totalPrice;
     });
   });
 
-  await existedOrder.save();
   if (!customer.orders.includes(existedOrder.id.toString())) {
     customer.orders.push(existedOrder.id);
   }
   await customer.save();
-  return res.send(existedOrder);
+  return existedOrder.save().then(() => res.send(existedOrder));
 };
 
 // // UPDATE ORDER
@@ -111,22 +111,61 @@ orderControllers.updateOrder = async (req, res) => {
     status: 'adding dishes',
   });
 
-  theOrder.dishes.forEach(async (dish, index) => {
+  theOrder.dishes.forEach((dish, index) => {
     if (dish.dish.toString() === dishid) {
       // UPDATING THE QUANTITY
       theOrder.dishes[index].quantity = quantity;
-
-      // UPDATING THE TOTOAL PRICE
-      theOrder.dishes.forEach((elm) => {
-        dishModel.findById(elm.dish.toString()).then((dishData) => {
-          totalPrice += dishData.price * elm.quantity;
-          theOrder.total_price = totalPrice;
-        });
-      });
     }
   });
-  await theOrder.save();
-  return res.send(theOrder);
+
+  // UPDATING THE TOTOAL PRICE
+  theOrder.dishes.forEach((elm) => {
+    dishModel.findById(elm.dish.toString()).then((dishData) => {
+      totalPrice += dishData.price * elm.quantity;
+      theOrder.total_price = totalPrice;
+    });
+  });
+
+  // SAVING TO DB
+  setTimeout(async () => {
+    await theOrder.save();
+    res.send(theOrder);
+  }, 100);
+};
+
+// DELETE DISH FROM THE ORDER
+orderControllers.deleteDish = async (req, res) => {
+  const { customerid } = req.params;
+  const { dishid } = req.body;
+  const theOrder = await orderModel.findOne({
+    customer: customerid,
+    status: 'adding dishes',
+  });
+  let totalPrice = 0;
+
+  if (theOrder) {
+    // REMOVE DISH FROM THE DISHES ARRAY
+    theOrder.dishes.forEach(async (elm, index) => {
+      if (`${elm.dish.toString()}` === dishid) {
+        theOrder.dishes.splice(index, 1);
+      }
+    });
+
+    // RECALACULATE THE TOTAL PRICE IN ORDER
+    theOrder.dishes.forEach((elm) => {
+      dishModel.findById(elm.dish.toString()).then((dishData) => {
+        totalPrice += dishData.price * elm.quantity;
+        theOrder.total_price = totalPrice;
+      });
+    });
+  } else {
+    res.send('You dont have a dish to delete');
+  }
+
+  setTimeout(async () => {
+    await theOrder.save();
+    res.send(theOrder);
+  }, 100);
 };
 
 // DELETE ORDER
