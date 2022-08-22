@@ -34,7 +34,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   // clean db
-  await User.deleteMany({});
+  await User.deleteOne({ username: 'validchef' });
 });
 
 const dish = {
