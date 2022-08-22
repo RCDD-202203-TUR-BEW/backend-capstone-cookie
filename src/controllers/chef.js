@@ -131,30 +131,37 @@ chefControllers.updateDishInfos = async (req, res) => {
     if (!relatedChef)
       res.status(401).send("You don't have authorization to view this page");
     else {
-      const isDishForRelatedChef = await Dishes.findOne({
-        _id: dishId,
-        chef_id: _id,
-      });
-      if (isDishForRelatedChef) {
-        const dataToBeUpdated = {};
-        const properties = Object.keys(req.body);
-        properties.forEach((prop) => {
-          if (req.body[prop]) {
-            if (prop === 'dishType') dataToBeUpdated.dish_type = req.body[prop];
-            else dataToBeUpdated[prop] = req.body[prop];
-          }
+      const dish = await Dishes.findOne({ _id: dishId });
+      if (!dish) res.status(404).json({ message: 'Dish not found' });
+      else {
+        const isDishForRelatedChef = await Dishes.findOne({
+          _id: dishId,
+          chef_id: _id,
         });
-        const updatedDish = await Dishes.findByIdAndUpdate(
-          dishId,
-          dataToBeUpdated,
-          {
-            new: true,
-          }
-        );
-        updatedDish.edited_at = Date.now();
-        res.json(updatedDish);
-      } else
-        res.status(401).send("You don't have authorization to view this page");
+        if (isDishForRelatedChef) {
+          const dataToBeUpdated = {};
+          const properties = Object.keys(req.body);
+          properties.forEach((prop) => {
+            if (req.body[prop]) {
+              if (prop === 'dishType')
+                dataToBeUpdated.dish_type = req.body[prop];
+              else dataToBeUpdated[prop] = req.body[prop];
+            }
+          });
+          const updatedDish = await Dishes.findByIdAndUpdate(
+            dishId,
+            dataToBeUpdated,
+            {
+              new: true,
+            }
+          );
+          updatedDish.edited_at = Date.now();
+          res.json(updatedDish);
+        } else
+          res
+            .status(401)
+            .send("You don't have authorization to view this page");
+      }
     }
   } catch (err) {
     res.json({ error: err.message });
@@ -169,15 +176,21 @@ chefControllers.deleteDish = async (req, res) => {
     if (!relatedChef)
       res.status(401).send("You don't have authorization to view this page");
     else {
-      const isDishForRelatedChef = await Dishes.findOne({
-        _id: dishId,
-        chef_id: _id,
-      });
-      if (isDishForRelatedChef) {
-        await Dishes.findByIdAndDelete(dishId);
-        res.json('Dish has been deleted successfully');
-      } else
-        res.status(401).send("You don't have authorization to view this page");
+      const dish = await Dishes.findOne({ _id: dishId });
+      if (!dish) res.status(404).json({ message: 'Dish not found' });
+      else {
+        const isDishForRelatedChef = await Dishes.findOne({
+          _id: dishId,
+          chef_id: _id,
+        });
+        if (isDishForRelatedChef) {
+          await Dishes.findByIdAndDelete(dishId);
+          res.json({ message: 'Dish has been deleted successfully' });
+        } else
+          res
+            .status(401)
+            .send("You don't have authorization to view this page");
+      }
     }
   } catch (err) {
     res.json({ error: err.message });
