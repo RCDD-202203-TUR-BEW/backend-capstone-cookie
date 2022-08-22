@@ -35,12 +35,20 @@
     }
   ],
   "paths": {
-    "/:customerid/order": {
+    "/orders/{customerid}/order": {
       "get": {
         "tags": ["order"],
         "summary": "Get the last ordedr the user made",
         "description": "this endpoint should return the last order the user made",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -50,6 +58,34 @@
       "post": {
         "tags": ["order"],
         "summary": "Create or Add new dish to the order ",
+        "description": "this endpoint should create new order",
+        "parameters": [
+          {
+            "name": "dishid and quantity",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "dishid": {
+                "type": "string",
+                "description": "The id for the dish",
+                "required": true
+              },
+              "quantity": {
+                "type": "string",
+                "description": "The id for the dish",
+                "required": true
+              }
+            }
+          },
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -61,6 +97,33 @@
         "tags": ["order"],
         "summary": "Update order information",
         "description": "this endpoint should update the order information like quantity",
+        "parameters": [
+          {
+            "name": "dishid and quantity",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "dishid": {
+                "type": "string",
+                "description": "The id for the dish",
+                "required": true
+              },
+              "quantity": {
+                "type": "string",
+                "description": "The id for the dish",
+                "required": true
+              }
+            }
+          },
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -72,6 +135,14 @@
         "tags": ["order"],
         "summary": "Delete order",
         "description": " this endpoint should delete the order in your basket",
+        "parameters": [
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -80,11 +151,54 @@
         }
       }
     },
-    "/:customerid/orders": {
+    "/orders/{customerid}/orders": {
       "get": {
         "tags": ["order"],
         "summary": "Get all previous orders",
         "description": "this endpoint should return all the order that the customer made",
+        "parameters": [
+          {
+            "name": "customerid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/orders/{customerid}/order/dish": {
+      "delete": {
+        "tags": ["order"],
+        "summary": "Delete one dish from the order",
+        "description": "this endpoint should return the order object after you deleted the dish from it",
+        "parameters": [
+          {
+            "name": "dishid",
+            "in": "body",
+            "description": "the id of the dish you want to delete",
+            "required": true,
+            "type": "object",
+            "properties": {
+              "dishid": {
+                "type": "string",
+                "description": "The id for the dish",
+                "required": true
+              }
+            }
+          },
+          {
+            "name": "customer",
+            "in": "path",
+            "description": "the user you want to delete his dish",
+            "required": true
+          }
+        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
@@ -826,53 +940,7 @@
           "description": "Turkish phone number"
         },
         "birthday": {
-          "type": "string",
-          "example": "01-01-2000"
-        },
-        "gender": {
           "type": "string"
-        },
-        "acceptTos": {
-          "type": "boolean"
-        }
-      }
-    },
-    "Chef": {
-      "type": "object",
-      "properties": {
-        "role": {
-          "type": "string",
-          "default": "chef",
-          "readOnly": true
-        },
-        "username": {
-          "type": "string"
-        },
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "confirmPassword": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "number",
-          "description": "Turkish phone number"
-        },
-        "birthday": {
-          "type": "string",
-          "example": "01-01-2000"
         },
         "gender": {
           "type": "string"
@@ -926,6 +994,78 @@
           ]
         },
         "price": { "type": "number" }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "customer": {
+          "type": "object"
+        },
+        "dishes": {
+          "type": "object"
+        },
+        "total_price": {
+          "type": "number"
+        },
+        "coupon": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string"
+        },
+        "paid": {
+          "type": "boolean"
+        },
+        "evaluation": {
+          "type": "object"
+        },
+        "order_date": {
+          "type": "string"
+        }
+      }
+    },
+    "Coupon": {
+      "type": "object",
+      "properties": {
+        "coupon_code": {
+          "type": "string"
+        },
+        "discount_type": {
+          "type": "string"
+        },
+        "discount_amount": {
+          "type": "number"
+        },
+        "coupon": {
+          "type": "object"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "expiration_date": {
+          "type": "string"
+        }
+      }
+    },
+    "Evaluation": {
+      "type": "object",
+      "properties": {
+        "dish_id": {
+          "type": "object"
+        },
+        "customer_id": {
+          "type": "object"
+        },
+        "rate": {
+          "type": "number"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        }
       }
     }
   }
