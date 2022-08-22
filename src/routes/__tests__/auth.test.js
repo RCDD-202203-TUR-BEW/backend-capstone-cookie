@@ -183,3 +183,7 @@
 //     expect(res.body.message).toBe('chef1 has signed out successfully');
 //   });
 // });
+
+it('should hash password with bcrypt', async () => {
+  expect();
+});
