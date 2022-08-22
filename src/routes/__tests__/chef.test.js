@@ -85,7 +85,7 @@ describe('Chef Related Routes', () => {
 
   describe('Private Routes', () => {
     describe('When not authenticated', () => {
-      it('Responds with 302 for all endpoints and redirect to signin page', async () => {
+      it('Responds with 401 for all endpoints', async () => {
         const resRead = await request(app).get('/api/chefs/profile/testchef');
         const resCreate = await request(app)
           .post('/api/chefs/dishes/testchef')
