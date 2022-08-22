@@ -6,15 +6,35 @@ const Dish = require('../../models/dish');
 
 jest.setTimeout(1500);
 
-const { connectToMongo, clearDatabase } = require('../../db/connection');
+const connectToMongo = require('../../db/connection');
 
+let token;
+let dishId;
 beforeAll(async () => {
   await connectToMongo();
+  const validChef = {
+    firstname: 'valid',
+    lastname: 'chef',
+    username: 'validchef',
+    email: 'valid-chef@gmail.com',
+    role: 'chef',
+    password: 'correctPass7',
+    confirmPassword: 'correctPass7',
+    phone: 5555525555,
+    kitchenName: 'validkitchen',
+    kitchenDescription: 'asian food',
+    birthday: '01-01-2000',
+    gender: 'female',
+    acceptTos: true,
+  };
+  const res = await request(app).post('/api/auth/chef/signup').send(validChef);
+  const cookieProperties = res.headers['set-cookie'][0].split(';');
+  [token] = cookieProperties;
 });
 
 afterAll(async () => {
   // clean db
-  await clearDatabase();
+  await User.deleteMany({});
 });
 
 const dish = {
@@ -51,7 +71,7 @@ describe('Chef Related Routes', () => {
     });
 
     it('GET /api/chefs/:username should return the chef with the specific username successfully', async () => {
-      const res = await request(app).get('/api/chefs/testchef');
+      const res = await request(app).get('/api/chefs/validchef');
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
     });
@@ -88,31 +108,6 @@ describe('Chef Related Routes', () => {
     });
 
     describe('When authenticated', () => {
-      let token;
-      let dishId;
-      beforeAll(async () => {
-        const validChef = {
-          firstname: 'valid',
-          lastname: 'chef',
-          username: 'validchef',
-          email: 'valid-chef@gmail.com',
-          role: 'chef',
-          password: 'correctPass7',
-          confirmPassword: 'correctPass7',
-          phone: 5555525555,
-          kitchenName: 'validkitchen',
-          kitchenDescription: 'asian food',
-          birthday: '01-01-2000',
-          gender: 'female',
-          acceptTos: true,
-        };
-        const res = await request(app)
-          .post('/api/auth/chef/signup')
-          .send(validChef);
-        const cookieProperties = res.headers['set-cookie'][0].split(';');
-        [token] = cookieProperties;
-      });
-
       it('GET /api/chefs/profile/:username should return the chef information correctly', async () => {
         const res = await request(app)
           .get('/api/chefs/profile/validchef')

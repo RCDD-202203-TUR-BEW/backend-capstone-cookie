@@ -6,7 +6,7 @@ const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
 const swaggerUi = require('swagger-ui-express');
 const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
 const swaggerDocument = require('./swagger.json');
-const { connectToMongo } = require('./db/connection');
+const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
 
