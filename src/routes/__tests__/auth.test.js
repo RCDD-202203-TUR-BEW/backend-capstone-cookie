@@ -14,7 +14,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
   // clean db
-  await User.deleteMany({});
+  await User.deleteMany({
+    username: { $in: ['chef1', 'newchef', 'customer1'] },
+  });
 });
 
 // to test registration
@@ -106,7 +108,7 @@ describe('Signup functionality', () => {
 
   it('should handle used email', async () => {
     const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
+    newChefLocal.username = 'newchef';
     const res = await request(app)
       .post('/api/auth/chef/signup')
       .send(newChefLocal);
@@ -116,7 +118,7 @@ describe('Signup functionality', () => {
 
   it('should handle used phone', async () => {
     const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
+    newChefLocal.username = 'newchef';
     newChefLocal.email = 'email@gmail.com';
     const res = await request(app)
       .post('/api/auth/chef/signup')
@@ -127,7 +129,7 @@ describe('Signup functionality', () => {
 
   it('should handle wrong password confirm', async () => {
     const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
+    newChefLocal.username = 'newchef';
     newChefLocal.email = 'email@gmail.com';
     newChefLocal.phone = 5553215353;
     newChefLocal.confirmPassword = 'wrongPassword1';
