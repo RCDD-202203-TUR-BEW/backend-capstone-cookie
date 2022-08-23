@@ -35,4 +35,11 @@ routes.delete(
   orderControllers.deleteOrder
 );
 
+// DELETE DISH
+routes.delete(
+  '/:customerid/:dishid',
+  permit('customer'),
+  orderControllers.deleteDish
+);
+
 module.exports = routes;
