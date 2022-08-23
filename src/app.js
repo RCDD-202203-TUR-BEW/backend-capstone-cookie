@@ -9,15 +9,12 @@ const swaggerDocument = require('./swagger.json');
 const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
-const orderRoutes = require('./routes/order');
-
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 
 app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
@@ -28,9 +25,7 @@ const path = [
   '/api/auth/signin',
   '/api/chefs',
   '/api/chefs/nearby-chefs',
-  /^\/api\/chefs\/^(?!profile$|dishes$|orders$).*/,
-  // /^\/api\/chefs\/(?!dishes).*/,
-  // /^\/api\/chefs\/(?!orders).*/,
+  /^\/api\/chefs\/(?:([^/]+?))\/?$/i, // equals to /api/chefs/:username
   '/api/dishes',
   '/api/dishes/filter',
   /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
