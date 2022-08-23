@@ -1,23 +1,42 @@
-/* eslint-disable prefer-object-spread */
 const request = require('supertest');
-const bcrypt = require('bcrypt');
 const app = require('../../app');
+const orderModel = require('../../models/order');
 const { User } = require('../../models/user');
+const dishModel = require('../../models/dish');
 
-jest.setTimeout(1500);
+// STARTING THE DB AND DROPING IT AFTER FINISHING
+jest.setTimeout(10000);
 
 const connectToMongo = require('../../db/connection');
 
 beforeAll(async () => {
-  await connectToMongo();
+  connectToMongo();
+  await orderModel.deleteMany({});
 });
 
 afterAll(async () => {
-  // clean db
-  await User.deleteMany({});
+  await orderModel.deleteMany({});
+  await User.findOneAndDelete({ username: 'customer1' });
+  await User.findOneAndDelete({ username: 'chef1' });
+  await dishModel.deleteMany({ price: 5 });
+  await dishModel.deleteMany({ price: 15 });
 });
 
-// to test registration
+// DUMMY DATA
+const newCustomer = {
+  firstname: 'new',
+  lastname: 'customer',
+  username: 'customer1',
+  email: 'new-customer@gmail.com',
+  role: 'customer',
+  password: 'correctPass7',
+  confirmPassword: 'correctPass7',
+  phone: 5555555557,
+  birthday: '01-01-2000',
+  gender: 'female',
+  acceptTos: true,
+};
+
 const newChef = {
   firstname: 'new',
   lastname: 'chef',
@@ -34,153 +53,125 @@ const newChef = {
   acceptTos: true,
 };
 
-const newCustomer = {
-  firstname: 'new',
-  lastname: 'customer',
-  username: 'customer1',
-  email: 'new-customer@gmail.com',
-  role: 'customer',
-  password: 'correctPass7',
-  confirmPassword: 'correctPass7',
-  phone: 5555555557,
-  birthday: '01-01-2000',
-  gender: 'female',
-  acceptTos: true,
+const newDish = {
+  title: 'new dish 2',
+  ingredients: 'new ingredients 2',
+  description: 'new dish description 2',
+  images: 'https://picsum.photos/200',
+  price: '5',
+  cuisine: 'Turkish',
+  dishType: 'Soup',
 };
 
-let token;
+const newDish3 = {
+  title: 'new dish 3',
+  ingredients: 'new ingredients 3',
+  description: 'new dish description 3',
+  images: 'https://picsum.photos/200',
+  price: '15',
+  cuisine: 'Turkish',
+  dishType: 'Soup',
+};
 
-describe('Signup functionality', () => {
-  it('should register a new chef successfully', async () => {
-    const res = await request(app).post('/api/auth/chef/signup').send(newChef);
-
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['content-type']).toMatch(/json/);
-    expect(res.headers['set-cookie']).toBeDefined();
-    expect(res.headers['set-cookie']).toBeTruthy();
-    expect(res.body.message).toBe('new chef signed up successfully');
-
-    // saving the token to test the signout functionality
-    const cookieProperties = res.headers['set-cookie'][0].split(';');
-    [token] = cookieProperties; // array destructuring to take first value which is the token
-
-    // check user in db
-    const user = await User.findOne({ username: newChef.username });
-    expect(user).toBeDefined();
-    expect(user.username).toEqual(newChef.username);
-  });
-
-  it('should register a new customer successfully', async () => {
-    const res = await request(app)
+describe('order testing', () => {
+  // CREATEING NEW ORDER
+  it('Should Create new order', async () => {
+    // CREATE NEW USER
+    const dummyUser = await request(app)
       .post('/api/auth/customer/signup')
       .send(newCustomer);
 
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['content-type']).toMatch(/json/);
-    expect(res.headers['set-cookie']).toBeDefined();
-    expect(res.headers['set-cookie']).toBeTruthy();
-    expect(res.body.message).toBe('new customer signed up successfully');
-
-    // check user in db
-    const user = await User.findOne({ username: newChef.username });
-    expect(user).toBeDefined();
-    expect(user.username).toEqual(newChef.username);
-  });
-
-  it('should hash password with bcrypt', async () => {
-    await request(app).post('/api/auth/chef/signup').send(newChef);
-    const user = await User.findOne({ username: newChef.username });
-    expect(user).toBeDefined();
-    const valid =
-      user && (await bcrypt.compare(newChef.password, user.password_hash));
-    expect(valid).toBe(true);
-  });
-
-  it('should handle used username', async () => {
-    const res = await request(app)
-      .post('/api/auth/customer/signup')
-      .send(newCustomer);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.error).toBe('username (customer1) already exists!');
-  });
-
-  it('should handle used email', async () => {
-    const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
-    const res = await request(app)
+    // CREATE NEW CHEF
+    const dummyChef = await request(app)
       .post('/api/auth/chef/signup')
-      .send(newChefLocal);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.error).toBe('email (new-chef@gmail.com) already exists!');
+      .send(newChef);
+
+    const userId = await User.findOne({ username: 'customer1' });
+    const chefUsername = await User.findOne({ username: 'chef1' });
+
+    // CREATE NEW DISH
+
+    const dummyDish = await dishModel.create(newDish);
+
+    // CREATE NEW ORDER
+    let orderData = await request(app)
+      .post(`/api/orders/${userId.id}/order`)
+      .send({ dishid: `${dummyDish.id}`, quantity: '2' });
+
+    orderData = JSON.parse(orderData.text);
+
+    //  CHECK THE USER ID IN THE ORDER & THE DISH ID & THE TOTAL PRICE
+
+    expect(orderData.customer).toEqual(userId.id);
+    expect(orderData.dishes[0].dish).toEqual(dummyDish.id);
+    expect(orderData.total_price).toEqual(10);
   });
 
-  it('should handle used phone', async () => {
-    const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
-    newChefLocal.email = 'email@gmail.com';
-    const res = await request(app)
-      .post('/api/auth/chef/signup')
-      .send(newChefLocal);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.error).toBe('phone (5555555555) already exists!');
+  // GET THE LAST ORDER CREATED
+  it('Should get the last order created', async () => {
+    // FETCH THE USER
+    const dummyUser = await User.findOne({ username: 'customer1' });
+
+    // REQUEST THE ROUTE BY HIS ID
+    let res = await request(app).get(`/api/orders/${dummyUser.id}/order`);
+    res = JSON.parse(res.text);
+
+    // CHECK THE CUSTOMER ID SIMILAR TO THE USER & THE TOTAL PRICE OF THE ORDER
+    expect(res.customer).toEqual(dummyUser.id);
+    expect(res.total_price).toEqual(10);
   });
 
-  it('should handle wrong password confirm', async () => {
-    const newChefLocal = Object.assign({}, newChef);
-    newChefLocal.username = 'username';
-    newChefLocal.email = 'email@gmail.com';
-    newChefLocal.phone = 5553215353;
-    newChefLocal.confirmPassword = 'wrongPassword1';
-    const res = await request(app)
-      .post('/api/auth/chef/signup')
-      .send(newChefLocal);
-    expect(res.statusCode).toBe(400);
-    expect(res.body.error).toBe("Passwords don't match");
+  // UPDATE THE ORDER WE CREATED
+
+  it('Should update the quantity and the total price', async () => {
+    // FETCH THE USER
+    const dummyUser = await User.findOne({ username: 'customer1' });
+
+    const theOrder = await orderModel
+      .findOne({ customer: dummyUser.id })
+      .populate('dishes');
+
+    let res = await request(app)
+      .put(`/api/orders/${dummyUser.id}/order`)
+      .send({ dishid: theOrder.dishes[0].dish, quantity: '12' });
+    res = JSON.parse(res.text);
+
+    expect(res.customer).toEqual(dummyUser.id);
+    expect(res.dishes[0].quantity).toEqual(12);
+    expect(res.total_price).toEqual(60);
+  });
+
+  // DELETE ONE DISH FROM THE ORDER
+  it('Should delete the dish from the order', async () => {
+    // CREATE NEW DISH
+
+    const dummyDish = await dishModel.create(newDish3);
+    const dummyUser = await User.findOne({ username: 'customer1' });
+
+    const newDishToOrder = await request(app)
+      .post(`/api/orders/${dummyUser.id}/order`)
+      .send({ dishid: dummyDish.id.toString(), quantity: 1 });
+
+    let res = await request(app)
+      .delete(`/api/orders/${dummyUser.id}/order/dish`)
+      .send({ dishid: `${dummyDish.id.toString()}` });
+    res = JSON.parse(res.text);
+
+    expect(res.dishes.length).toEqual(1);
+    expect(res.dishes).not.toContain({ dish: dummyDish.toString(), price: 15 });
+  });
+
+  // DELETE THE ENTIRE ORDER WE CREATED
+  it('Should delete the order with status add dishes', async () => {
+    const dummyUser = await User.findOne({ username: 'customer1' });
+
+    let res = await request(app).delete(`/api/orders/${dummyUser.id}/order`);
+    res = JSON.parse(res.text);
+
+    const userAfterDelete = await User.findOne({ username: 'customer1' });
+    const deleteOrder = await orderModel.findOne({ customer: dummyUser });
+
+    expect(userAfterDelete.orders.length).toEqual(0);
+    expect(deleteOrder).toBe(null);
   });
 });
-
-describe('Signin functionality', () => {
-  it('should log the user in successfully', async () => {
-    const res = await request(app)
-      .post('/api/auth/signin')
-      .send({ id: newChef.username, password: newChef.password });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.message).toBe('chef: chef1 signed in successfully');
-  });
-
-  it('should handle wrong id', async () => {
-    const res = await request(app)
-      .post('/api/auth/signin')
-      .send({ id: 'wrong', password: newChef.password });
-    expect(res.statusCode).toBe(401);
-    expect(res.body.error).toBe('invalid id or password');
-  });
-
-  it('should handle wrong password', async () => {
-    const res = await request(app)
-      .post('/api/auth/signin')
-      .send({ id: newChef.username, password: 'wrongPass7' });
-    expect(res.statusCode).toBe(401);
-    expect(res.body.error).toBe('invalid id or password');
-  });
-});
-
-describe('Signout functionality', () => {
-  it("should return error message when the user isn't signed in ", async () => {
-    const res = await request(app).get('/api/auth/signout');
-
-    expect(res.statusCode).toBe(401);
-    expect(res.text).toBe("You don't have authorization to view this page");
-  });
-
-  it('should sign the user out', async () => {
-    const res = await request(app)
-      .get('/api/auth/signout')
-      .set('Cookie', [token]);
-
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['set-cookie']).toBeTruthy();
-    expect(res.body.message).toBe('chef1 has signed out successfully');
-  });
-});
-
