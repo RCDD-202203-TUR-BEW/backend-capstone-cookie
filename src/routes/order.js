@@ -7,14 +7,14 @@ const orderControllers = require('../controllers/order');
 // GET CUSTOMER ORDER
 routes.get(
   '/:customerid/order',
-  permit('customer'),
+  // permit('customer'),
   orderControllers.getCustomerOrder
 );
 
 // GET ALL PREVIOUS CUSTOMER ORDERS
 routes.get(
   '/:customerid/orders',
-  permit('customer'),
+  // permit('customer'),
   orderControllers.getAllPrevOrders
 );
 
@@ -24,14 +24,21 @@ routes.post('/:customerid/order', orderControllers.addNewOrder);
 // UPDATE ORDER
 routes.put(
   '/:customerid/order',
-  permit('customer'),
+  // permit('customer'),
   orderControllers.updateOrder
+);
+
+// DELETE DISH FROM THE ORDER
+routes.delete(
+  '/:customerid/order/dish',
+  // permit('customer'),
+  orderControllers.deleteDish
 );
 
 // DELETE ORDER
 routes.delete(
   '/:customerid/order',
-  permit('customer'),
+  // permit('customer'),
   orderControllers.deleteOrder
 );
 
