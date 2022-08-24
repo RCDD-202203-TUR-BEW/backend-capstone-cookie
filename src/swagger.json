@@ -193,7 +193,7 @@
             }
           },
           {
-            "name": "customer",
+            "name": "customerid",
             "in": "path",
             "description": "the user you want to delete his dish",
             "required": true
