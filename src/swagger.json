@@ -158,49 +158,116 @@
         }
       }
     },
-    "/customer/:username": {
+    "/customer/{username}": {
       "get": {
         "tags": ["customer"],
         "summary": "Return user details",
         "description": "this endpoint should return a user by his username",
-        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The customer username that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+          "500": {
+            "description": "bad requests"
           }
         }
       }
     },
-    "/customer/profile/:id": {
+    "/customer/profile/{id}": {
       "put": {
         "tags": ["customer"],
         "summary": "Update user details",
         "description": "this endpoint should update the profile details depending on his id",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer details that needs to be updated.",
+            "required": true,
+            "example": {
+              "username": "cookiesrecoded",
+              "password": "cookiesrecoded",
+              "email": "example@example.com"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+          "422": {
+            "description": "bad requests"
           }
         }
       }
     },
-    "/customer/:customerId/location": {
+    "/users/{userId}/locations": {
       "post": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Create or add new location",
         "description": "this endpoint should create or push new location to the user",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer location that needs to be added.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+
+          "500": {
+            "description": "bad requests"
           }
         }
       },
       "get": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Get all user location",
         "description": "this endpoint should return all location that the user have",
-        "produces": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
@@ -208,34 +275,107 @@
         }
       }
     },
-    "/customer/:customerId/location/:locationId": {
+    "/users/{userId}/location/{locationId}": {
       "get": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Get specefic location",
         "description": "this endpoint should return location by using user id and user location id",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "500": {
+            "description": "bad requests"
           }
         }
       },
       "put": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Update specefic location",
+
         "description": "this endpoint should update the location by using user id and user location id",
-        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer location that needs to be updated.",
+            "required": true,
+            "example": {
+              "locationName": "Home",
+              "city": "Fake City",
+              "street": "Fake Street"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "422": {
+            "description": "bad requests"
           }
         }
       },
       "delete": {
-        "tags": ["customer"],
+        "tags": ["user"],
         "summary": "Delete specefic location",
         "description": "this endpoint should delete location by using user id and user location id",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "204": {
             "description": "successful operation"
@@ -243,13 +383,31 @@
         }
       }
     },
-    "/customer/:id": {
-      "tags": ["customer"],
-      "summary": "Delete the user account",
-      "description": "this endpoint should delete the user account",
-      "response": {
-        "200": {
-          "description": "successful operation"
+    "/customer/{id}": {
+      "delete": {
+        "tags": ["customer"],
+        "summary": "Delete the user account",
+        "description": "this endpoint should delete the user account",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "500": {
+            "description": "bad requests"
+          }
         }
       }
     },
@@ -932,6 +1090,35 @@
           ]
         },
         "price": { "type": "number" }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "locationName": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "quarter": {
+          "type": "string"
+        },
+        "block_num": {
+          "type": "number"
+        },
+        "flat_num": {
+          "type": "number"
+        },
+        "location_description": {
+          "type": "string"
+        }
       }
     }
   }
