@@ -58,7 +58,7 @@ authControllers.signup = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   let user;
   if (role === 'chef') {
-    const { kitchenName, kitchenDescription } = req.body;
+    const { kitchenName, kitchenDescription, bio } = req.body;
     if (await isExisted('kitchen_name', kitchenName, Chefs))
       return response('Kitchen Name', kitchenName);
     user = await Chefs.create({
@@ -67,6 +67,7 @@ authControllers.signup = async (req, res) => {
       username,
       email,
       role,
+      bio,
       password_hash: hashedPassword,
       phone,
       birthday,
