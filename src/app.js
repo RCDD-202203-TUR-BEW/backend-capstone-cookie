@@ -12,8 +12,8 @@ const apiRoutes = require('./routes');
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
-const passport = require('passport');
-app.use(passport.initialize());
+
+require('./services/passport-setup');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -33,8 +33,10 @@ const path = [
   /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
   // excluding "/nearby-dishes" as it needs authentication to know the user location first
   /^\/api\/dishes\/chef\/.*/,
-  '/api/auth/google',
-  '/api/auth/google/redirect',
+  '/api/auth/google/customer',
+  '/api/auth/google/customer/redirect',
+  '/api/auth/google/chef',
+  '/api/auth/google/chef/redirect',
 ];
 
 app.use(
