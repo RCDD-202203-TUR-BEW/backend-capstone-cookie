@@ -1,11 +1,9 @@
 const express = require('express');
 const Multer = require('multer');
+const passport = require('passport');
+const signJWT = require('../helpers/signJWT');
 const authControllers = require('../controllers/auth');
 // const { MAX_IMAGE_SIZE } = require('../utility/variables');
-const isAuthenticated = require('../middleware/isAuthenticated');
-const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const { checkToken } = require('../services/passport-setup');
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
@@ -59,41 +57,43 @@ router.post('/signin', authControllers.signin);
 router.get('/signout', authControllers.signout);
 
 router.get(
-  '/google',
-  passport.authenticate('google', {
+  '/google/customer',
+  passport.authenticate('customer', {
     scope: ['profile', 'email', 'openid'],
   })
 );
 
 router.get(
-  '/google/redirect',
-  passport.authenticate('google', {
+  '/google/customer/redirect',
+  passport.authenticate('customer', {
     session: false,
   }),
-  function (req, res) {
-    const cookieAge = 14 * 24 * 3600 * 1000;
-
+  async (req, res) => {
     const { user } = req;
-    const token = jwt.sign(
-      {
-        name: user.name,
-        email: user.email,
-        providerId: `google-${user.providerId}`,
-        avatar: user.profilePicture,
-        iat: Math.floor(Date.now() / 1000),
-      },
-      process.env.SECRET_KEY,
-      { expiresIn: '14d' },
-      { algorithms: 'HS256' }
-    );
-    console.log(token);
-    res.cookie('token', token, {
-      httpOnly: true,
-      maxAge: cookieAge,
-      secure: false,
-    });
-    //directing to update the customer profile
-    res.redirect(`/api/customers/profile/${user.id}`);
+    signJWT(res, user);
+
+    res.json({ message: 'new customer signed up successfully' });
+  }
+);
+
+router.get(
+  '/google/chef',
+  passport.authenticate('chef', {
+    scope: ['profile', 'email', 'openid'],
+  })
+);
+
+router.get(
+  '/google/chef/redirect',
+  passport.authenticate('chef', {
+    session: false,
+  }),
+  async (req, res) => {
+    const { user } = req;
+
+    signJWT(res, user);
+
+    res.json({ message: 'new chef signed up successfully' });
   }
 );
 
