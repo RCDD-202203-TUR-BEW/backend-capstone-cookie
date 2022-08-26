@@ -11,7 +11,8 @@ const userGoogleStrategy = (userType) =>
     },
     async (accessToken, refreshToken, profile, cb) => {
       const providerId = `google-${profile.id}`;
-      const [username] = profile.emails[0].value.split('@');
+      let [username] = profile.emails[0].value.split('@');
+      username = username.slice(0, 20);
       const { provider } = profile;
       const firstname = profile.name.givenName;
       const lastname = profile.name.familyName;
