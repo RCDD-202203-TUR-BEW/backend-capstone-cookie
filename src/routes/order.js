@@ -1,5 +1,6 @@
 const express = require('express');
 const permit = require('../middleware/authorization');
+const isVerified = require('../middleware/isVerified');
 
 const routes = express.Router();
 const orderControllers = require('../controllers/order');
@@ -19,7 +20,8 @@ routes.get(
 );
 
 // CREATE NEW ORDER
-routes.post('/:customerid/order', orderControllers.addNewOrder);
+// eslint-disable-next-line prettier/prettier
+routes.post('/:customerid/order', isVerified, orderControllers.addNewOrder);
 
 // UPDATE ORDER
 routes.put(

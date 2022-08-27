@@ -4,6 +4,7 @@ const router = express.Router();
 
 const chefControllers = require('../controllers/chef');
 const isAuthenticated = require('../middleware/isAuthenticated');
+const isVerified = require('../middleware/isVerified');
 const permit = require('../middleware/authorization');
 
 // IMPORTANT NOTE: The order of the routes matters as middleware functions are executed sequentially
@@ -30,6 +31,7 @@ router.put(
 router.post(
   '/dishes/:username',
   isAuthenticated,
+  isVerified,
   permit('chef'),
   chefControllers.addDish
 );
@@ -55,6 +57,7 @@ router.get(
 router.put(
   '/orders/:username/:orderId',
   isAuthenticated,
+  isVerified,
   permit('chef'),
   chefControllers.finishPreparation
 );
