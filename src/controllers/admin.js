@@ -11,7 +11,9 @@ const fetchAll = async (req, res) => {
 };
 const fetchCustomers = async (req, res) => {
   try {
-    const customers = await UserModel.find({ role: 'customer' });
+    const customers = await UserModel.find({ role: 'customer' }).populate(
+      'orders'
+    );
     res.status(200).json({ customers });
   } catch (error) {
     res.status(500).json({ error });

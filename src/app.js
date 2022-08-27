@@ -3,17 +3,12 @@ require('dotenv').config();
 const { expressjwt: jwt } = require('express-jwt');
 const cookieParser = require('cookie-parser');
 const { encryptCookieNodeMiddleware } = require('encrypt-cookie');
-
+const swaggerUi = require('swagger-ui-express');
 const { UnauthorizedErrorHandler } = require('./middleware/errorHandling');
-
+const swaggerDocument = require('./swagger.json');
 const connectToMongo = require('./db/connection');
 
 const apiRoutes = require('./routes');
-const orderRoutes = require('./routes/order');
-
-// const customerRoutes = require('./routes/customer');
-// const chefRoutes = require('./routes/chef');
-const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = process.env.NODE_LOCAL_PORT;
@@ -25,13 +20,17 @@ app.use(cookieParser(process.env.SECRET_KEY));
 app.use(encryptCookieNodeMiddleware(process.env.SECRET_KEY));
 
 const path = [
-  '/api/auth/signup',
+  '/api/auth/chef/signup',
+  '/api/auth/customer/signup',
   '/api/auth/signin',
   '/api/chefs',
-  '/api/chefs/:username',
+  '/api/chefs/nearby-chefs',
+  /^\/api\/chefs\/(?:([^/]+?))\/?$/i, // equals to /api/chefs/:username
   '/api/dishes',
-  '/api/dishes/:dishId',
   '/api/dishes/filter',
+  /^\/api\/dishes\/(?!nearby-dishes).*/, // (this is equivalent to "/api/chefs/dishes/:dishId")  because unless method doesn't accept express' :param path arguments syntax, but it does accept a regex
+  // excluding "/nearby-dishes" as it needs authentication to know the user location first
+  /^\/api\/dishes\/chef\/.*/,
 ];
 
 app.use(
@@ -46,17 +45,17 @@ app.use(
   })
 );
 
-// app.use('/api', apiRoutes);
-// app.use('/api/customer', customerRoutes);
-// app.use('/api/chef', chefRoutes);
-app.use(orderRoutes);
-app.use(authRoutes);
+app.use('/api', apiRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(UnauthorizedErrorHandler);
 
-app.listen(port, () => {
-  // console.log(`Server listening on port ${port}`);
-  connectToMongo();
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+    connectToMongo();
+  });
+}
 
 module.exports = app;

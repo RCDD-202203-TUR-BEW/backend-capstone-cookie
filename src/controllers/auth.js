@@ -1,19 +1,29 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring');
-const Users = require('../models/user');
+
+const Users = require('../models/user').User;
+const Chefs = require('../models/user').Chef;
+const Customers = require('../models/user').Customer;
 const signJWT = require('../helpers/signJWT');
 const transporter = require('../utils/email');
 
 const authControllers = {};
 let randomstr;
 
+const storage = require('../db/storage');
+const { getFileExtension } = require('../utils/utils');
+
+const PROFILE_IMAGE_DIR = 'avatars';
 authControllers.signup = async (req, res) => {
+  let role = 'customer';
+  if (req.path === '/chef/signup') role = 'chef';
+
   const {
     firstname,
     lastname,
     username,
     email,
-    role,
     password,
     confirmPassword,
     phone,
@@ -22,8 +32,11 @@ authControllers.signup = async (req, res) => {
     acceptTos,
   } = req.body;
 
-  const isExisted = async (fieldName, value) => {
-    const existedProperty = await Users.find({}).where(fieldName).equals(value);
+  const isExisted = async (fieldName, value, modelName = Users) => {
+    const existedProperty = await modelName
+      .find({})
+      .where(fieldName)
+      .equals(value);
     if (existedProperty.length !== 0) return true;
     return false;
   };
@@ -47,19 +60,40 @@ authControllers.signup = async (req, res) => {
   }
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
-  const user = await Users.create({
-    firstname,
-    lastname,
-    username,
-    email,
-    role,
-    password_hash: hashedPassword,
-    phone,
-    birthday,
-    gender,
-  });
+  let user;
+  if (role === 'chef') {
+    const { kitchenName, kitchenDescription, bio } = req.body;
+    if (await isExisted('kitchen_name', kitchenName, Chefs))
+      return response('Kitchen Name', kitchenName);
+    user = await Chefs.create({
+      firstname,
+      lastname,
+      username,
+      email,
+      role,
+      bio,
+      password_hash: hashedPassword,
+      phone,
+      birthday,
+      gender,
+      kitchen_name: kitchenName,
+      kitchen_description: kitchenDescription,
+    });
+  } else {
+    user = await Customers.create({
+      firstname,
+      lastname,
+      username,
+      email,
+      role,
+      password_hash: hashedPassword,
+      phone,
+      birthday,
+      gender,
+    });
+  }
 
-  // sending verification email
+  signJWT(res, user);
 
   randomstr = randomstring.generate();
 
@@ -90,12 +124,14 @@ authControllers.verifyEmail = async (req, res) => {
   const { email, code } = req.body;
   if (code !== randomstr) return res.send('Please enter a correect code');
 
-  const user = await Users.User.findOne({ email });
+  // const userId = await jwt.verify(req.signedCookies.token,process.env.SECRET_KEY);
+
+  const user = await Users.findOne({ email });
   user.email_verified = true;
 
   await user.save();
 
-  return res.redirect('/api/aut/signin');
+  return res.send('User verified succefully');
 };
 
 authControllers.signin = async (req, res) => {
@@ -139,4 +175,33 @@ authControllers.signout = async (req, res) => {
   // redirect to signin page once we have a view ready
 };
 
+authControllers.uploadAvatarImage = async (req, res) => {
+  const { _id } = req.user;
+
+  let user;
+  try {
+    if (req.path === '/chef/signup') {
+      user = await Chefs.findOne({ _id });
+    } else if (req.path === '/customer/signup') {
+      user = await Customers.findOne({ _id });
+    } else user = await Users.findOne({ _id });
+
+    /// / add the image to the storage of the user
+    // image is optional
+    // fileName imageDir/userId.extension
+    if (req.file) {
+      const imgUrl = await storage.uploadImage(
+        req.file,
+        `${PROFILE_IMAGE_DIR}/${user.id}.${getFileExtension(
+          req.file.originalname
+        )}`
+      );
+      user.avatar = imgUrl;
+      await user.save();
+      res.json({ message: 'profile image uploaded successfully' });
+    } else res.status(400).json({ error: 'no image provided' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 module.exports = authControllers;

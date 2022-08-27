@@ -2,27 +2,61 @@ const express = require('express');
 
 const router = express.Router();
 
-const chefController = require('../controllers/chef');
+const chefControllers = require('../controllers/chef');
+const isAuthenticated = require('../middleware/isAuthenticated');
+const permit = require('../middleware/authorization');
 
-router.get('/', chefController); // all dishes - all chefs or (/dishes/all)
-router.get('/profile', chefController); // profile
+// IMPORTANT NOTE: The order of the routes matters as middleware functions are executed sequentially
 
-router.get('/order', chefController); // specific order
+// PUBLIC ROUTES
+router.get('/', chefControllers.getAllChefs);
+router.get('/nearby-chefs', chefControllers.getNearbyChefs);
+router.get('/:username', chefControllers.getSpecificChef);
 
-router.get('/rate', chefController); // rated dishes
-router.put('/profile', chefController); // update profile - or it cuts off the rest of the routes
+// PRIVATE ROUTES
+router.get(
+  '/profile/:username',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.seeProfile
+);
+router.put(
+  '/profile/:username',
+  permit('chef'),
+  isAuthenticated,
+  chefControllers.updateProfile
+);
 
-router.put('/updateDetails', chefController); // oreder details
+router.post(
+  '/dishes/:username',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.addDish
+);
+router.put(
+  '/dishes/:username/:dishId',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.updateDishInfos
+);
+router.delete(
+  '/dishes/:username/:dishId',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.deleteDish
+);
 
-router.delete('/deletedetails', chefController); // delete address
-
-router.get('/chefs', chefController); // all chefs"
-router.get('/chefs/:username', chefController); // all chefs"
-router.get('/dishes/:dishId', chefController); // dish by id
-router.get('/dishes/filter', chefController); // filter dishes
-
-router.post('/dishes', chefController); // add dish
-router.put('/dishes/:dishId', chefController); // update dish
-router.delete('/dishes/:dishId', chefController); // delete dish
+router.get(
+  '/orders/:username',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.getOrders
+);
+router.put(
+  '/orders/:username/:orderId',
+  isAuthenticated,
+  permit('chef'),
+  chefControllers.finishPreparation
+);
 
 module.exports = router;

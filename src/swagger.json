@@ -1,0 +1,1125 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "COOKIEZ ITS WEBSITE FOR SERVING HOMEMADE FOOD STRIGHT UP TO YOUR DOOR",
+    "title": "COOKIEZ",
+    "contact": {
+      "email": "cookiesrecoded@outlook.com"
+    }
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user"
+    },
+    {
+      "name": "admin",
+      "description": "Access to all users data, fetch users, delete users"
+    },
+    {
+      "name": "customer",
+      "description": "Normal user opreation like updating his profile, create location..."
+    },
+    {
+      "name": "chef",
+      "description": "chef related operations"
+    },
+    {
+      "name": "dish",
+      "description": "fetching dishes in different ways"
+    },
+    {
+      "name": "order",
+      "description": "Adding new order, fetching orders, removing orders"
+    }
+  ],
+  "paths": {
+    "/:customerid/order": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get the last ordedr the user made",
+        "description": "this endpoint should return the last order the user made",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "post": {
+        "tags": ["order"],
+        "summary": "Create or Add new dish to the order ",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "tags": ["order"],
+        "summary": "Update order information",
+        "description": "this endpoint should update the order information like quantity",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["order"],
+        "summary": "Delete order",
+        "description": " this endpoint should delete the order in your basket",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/:customerid/orders": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get all previous orders",
+        "description": "this endpoint should return all the order that the customer made",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/admin/fetchCustomers": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all customer in the database",
+        "description": "this endpoint should return all the customer in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/admin/fetchAdmins": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all admins in the database",
+        "description": "this endpoint should return all the admins in the database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/admin/fetchChefs": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all chefs in the database",
+        "description": "this endpoint should return all the chefs in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/admin/fetchAll": {
+      "get": {
+        "tags": ["admin"],
+        "summary": "Get all type of users in the database",
+        "description": "this endpoint should return all the type of users in database",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/admin/delete/:id": {
+      "delete": {
+        "tags": ["admin"],
+        "summary": "Delete user",
+        "description": " this endpoint should delete any user but not the main admin",
+        "produces": ["application/json"],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/customer/{username}": {
+      "get": {
+        "tags": ["customer"],
+        "summary": "Return user details",
+        "description": "this endpoint should return a user by his username",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The customer username that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/customer/profile/{id}": {
+      "put": {
+        "tags": ["customer"],
+        "summary": "Update user details",
+        "description": "this endpoint should update the profile details depending on his id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer details that needs to be updated.",
+            "required": true,
+            "example": {
+              "username": "cookiesrecoded",
+              "password": "cookiesrecoded",
+              "email": "example@example.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "422": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/users/{userId}/locations": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Create or add new location",
+        "description": "this endpoint should create or push new location to the user",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer location that needs to be added.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      },
+      "get": {
+        "tags": ["user"],
+        "summary": "Get all user location",
+        "description": "this endpoint should return all location that the user have",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/{userId}/location/{locationId}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get specefic location",
+        "description": "this endpoint should return location by using user id and user location id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Update specefic location",
+
+        "description": "this endpoint should update the location by using user id and user location id",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The customer location that needs to be updated.",
+            "required": true,
+            "example": {
+              "locationName": "Home",
+              "city": "Fake City",
+              "street": "Fake Street"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "422": {
+            "description": "bad requests"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete specefic location",
+        "description": "this endpoint should delete location by using user id and user location id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "locationId",
+            "in": "path",
+            "description": "The location id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/customer/{id}": {
+      "delete": {
+        "tags": ["customer"],
+        "summary": "Delete the user account",
+        "description": "this endpoint should delete the user account",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "response": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/chef/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New chef creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Chef"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/customer/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New customer creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Logs user into the system",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The user id for signin (email/username)",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password for login in clear text",
+                "required": true
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "Invalid id/password supplied"
+          }
+        }
+      }
+    },
+    "/auth/signout": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "no authorization to view the page"
+          }
+        }
+      }
+    },
+    "/chefs": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get all the chefs registered in database",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "No chefs to show at this time"
+          }
+        }
+      }
+    },
+    "/chefs/nearby-chefs": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get all the chefs located in the provided city",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "description": "The city in where to search for nearby chefs",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/chefs/{username}": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get a specific chef depending on their username",
+        "description": "a public route to see a chef page",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/chefs/profile/{username}": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get profile for the authenticated chef",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username who's trying to see their profile.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      },
+      "put": {
+        "tags": ["chef"],
+        "summary": "update profile for the authenticated chef",
+        "description": "This can only be done by the logged in user.",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username who's trying to edit their profile.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "updated user object",
+            "required": true,
+            "type": "object",
+            "example": {
+              "bio": "bio about the chef",
+              "lastname": "new lastname"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/dishes/{username}": {
+      "post": {
+        "tags": ["chef"],
+        "summary": "add a dish to the chef menu",
+        "description": "This can only be done by the logged in user.",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "created dish object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Dish"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/dishes/{username}/{dishId}": {
+      "put": {
+        "tags": ["chef"],
+        "summary": "update dish details",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "updated dish object",
+            "required": true,
+            "type": "object",
+            "example": {
+              "price": 40
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["chef"],
+        "summary": "delete dish from chef menu",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      }
+    },
+    "/chefs/orders/{username}": {
+      "get": {
+        "tags": ["chef"],
+        "summary": "get orders that are asked from the chef",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/chefs/orders/{username}/{orderId}": {
+      "put": {
+        "tags": ["chef"],
+        "summary": "update the status of the order to 'completed' when chef finish preperation",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "The order id to change its status",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "not authorized"
+          }
+        }
+      }
+    },
+    "/dishes": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes in the application",
+        "description": "This is a public route when the user isn't logged in",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/dishes/chef/{username}": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes for a specific chef",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The chef username",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/{dishId}": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get a specific dish by its id",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "dishId",
+            "in": "path",
+            "description": "The dish id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/filter": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "filter the dishes upon specific queries",
+        "description": "This is a public route",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "the name of the dish",
+            "type": "string"
+          },
+          {
+            "name": "cuisine",
+            "in": "query",
+            "description": "the cuisine of the dish",
+            "type": "string"
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "description": "a specefic ingredient contained in the dish",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "description": "price range",
+            "type": "string",
+            "example": "44-77"
+          },
+          {
+            "name": "dish_type",
+            "in": "query",
+            "description": "the dish type",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/dishes/nearby-dishes": {
+      "get": {
+        "tags": ["dish"],
+        "summary": "get the all the dishes in the same city as the user's",
+        "description": "This can only be done by the logged in user.",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "default": "customer",
+          "readOnly": true
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "number",
+          "description": "Turkish phone number"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "01-01-2000"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "acceptTos": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Chef": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "default": "chef",
+          "readOnly": true
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "confirmPassword": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "number",
+          "description": "Turkish phone number"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "01-01-2000"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "acceptTos": {
+          "type": "boolean"
+        },
+        "kitchenName": {
+          "type": "string",
+          "required": true
+        },
+        "kitchenDescription": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "Dish": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "ingredients": {
+          "type": "string",
+          "example": ["str1", "str2"]
+        },
+        "description": { "type": "string" },
+        "cuisine": {
+          "type": "string",
+          "enum": [
+            "Turkish",
+            "Asian",
+            "Japanese",
+            "Italian",
+            "American",
+            "Indian",
+            "Mexican"
+          ]
+        },
+        "dishType": {
+          "type": "string",
+          "enum": [
+            "Appetizer",
+            "Main Dish",
+            "Dessert",
+            "Soup",
+            "Salad",
+            "Pizza",
+            "Burger",
+            "Pasta",
+            "Sandwich"
+          ]
+        },
+        "price": { "type": "number" }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "locationName": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "quarter": {
+          "type": "string"
+        },
+        "block_num": {
+          "type": "number"
+        },
+        "flat_num": {
+          "type": "number"
+        },
+        "location_description": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
