@@ -109,26 +109,28 @@ dishControllers.getChefDishes = async (req, res) => {
   }
 };
 
-//
-
 dishControllers.uploadDishImage = async (req, res) => {
-  console.log('-------- uploadDishImage');
   try {
     if (req.file) {
-      // get dish id from params
       const { dishId } = req.params;
 
-      // get dish from db
       const dish = await Dishes.findById(dishId);
 
+      // const userId = dish.chef_id;
+      // const { _id } = req.user;
+      // if (_id !== userId)
+      //   res
+      //     .status(401)
+      //     .json({ message: "You're not authorized to view this page" });
+
       const nextImageIndex = dish.images.length;
-      console.log(nextImageIndex);
+
       const fileName = `${DISH_IMAGE_DIR}/${dishId}_${nextImageIndex}.${getFileExtension(
         req.file.originalname
       )}`;
-      // upload image to firebase storage
+
       const imageURL = await storage.uploadImage(req.file, fileName);
-      // assign image url to dish images array
+
       dish.images.push(imageURL);
       dish.save();
       res.status(200).json({ message: 'dish image uploaded successfully' });
@@ -163,10 +165,17 @@ dishControllers.fetchAllDishImages = async (req, res) => {
 };
 
 dishControllers.updateDishImage = async (req, res) => {
-  console.log('-------- updateDishImage');
   try {
     const { dishId, index } = req.params;
     const dish = await Dishes.findById(dishId);
+
+    // const userId = dish.chef_id;
+    // const { _id } = req.user;
+    // if (_id !== userId)
+    //   res
+    //     .status(401)
+    //     .json({ message: "You're not authorized to view this page" });
+
     if (req.file) {
       const newFileName = `${DISH_IMAGE_DIR}/${dishId}_${index}.${getFileExtension(
         req.file.originalname
@@ -174,13 +183,16 @@ dishControllers.updateDishImage = async (req, res) => {
 
       const file = dish.images[index].split('%2F')[1];
       const oldFileName = `${DISH_IMAGE_DIR}/${file}`;
-      console.log(oldFileName);
-      console.log(newFileName);
+
       const imageURL = await storage.updateImage(
         req.file,
         oldFileName,
         newFileName
       );
+
+      dish.images[index] = imageURL;
+      dish.save();
+
       //   no need to update the image url in the images array, not changing the image url at this index
       res.status(200).json({ message: 'dish image updated successfully' });
     } else {
@@ -192,16 +204,23 @@ dishControllers.updateDishImage = async (req, res) => {
 };
 
 dishControllers.deleteDishImage = async (req, res) => {
-  console.log('-------- deleteDishImage');
   try {
     const { dishId, index } = req.params;
     const dish = await Dishes.findById(dishId);
+
+    const userId = dish.chef_id;
+    const { _id } = req.user;
+    if (_id !== userId)
+      res
+        .status(401)
+        .json({ message: "You're not authorized to view this page" });
+
     const imageURL = dish.images[index];
 
     // get the file name from the image url
     const file = imageURL.split('%2F')[1];
     const fileName = `${DISH_IMAGE_DIR}/${file}`;
-    console.log(fileName);
+
     await storage.deleteImage(fileName);
     dish.images.splice(index, 1);
     dish.save();
