@@ -220,6 +220,188 @@
         }
       }
     },
+    "/auth/chef/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New chef creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Chef"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/customer/signup": {
+      "post": {
+        "tags": ["user"],
+        "summary": "New customer creation",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Logs user into the system",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The user id for signin (email/username)",
+                "required": true
+              },
+              "password": {
+                "type": "string",
+                "description": "The password for login in clear text",
+                "required": true
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "Invalid id/password supplied"
+          }
+        }
+      }
+    },
+    "/auth/signout": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "no authorization to view the page"
+          }
+        }
+      }
+    },
+    "/auth/chef/signup/{id}/avatar": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Upload chef avatar",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The chef id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "avatar",
+            "in": "formData",
+            "description": "The chef avatar that needs to be uploaded.",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
+    "/auth/customer/signup/{id}/avatar": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Upload customer avatar",
+        "description": "",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The customer id that needs to be fetched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "avatar",
+            "in": "formData",
+            "description": "The customer avatar that needs to be uploaded.",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "401": {
+            "description": "not authorized"
+          },
+          "500": {
+            "description": "bad requests"
+          }
+        }
+      }
+    },
     "/users/{userId}/locations": {
       "post": {
         "tags": ["user"],
@@ -505,188 +687,7 @@
         }
       }
     },
-    "/auth/chef/signup": {
-      "post": {
-        "tags": ["user"],
-        "summary": "New chef creation",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json", "application/xml"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Created user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Chef"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "bad requests"
-          }
-        }
-      }
-    },
-    "/auth/customer/signup": {
-      "post": {
-        "tags": ["user"],
-        "summary": "New customer creation",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json", "application/xml"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "description": "Created user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Customer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "400": {
-            "description": "bad requests"
-          }
-        }
-      }
-    },
-    "/auth/signin": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Logs user into the system",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json", "application/xml"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "The user id for signin (email/username)",
-                "required": true
-              },
-              "password": {
-                "type": "string",
-                "description": "The password for login in clear text",
-                "required": true
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "401": {
-            "description": "Invalid id/password supplied"
-          }
-        }
-      }
-    },
-    "/auth/signout": {
-      "get": {
-        "tags": ["user"],
-        "summary": "Logs out current logged in user session",
-        "description": "",
-        "operationId": "logoutUser",
-        "produces": ["application/json", "application/xml"],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "401": {
-            "description": "no authorization to view the page"
-          }
-        }
-      }
-    },
-    "/auth/chef/signup/{id}/avatar": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Upload chef avatar",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json", "application/xml"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The chef id that needs to be fetched.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "avatar",
-            "in": "formData",
-            "description": "The chef avatar that needs to be uploaded.",
-            "required": true,
-            "type": "file"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "401": {
-            "description": "not authorized"
-          },
-          "500": {
-            "description": "bad requests"
-          }
-        }
-      }
-    },
-    "/auth/customer/signup/{id}/avatar": {
-      "post": {
-        "tags": ["user"],
-        "summary": "Upload customer avatar",
-        "description": "",
-        "consumes": ["application/json"],
-        "produces": ["application/json", "application/xml"],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The customer id that needs to be fetched.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "avatar",
-            "in": "formData",
-            "description": "The customer avatar that needs to be uploaded.",
-            "required": true,
-            "type": "file"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
-          },
-          "401": {
-            "description": "not authorized"
-          },
-          "500": {
-            "description": "bad requests"
-          }
-        }
-      }
-    },
+
     "/chefs": {
       "get": {
         "tags": ["chef"],
