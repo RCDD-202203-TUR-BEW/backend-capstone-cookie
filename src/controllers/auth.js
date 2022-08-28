@@ -108,14 +108,14 @@ authControllers.signup = async (req, res) => {
 
 authControllers.verifyEmail = async (req, res) => {
   const { code, email } = req.query;
-  if (code !== randomstr) return res.send('Please enter a correect code');
+  if (code !== randomstr) return res.send('Please enter a correct code');
 
   const user = await Users.findOne({ email });
   user.email_verified = true;
 
   await user.save();
 
-  return res.send('User verified succefully');
+  return res.send('Email is verified successfully');
 };
 
 authControllers.signin = async (req, res) => {
