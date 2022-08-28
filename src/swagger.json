@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "COOKIEZ ITS WEBSITE FOR SERVING HOMEMADE FOOD STRIGHT UP TO YOUR DOOR",
+    "description": "COOKIEZ ITS WEBSITE FOR SERVING HOMEMADE FOOD STRAIGHT UP TO YOUR DOOR",
     "title": "COOKIEZ",
     "contact": {
       "email": "cookiesrecoded@outlook.com"
@@ -518,6 +518,30 @@
           "401": {
             "description": "no authorization to view the page"
           }
+        }
+      }
+    },
+    "/auth/google/chef": {
+      "get": {
+        "tags": ["user"],
+        "summary": "allows chefs to sign in using their Google account.",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": { "description": "successful operation" }
+        }
+      }
+    },
+    "/auth/google/customer": {
+      "get": {
+        "tags": ["user"],
+        "summary": "allows customers to sign in using their Google account.",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "200": { "description": "successful operation" }
         }
       }
     },
