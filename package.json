@@ -28,6 +28,8 @@
     "mongo": "^0.1.0",
     "mongoose": "^6.4.6",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.7.8",
+    "randomstring": "^1.2.2",
     "react": "^18.2.0",
     "supertest": "^6.2.4",
     "swagger-jsdoc": "^6.2.4",
