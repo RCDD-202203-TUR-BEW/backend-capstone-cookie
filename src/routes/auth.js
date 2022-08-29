@@ -53,5 +53,6 @@ router.post(
 
 router.post('/signin', authControllers.signin);
 router.get('/signout', authControllers.signout);
+router.get('/verifyEmail', authControllers.verifyEmail);
 
 module.exports = router;
