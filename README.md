@@ -12,7 +12,7 @@
    <img width="100" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    <br>
    -Nodejs: It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
-   <br>
+   <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1.png">
    <br>
    -MongoDB Atlas: It is used to create and manage the Database for this project
