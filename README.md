@@ -51,7 +51,8 @@
     Chefs: post, delete, and update types of food they can make
     Customers: view all kinds of food around him, all chefs, can rate a specific dish, order any kind of available food  
     
-    # Team
+ # Team
+    
     <table>
       
     </table>
