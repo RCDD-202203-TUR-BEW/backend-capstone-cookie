@@ -53,39 +53,5 @@
     
     # Team
     <table>
-      <tr>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-       <td>
-       </td>
-      </tr>
-      <tr>
-         <td>
-           Lead Enginner
-         </td>
-         <td>
-            Junior Enginner
-         </td>
-         <td>
-            Junior Enginner
-         </td>
-         <td>
-            Junior Enginner
-        </td>
-        <td>
-            Junior Enginner
-        </td>
-        <td>
-          Junior Enginner
-       </td>
-
-     </tr>
+      
     </table>
