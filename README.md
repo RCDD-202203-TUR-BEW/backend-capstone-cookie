@@ -50,3 +50,42 @@
     Admin accepts responses of accounts for all other types of users and deletes these accounts when there is a need for that
     Chefs: post, delete, and update types of food they can make
     Customers: view all kinds of food around him, all chefs, can rate a specific dish, order any kind of available food  
+    
+    # Team
+    <table>
+      <tr>
+       <td>
+       </td>
+       <td>
+       </td>
+       <td>
+       </td>
+       <td>
+       </td>
+       <td>
+       </td>
+       <td>
+       </td>
+      </tr>
+      <tr>
+         <td>
+           Lead Enginner
+         </td>
+         <td>
+            Junior Enginner
+         </td>
+         <td>
+            Junior Enginner
+         </td>
+         <td>
+            Junior Enginner
+        </td>
+        <td>
+            Junior Enginner
+        </td>
+        <td>
+          Junior Enginner
+       </td>
+
+     </tr>
+    </table>
