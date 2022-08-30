@@ -11,27 +11,27 @@
    <br>
    <img width="100" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    <br>
-   -Nodejs: It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
+   <b>-Nodejs:</b> It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1.png">
    <br>
-   -MongoDB Atlas: It is used to create and manage the Database for this project
+   <b>-MongoDB Atlas:</b> It is used to create and manage the Database for this project
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/express-js.png">
    <br>
-   -Expressjs: It's a minimal and flexible Node.js web application framework
+   <b>-Expressjs:</b> It's a minimal and flexible Node.js web application framework
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    <br>
-   -Swagger: It's used to document all of REST APIS
+   <b>-Swagger:</b> It's used to document all of REST APIS
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Heroku_logo.svg.png">
    <br>
-   -Heroku 
+   <b>-Heroku </b>
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Firebase_Logo.svg.png">
    <br>
-   -Firebase: It's used to develop Android and Web Applications 
+   <b>-Firebase:<b> It's used to develop Android and Web Applications 
 
 
 # Content of project
