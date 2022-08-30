@@ -1,4 +1,4 @@
-# Cookie project
+  ## <p align="center">Cookie project</p> 
 ## Introduction
 ## Technologies
 ## contents of the project
@@ -11,12 +11,12 @@
   # Technologies
    Technologies used in this project  for the Backend side :
    <img width="100" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
-   1:Nodejs: It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
-   2:MongoDB Atlas: It is used to create and manage the Database for this project
-   3:Expressjs: It's a minimal and flexible Node.js web application framework
-   4:Swagger: It's used to document all of REST APIS
-   5:Heroku 
-   6:Firebase: It's used to develop Android and Web Applications 
+   -Nodejs: It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
+   -MongoDB Atlas: It is used to create and manage the Database for this project
+   -Expressjs: It's a minimal and flexible Node.js web application framework
+   -Swagger: It's used to document all of REST APIS
+   -Heroku 
+   -Firebase: It's used to develop Android and Web Applications 
 
 
 # Content of project
