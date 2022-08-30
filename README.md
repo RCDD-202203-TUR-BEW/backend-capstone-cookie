@@ -37,6 +37,9 @@
    <br>
    <b>-NodeMailer:</b> It's used to send and recieve Emailes from Nodejs application to submite accounts 
 
+<p align="center"><img width="1000" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/project.png"></p>
+
+<p align="center"><img width="1000" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/project2.png"></p>
 
 
 # Content of project
