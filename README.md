@@ -10,6 +10,7 @@
   
   # Technologies
    Technologies used in this project  for the Backend side :
+   <img width="100" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    1:Nodejs: It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
    2:MongoDB Atlas: It is used to create and manage the Database for this project
    3:Expressjs: It's a minimal and flexible Node.js web application framework
