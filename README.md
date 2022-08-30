@@ -31,7 +31,7 @@
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Firebase_Logo.svg.png">
    <br>
-   <b>-Firebase:<b> It's used to develop Android and Web Applications 
+   <b>-Firebase:</b> It's used to develop Android and Web Applications 
 
 
 # Content of project
