@@ -48,9 +48,63 @@ const deleteAccount = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const addRate = async (req, res) => {
+  try {
+    const { customerId } = req.params;
+    const { dishId } = req.body;
+    const customer = await customerModel.findById(customerId);
+    const theDish = await dishModel.findById(dishId);
+    const newRate= await evaluationModel.create({
+      customer:customerId,
+      dish:dishId,
+      rate:req.body.rate,
+      comment:req.body.comment,
+    })
+    await newRate.save();
+    res.json(newRate)
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+ //res.send("kdf");
+};
+// insatall mongodb ubuntu
+const deleteRate = async (req, res) => {
+ try {
+   const { customerId } = req.params;
+   const { rateId, dishId } = req.body;
+   const Rate = await dishModel.evaluation.find({
+     customer: customerId,
+     dish: dishId,
+   });
+// findOneAndDelete()
+   if (Rate) {
+     evaluationModel.deleteOne({ customer: customerId, dish_id: dishId });
+
+     dishModel.save();
+
+     res.send(Rate);
+   } else {
+     res.send('you do not have a rate to delete');
+   }
+ } catch (error) {
+   res.status(500).json({ error: error.message });
+ }
+};
+const getAllRates = async (req, res) => {
+ try {
+   const dishId = req.param;
+   const Rates = await evaluationModel.find({ dish_id: dishId });
+   res.status(200).json({ Rates });
+ } catch (error) {
+   res.status(500).json({ error });
+ }
+};
 
 module.exports = {
-  getProfile,
-  updateProfile,
-  deleteAccount,
+ getProfile,
+ updateProfile,
+ deleteAccount,
+ addRate,
+ deleteRate,
+ getAllRates
 };
