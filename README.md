@@ -27,7 +27,7 @@
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Heroku_logo.svg.png">
    <br>
-   <b>-Heroku </b>
+   <b>-Heroku </b> a cloud Platform as a Service (PaaS) used to deploy and manage our application
    <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Firebase_Logo.svg.png">
    <br>
@@ -52,7 +52,4 @@
     Customers: view all kinds of food around him, all chefs, can rate a specific dish, order any kind of available food  
     
  # Team
-    
-    <table>
-      
-    </table>
+    this team contain 5 engineer
