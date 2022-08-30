@@ -16,19 +16,19 @@
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1.png">
    <br>
    -MongoDB Atlas: It is used to create and manage the Database for this project
-   <br>
+   <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/express-js.png">
    <br>
    -Expressjs: It's a minimal and flexible Node.js web application framework
-   <br>
+   <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    <br>
    -Swagger: It's used to document all of REST APIS
-   <br>
+   <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Heroku_logo.svg.png">
    <br>
    -Heroku 
-   <br>
+   <br><br><br>
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Firebase_Logo.svg.png">
    <br>
    -Firebase: It's used to develop Android and Web Applications 
