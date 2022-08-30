@@ -1,4 +1,4 @@
-  ## <p align="center">Cookie project</p>
+  ## <p align="center">Cookies project</p>
   <p align="center"><img width="600" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/cookies.png"></p>
 
 
