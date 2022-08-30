@@ -1,11 +1,14 @@
 const bcrypt = require('bcrypt');
+const randomString = require('randomstring');
 
 const Users = require('../models/user').User;
 const Chefs = require('../models/user').Chef;
 const Customers = require('../models/user').Customer;
 const signJWT = require('../helpers/signJWT');
+const sendEmail = require('../utils/email');
 
 const authControllers = {};
+let randomstr;
 
 const storage = require('../db/storage');
 const { getFileExtension } = require('../utils/utils');
@@ -91,12 +94,28 @@ authControllers.signup = async (req, res) => {
 
   signJWT(res, user);
 
+  // Verifying the email
+  randomstr = randomString.generate();
+  sendEmail(user, randomstr);
+
   // checking the role to render the appropriate page for the user after signing up
 
   if (role === 'chef')
     return res.json({ message: 'new chef signed up successfully' });
 
   return res.json({ message: 'new customer signed up successfully' });
+};
+
+authControllers.verifyEmail = async (req, res) => {
+  const { code, email } = req.query;
+  if (code !== randomstr) return res.send('Please enter a correct code');
+
+  const user = await Users.findOne({ email });
+  user.email_verified = true;
+
+  await user.save();
+
+  return res.send('Email is verified successfully');
 };
 
 authControllers.signin = async (req, res) => {

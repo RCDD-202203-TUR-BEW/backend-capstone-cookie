@@ -14,7 +14,6 @@ const usernameValidator = check('username')
 const emailValidator = check('email')
   .notEmpty()
   .withMessage('Email should not be empty')
-  .normalizeEmail()
   .isEmail() // Normalize the email address by lowercasing the domain part of it.
   .withMessage('Invalid Email');
 
