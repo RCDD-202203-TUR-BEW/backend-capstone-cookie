@@ -32,6 +32,11 @@
    <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Firebase_Logo.svg.png">
    <br>
    <b>-Firebase:</b> It's used to develop Android and Web Applications 
+    <br><br><br>
+   <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/node.jpg">
+   <br>
+   <b>-NodeMailer:</b> It's used to send and recieve Emailes from Nodejs application to submite accounts 
+
 
 
 # Content of project
