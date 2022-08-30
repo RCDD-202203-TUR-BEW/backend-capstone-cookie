@@ -160,15 +160,16 @@ authControllers.signout = async (req, res) => {
 };
 
 authControllers.uploadAvatarImage = async (req, res) => {
-  const { _id } = req.user;
-
-  let user;
   try {
-    if (req.path === '/chef/signup') {
-      user = await Chefs.findOne({ _id });
-    } else if (req.path === '/customer/signup') {
-      user = await Customers.findOne({ _id });
-    } else user = await Users.findOne({ _id });
+    const { username } = req.params;
+    const { _id } = req.user;
+
+    const user = await Users.findOne({ username });
+    // eslint-disable-next-line no-underscore-dangle
+    if (user._id.toString() !== _id)
+      res
+        .status(401)
+        .json({ message: "you're not authorized to view this page" });
 
     /// / add the image to the storage of the user
     // image is optional
@@ -182,7 +183,9 @@ authControllers.uploadAvatarImage = async (req, res) => {
       );
       user.avatar = imgUrl;
       await user.save();
-      res.json({ message: 'profile image uploaded successfully' });
+      res.json({
+        message: 'profile picture is uploaded successfully',
+      });
     } else res.status(400).json({ error: 'no image provided' });
   } catch (err) {
     res.status(400).json({ error: err.message });

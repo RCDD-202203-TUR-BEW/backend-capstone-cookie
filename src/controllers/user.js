@@ -8,6 +8,7 @@ const fetchUserAvatar = async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await UserModel.findById(userId);
+    console.log(user);
     res.status(200).json(user.avatar);
   } catch (error) {
     res.status(500).json({ error });
@@ -17,6 +18,13 @@ const fetchUserAvatar = async (req, res) => {
 const deleteUserAvatar = async (req, res) => {
   try {
     const { userId } = req.params;
+
+    const { _id } = req.user;
+    if (_id !== userId)
+      res
+        .status(401)
+        .json({ message: "You're not authorized to view this page" });
+
     const user = await UserModel.findById(userId);
     const { avatar } = user;
     if (avatar) {
@@ -38,13 +46,31 @@ const deleteUserAvatar = async (req, res) => {
 const uploadUserAvatar = async (req, res) => {
   try {
     const { userId } = req.params;
+
+    const { _id } = req.user;
+    if (_id !== userId)
+      res
+        .status(401)
+        .json({ message: "You're not authorized to view this page" });
+
     const user = await UserModel.findById(userId);
     const { avatar } = user;
+    let fileName;
+    let imageUrl;
     if (req.file) {
-      const file = avatar.split('%2F')[1]; // debug if there is no avatar uploaded when sign up
-      const fileName = `${PROFILE_IMAGE_DIR}/${file}`;
-      await storage.updateImage(req.file, fileName, fileName);
-
+      // chek if there is an avatar to delete
+      if (avatar) {
+        const file = avatar.split('%2F')[1]; // debug if there is no avatar uploaded when sign up
+        fileName = `${PROFILE_IMAGE_DIR}/${file}`;
+        imageUrl = await storage.updateImage(req.file, fileName, fileName);
+      } else {
+        fileName = `${PROFILE_IMAGE_DIR}/${user.id}.${getFileExtension(
+          req.file.originalname
+        )}`;
+        imageUrl = await storage.uploadImage(req.file, fileName, fileName);
+      }
+      user.avatar = imageUrl;
+      user.save();
       res.status(200).json({ message: 'avatar uploaded successfully' });
     } else {
       res.status(200).json({ message: 'no avatar to upload' });
