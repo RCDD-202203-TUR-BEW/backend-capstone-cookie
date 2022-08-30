@@ -1,8 +1,7 @@
-# backend-capstone-template
-## Cookie project
-# Introduction
-# Technologies
-# contents of the project
+# Cookie project
+## Introduction
+## Technologies
+## contents of the project
 
 
 # Introduction
