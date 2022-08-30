@@ -66,7 +66,7 @@ const createLocation = async (req, res) => {
         .status(401)
         .json({ message: "You're not authorized to view this page" });
     else {
-      const user = await UserModel.findById(userId);
+      const user = await UserModel.findById(userId).populate('dishes');
 
       user.locations.push(newLocation);
       user.save();

@@ -1,5 +1,7 @@
 const express = require('express');
 const Multer = require('multer');
+const passport = require('passport');
+const signJWT = require('../helpers/signJWT');
 const authControllers = require('../controllers/auth');
 // const { MAX_IMAGE_SIZE } = require('../utility/variables');
 
@@ -54,5 +56,46 @@ router.post(
 router.post('/signin', authControllers.signin);
 router.get('/signout', authControllers.signout);
 router.get('/verifyEmail', authControllers.verifyEmail);
+
+router.get(
+  '/google/customer',
+  passport.authenticate('customer', {
+    scope: ['profile', 'email', 'openid'],
+  })
+);
+
+router.get(
+  '/google/customer/redirect',
+  passport.authenticate('customer', {
+    session: false,
+  }),
+  async (req, res) => {
+    const { user } = req;
+    signJWT(res, user);
+
+    res.json({ message: 'new customer signed up successfully' });
+  }
+);
+
+router.get(
+  '/google/chef',
+  passport.authenticate('chef', {
+    scope: ['profile', 'email', 'openid'],
+  })
+);
+
+router.get(
+  '/google/chef/redirect',
+  passport.authenticate('chef', {
+    session: false,
+  }),
+  async (req, res) => {
+    const { user } = req;
+
+    signJWT(res, user);
+
+    res.json({ message: 'new chef signed up successfully' });
+  }
+);
 
 module.exports = router;

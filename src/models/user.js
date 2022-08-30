@@ -47,14 +47,12 @@ const User = new Schema(
 
     firstname: {
       type: String,
-      unique: false,
-      required: true,
+      default: '',
     },
 
     lastname: {
       type: String,
-      unique: false,
-      required: true,
+      default: '',
     },
 
     username: {
@@ -92,8 +90,13 @@ const User = new Schema(
 
     phone: {
       type: Number,
-      required: true,
-      unique: true,
+      // required: true,
+      // the unique constraint is applied only if phone exists and is not null
+      // ref: https://stackoverflow.com/questions/62169061/mongoerror-e11000-duplicate-key-error-collection-users-index-mobile-1-dup-key
+      index: {
+        unique: true,
+        partialFilterExpression: { phone: { $type: 'number' } },
+      },
     },
 
     avatar: {
@@ -102,13 +105,13 @@ const User = new Schema(
 
     birthday: {
       type: Date,
-      required: true,
+      default: '',
     },
 
     gender: {
       type: String,
-      required: true,
-      enum: ['female', 'male', 'non-binary defined'],
+      enum: ['female', 'male', 'not defined'],
+      default: 'not defined',
     },
     provider: {
       type: String,
@@ -143,7 +146,6 @@ const ChefModel = UserModel.discriminator(
     kitchen_description: {
       type: String,
       default: '',
-      required: true,
     },
     bio: {
       type: String,
