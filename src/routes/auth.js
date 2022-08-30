@@ -31,12 +31,7 @@ router.post(
 );
 
 router.post(
-  '/chef/signup/:id/avatar',
-  multer.single('avatar'),
-  authControllers.uploadAvatarImage
-);
-router.post(
-  '/customer/signup/:id/avatar',
+  '/uploadAvatar/:username',
   multer.single('avatar'),
   authControllers.uploadAvatarImage
 );
