@@ -65,12 +65,26 @@ Junior Engineer
   
   <tr>
     <td>
+      Lead Engineer
     </td>
     <td>
       Junior Engineer
     </td>
     <td>
       Junior Engineer
+    </td>
+  </tr>
+
+  
+  <tr>
+    <td>
+      Can kishi
+    </td>
+    <td>
+      Hala Alkhellow
+    </td>
+    <td>
+      Hamza Wattar
     </td>
   </tr>
 
@@ -84,16 +98,6 @@ Junior Engineer
     </td>
   </tr>
 
-  
-  <tr>
-    <td>
-    </td>
-    <td>
-    </td>
-    <td>
-    </td>
-  </tr>
-
   <tr>
     <td>
       Junior Engineer
@@ -108,10 +112,13 @@ Junior Engineer
 
   <tr>
     <td>
+      Huzeyfe Abdullahoglu
     </td>
     <td>
+      Emine Çığ
     </td>
     <td>
+      Rasha Bsirini
     </td>
   </tr>
 
