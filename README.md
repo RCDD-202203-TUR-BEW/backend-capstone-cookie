@@ -64,11 +64,29 @@ Junior Engineer
     <td>
       <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Hamzah.png">
     </td>
+    <td>
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Huzayfe.png" class="circle-avatar">
+    </td>
+    <td>
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Emine.png">
+    </td>
+    <td>
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Rasha.png">
+    </td>
   </tr>
   
   <tr>
     <td>
       Lead Engineer
+    </td>
+    <td>
+      Junior Engineer
+    </td>
+    <td>
+      Junior Engineer
+    </td>
+    <td>
+      Junior Engineer
     </td>
     <td>
       Junior Engineer
@@ -89,34 +107,6 @@ Junior Engineer
     <td>
       Hamza Wattar
     </td>
-  </tr>
-
-  
-  <tr>
-    <td>
-      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Huzayfe.png" class="circle-avatar">
-    </td>
-    <td>
-      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Emine.png">
-    </td>
-    <td>
-      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      Junior Engineer
-    </td>
-    <td>
-      Junior Engineer
-    </td>
-    <td>
-      Junior Engineer
-    </td>
-  </tr>
-
-  <tr>
     <td>
       Huzeyfe Abdullahoglu
     </td>
@@ -126,7 +116,6 @@ Junior Engineer
     <td>
       Rasha Bsirini
     </td>
-  </tr>
-
+  
  </table>
 
