@@ -45,6 +45,19 @@
 <p align="center"><img width="1000" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/project2.png"></p>
 
 
+#Features
+Sign-in and sign-up features for users with Google, Facebook Authentication List of chefs with images of thier services, rate services and customers  
+
+#Functionalities
+List services
+CRUD operations for products
+CRUD operations for three kinds of user profiles
+rate functionality
+List your orders
+Authenctication with Google, Facebook
+Authenctication with email and password
+
+
 # Content of project
    The project contains three types of users, Admin, Chefs, and customers.
     Admin accepts responses of accounts for all other types of users and deletes these accounts when there is a need for that
