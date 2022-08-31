@@ -56,10 +56,13 @@ Junior Engineer
  <table>
   <tr>
     <td>
+      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
     </td>
     <td>
+      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/hala.png">
     </td>
     <td>
+      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/hamzah.png">
     </td>
   </tr>
   
