@@ -9,7 +9,7 @@
   # Technologies
    Technologies used in this project  for the Backend side :
    <br>
-   <img width="100" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
+   <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
    <br>
    <b>-Nodejs:</b> It's an open-source, cross-platform, back-end JavaScript runtime environment that runs on a JavaScript Engine
    <br><br><br>
@@ -21,7 +21,7 @@
    <br>
    <b>-Expressjs:</b> It's a minimal and flexible Node.js web application framework
    <br><br><br>
-   <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/1200px-Node.js_logo.svg.png">
+   <img width="200" src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/swagger-logo.png">
    <br>
    <b>-Swagger:</b> It's used to document all of REST APIS
    <br><br><br>
@@ -71,7 +71,7 @@ Junior Engineer
       <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Emine.png">
     </td>
     <td>
-      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Rasha.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Rasha.jpg">
     </td>
   </tr>
   
