@@ -108,7 +108,7 @@ Junior Engineer
       Hamza Wattar
     </td>
     <td>
-      Huzeyfe Abdullahoglu
+      Huzeyfe Abdullahoğlu
     </td>
     <td>
       Emine Çığ
