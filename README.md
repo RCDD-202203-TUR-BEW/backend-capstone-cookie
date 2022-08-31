@@ -37,9 +37,12 @@
    <br>
    <b>-NodeMailer:</b> It's used to send and recieve Emailes from Nodejs application to submite accounts 
    <hr>
-   # Features
+   
+# Features
+<hr>
 Sign-in and sign-up features for users with Google, Facebook Authentication List of chefs with images of thier services, rate services and customers  
 <hr>
+
 # Functionalities
 <ul>
 <li> List services </li>
