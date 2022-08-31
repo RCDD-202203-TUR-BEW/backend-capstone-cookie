@@ -56,13 +56,13 @@ Junior Engineer
  <table>
   <tr>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
+      <img width=200  src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
     </td>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/hala.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/hala.png">
     </td>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Hamzah.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Hamzah.png">
     </td>
   </tr>
   
@@ -94,13 +94,13 @@ Junior Engineer
   
   <tr>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Huzayfe.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Huzayfe.png" class="circle-avatar">
     </td>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Emine.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/Emine.png">
     </td>
     <td>
-      <img width=300 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
+      <img width=200 src="https://github.com/RCDD-202203-TUR-BEW/backend-capstone-cookie/blob/readme_Branch/Image/can%20Kisi.png">
     </td>
   </tr>
 
