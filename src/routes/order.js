@@ -37,7 +37,7 @@ routes.delete(
 
 // DELETE DISH
 routes.delete(
-  '/:customerid/:dishid',
+  '/:customerid/dish',
   permit('customer'),
   orderControllers.deleteDish
 );
